@@ -3,8 +3,9 @@ import AdminLTE, { Sidebar } from 'adminlte-2-react';
 import ProfileComponent from './components/employee/profile.component';
 import AttendanceComponent from './components/employee/attendance.component';
 import EodComponent from './components/employee/eod.component';
-import Leaves from './components/employee/leaves.component';
-
+import LeaveComponent from './components/employee/leaves.component';
+import UndertimeComponent from './components/employee/undertime.component';
+import OvertimeComponent from './components/employee/overtime.component';
 const { Item, UserPanel } = Sidebar;
 
 class App extends Component {
@@ -29,7 +30,9 @@ class App extends Component {
         <ProfileComponent path="/profile" />
         <AttendanceComponent path="/attendance" />
         <EodComponent path="/eod"/>
-        <Leaves path="/leaves"/>
+        <LeaveComponent path="/leaves"/>
+        <UndertimeComponent path="/undertime"/>
+        <OvertimeComponent path="/overtime"/>
       </AdminLTE>
     );
   }
