@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AdminLTE, { Inputs, Content, Row, Col, Box, Button } from 'adminlte-2-react';
+import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
  
 import "react-datepicker/dist/react-datepicker.css";
@@ -45,18 +45,19 @@ class LeaveComponent extends Component {
   }
 
   handleSubmit = event => {
-    alert(`${this.state.from_date}`)
+    alert(`${this.state.reason}`)
     event.preventDefault();
   }
 
   footer = [
     <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
-    <Button key="btnCancel" type="warning" pullRight text="Cancel" />
   ];
 
   render() {
     return (
-      <Content title="Leaves" subTitle="Leave Requests" browserTitle="Leaves">
+      <Content title="Leaves" subTitle="Requests" browserTitle="Leaves">
+      <Row>
+      <Col md={6}>
       <Row> 
         <Col xs={12}>
           <form>
@@ -64,7 +65,7 @@ class LeaveComponent extends Component {
               <div className="form-group">
                   <label>Leave Type</label>
                   <div>
-                    <select>
+                    <select value= {this.state.leave_type} onChange={this.leaveTypeChange}>
                       <option value='1'>Vacation</option>
                       <option value='2'>Sick</option>
                       <option value='3'>Compassionate</option>
@@ -94,14 +95,23 @@ class LeaveComponent extends Component {
               
               <div className="form-group">
                   <label>Reason</label>
-                  <textarea type="text" className="form-control" placeholder="Enter ..." />
+                  <textarea type="text" value={this.state.reason} className="form-control" placeholder="Enter ..." onChange={this.handleReason} />
               </div>
           
               </Box>
           </form>
         </Col>
       </Row>
-      <Row></Row>
+      </Col>
+      
+      <Col md={6}>
+          <Box title="Request Status" type="primary" collapsable>
+            <div className="form-group">
+                <label>todo</label>
+            </div>
+          </Box>
+        </Col>
+      </Row>
     </Content>);
   }
 }
