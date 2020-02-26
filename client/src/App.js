@@ -6,6 +6,8 @@ import EodComponent from './components/employee/eod.component';
 import LeaveComponent from './components/employee/leaves.component';
 import UndertimeComponent from './components/employee/undertime.component';
 import OvertimeComponent from './components/employee/overtime.component';
+import InterviewComponent from './components/recruitment/interviews.component'
+import OnBoardingComponent from './components/recruitment/onboarding.component';
 
 const { Item, UserPanel } = Sidebar;
 
@@ -48,13 +50,15 @@ class App extends Component {
 
   render() {
     return (
-      <AdminLTE title={["HRIS"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
+      <AdminLTE title={["HR Info System"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
         <ProfileComponent path="/profile" />
         <AttendanceComponent path="/attendance" />
         <EodComponent path="/eod"/>
         <LeaveComponent path="/leaves"/>
         <UndertimeComponent path="/undertime"/>
         <OvertimeComponent path="/overtime"/>
+        <InterviewComponent path="/interviews"/>
+        <OnBoardingComponent path="/onboarding"/>
       </AdminLTE>
     );
   }
