@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Social Spark</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  {{!-- <link rel="stylesheet" href="/stylesheets/signup.css"> --}}
+</head>
+
+<body>
+
+  <form class="form-signin" action="/api/leaves" method="POST">
+    <div class="form-group">
+      <label for="leave_type">Type of leave</label>
+      <select class="form-control" id="sel1" name="leave_type">
+        <option>Choose..</option>
+        <option>Vacation Leave</option>
+        <option>Sick Leave</option>
+        <option>Compassionate Leave</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit form</button> 
+  </form>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+    integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous">
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+</body>
+
+</html>
