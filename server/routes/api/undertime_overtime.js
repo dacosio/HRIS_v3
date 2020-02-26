@@ -4,7 +4,7 @@ const UndertimeOvertimeService = require('../../services/undertime_overtime.serv
 
 const undertimeOvertimeService = new UndertimeOvertimeService();
 
-/********** These are all mounted to /api/roles *********/
+/********** These are all mounted to /api/time *********/
 
 //get all roles
 router.get('/', function(req,res,next) {

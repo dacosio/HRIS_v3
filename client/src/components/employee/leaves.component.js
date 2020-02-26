@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
+import axios from 'axios';
  
 import "react-datepicker/dist/react-datepicker.css";
  
@@ -18,7 +19,7 @@ class LeaveComponent extends Component {
     this.setState({
       from_date: date
     });
-    console.log(date);
+    // console.log(date);
     
   };
 
@@ -26,27 +27,33 @@ class LeaveComponent extends Component {
     this.setState({
     to_date: date
     });
-    console.log(date)
+    // console.log(date)
   };
 
   leaveTypeChange = event => {
     this.setState({
       leave_type: event.target.value
     })
-    console.log(event.target.value);
+    // console.log(event.target.value);
   }
 
   handleReason = event => {
     this.setState({
       reason: event.target.value
     })
-    console.log(event.target.value);
+    // console.log(event.target.value);
     
   }
 
   handleSubmit = event => {
-    alert(`${this.state.reason}`)
-    event.preventDefault();
+    console.log(`${this.state.reason} ${this.state.from_date} ${this.state.to_date}`)
+    event.preventDefault()
+    axios.post('http://localhost:8080/api/leaves',this.state)
+      .then(response=> {
+        console.log(response);
+      }).catch(error => {
+        console.error(error);
+      })
   }
 
   footer = [
@@ -61,7 +68,7 @@ class LeaveComponent extends Component {
       <Row> 
         <Col xs={12}>
           <form>
-            <Box title="Leave Application" type="primary" collapsable footer={this.footer}>
+            <Box title="Leave Application" type="primary" name="leave_type" collapsable footer={this.footer}>
               <div className="form-group">
                   <label>Leave Type</label>
                   <div>
@@ -80,6 +87,7 @@ class LeaveComponent extends Component {
                     <DatePicker
                       selected={this.state.from_date}
                       onChange={this.handleChangeFrom}
+                      name="from_date"
                     />
                   </div>
               </div>
@@ -89,13 +97,14 @@ class LeaveComponent extends Component {
                 <DatePicker
                       selected={this.state.to_date}
                       onChange={this.handleChangeTo}
+                      name="to_date"
                     />
                 </div>
               </div>
               
               <div className="form-group">
                   <label>Reason</label>
-                  <textarea type="text" value={this.state.reason} className="form-control" placeholder="Enter ..." onChange={this.handleReason} />
+                  <textarea type="text" name="reason" value={this.state.reason} className="form-control" placeholder="Enter ..." onChange={this.handleReason} />
               </div>
           
               </Box>

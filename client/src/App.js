@@ -11,7 +11,7 @@ const { Item, UserPanel } = Sidebar;
 
 class App extends Component {
 
-  children = [
+  children_employee = [
     <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
     <Item key="attendance" text="Attendance" to="/attendance" icon="fa-user-clock"/>,
     <Item key="eod" text="End of Day" to="/eod" icon="fa-file-alt" />,
@@ -20,10 +20,31 @@ class App extends Component {
     <Item key="overtime" text="Overtime" to="/overtime" icon="fa-business-time" />
   ]
 
+  children_admin = [
+    <Item key="employeeLists" text="Employees" to="/employeelists" icon="fa-users" />,
+    <Item key="dependentLists" text="Dependents" to="/dependentlists" icon="fa-user-friends" />,
+    <Item key="emergencyContactLists" text="Emergency Contacts" to="/contactlists" icon="fa-mobile" />
+  ]
+
+  children_recruitment = [
+    <Item key="recruitmentLists" text="Interviews" to="/interviews" icon="fa-calendar-alt" />,
+    <Item key="onBoardingLists" text="On Boarding" to="/onboarding" icon="fa-calendar-check" />
+  ]
+
+  children_finance = [
+    <Item key="payroll" text="Payslip" to="/payslips" icon="fa-receipt" />
+  ]
+
+
   sidebar = [
     <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />,
-    <Item key="employee" icon="fa-address-card" text="Employee" children={this.children}/>
+    <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
+    <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
+    <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>,
+    <Item key="finance" icon="fa-wallet" text="Finance" children={this.children_finance}/>
   ]
+
+  
 
   render() {
     return (
