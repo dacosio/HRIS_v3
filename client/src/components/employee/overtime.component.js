@@ -37,26 +37,19 @@ class OvertimeComponent extends Component {
   };
 
   handleSubmit = event => {
-    console.log(
-    'date->',this.state.date_filed, 
-    'from ',this.state.from_time, 
-    'to ',this.state.to_time, 
-    'reason ',this.state.reason);
+    event.preventDefault();
 
-    event.preventDefault()
-    axios.post('http://localhost:8080/api/time',{
-      'date_filed':this.state.date_filed,
-      'from_time':this.state.from_time.format('HH:mm:ss'),
-      'to_time':this.state.to_time.format('HH:mm:ss'),
-      'reason':this.state.reason,
-      'created_by': 1 //todo
-    })
+    let obj = Object.assign({}, this.state);
+    obj.from_time = obj.from_time.format('HH:mm:ss');
+    obj.to_time = obj.to_time.format('HH:mm:ss');
+
+    axios.post('http://localhost:8080/api/time',obj)
     .then(response=> {
       console.log(response);
     }).catch(error => {
       console.error(error);
     })
-  }
+  };
 
   footer = [
     <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 

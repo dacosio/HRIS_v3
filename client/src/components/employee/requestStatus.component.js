@@ -38,6 +38,10 @@ class RequestStatusComponent extends Component {
             data: 'date_filed',
         },
         {
+            title: 'Reason',
+            data: 'reason'
+        },
+        {
             title: "From",
             data: 'from_time',
         },
