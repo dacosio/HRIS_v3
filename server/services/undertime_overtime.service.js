@@ -17,6 +17,7 @@ class UndertimeOvertimeService {
     }
 
     create(obj) {
+        obj.created_by = 1;
         return knex('undertime_overtime')
             .returning('id')
             .insert(obj);

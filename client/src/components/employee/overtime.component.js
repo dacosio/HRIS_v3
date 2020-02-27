@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import axios from 'axios';
 import moment from 'moment';
+
+import React, { Component } from 'react';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import TimePicker from 'rc-time-picker';
 import DatePicker from "react-datepicker";
-import axios from 'axios'
-
+import RequestStatusComponent from './requestStatus.component';
 
 import 'rc-time-picker/assets/index.css';
 
@@ -17,40 +18,39 @@ class OvertimeComponent extends Component {
     reason: '',
     time_type: 1,
     created_by: 1 //todo
-    };
+  };
     
   handleChangeDateFiled = date => {
-    this.setState({
-      date_filed: date
-    });
-    console.log(date)
+    this.setState({'date_filed': date});
   };
  
   handleFromTime = time => {
-    this.setState({
-        from_time: time
-    });
-    console.log(time.format('HH:mm:ss'));
+    this.setState({from_time: time});
   };
 
   handleToTime = time => {
-    this.setState({
-        to_time: time
-    });
-    console.log(time.format('HH:mm:ss'));
+    this.setState({to_time: time});
   };
 
   handleReason = event => {
-    this.setState({
-      reason: event.target.value
-    })
-    console.log(event.target.value);
-  }
+    this.setState({reason: event.target.value});
+  };
 
   handleSubmit = event => {
-    console.log(`date-> ${this.state.date_filed} from ${this.state.from_time} to ${this.state.to_time} reason ${this.state.reason}`)
+    console.log(
+    'date->',this.state.date_filed, 
+    'from ',this.state.from_time, 
+    'to ',this.state.to_time, 
+    'reason ',this.state.reason);
+
     event.preventDefault()
-    axios.post('http://localhost:8080/api/time',this.state)
+    axios.post('http://localhost:8080/api/time',{
+      'date_filed':this.state.date_filed,
+      'from_time':this.state.from_time.format('HH:mm:ss'),
+      'to_time':this.state.to_time.format('HH:mm:ss'),
+      'reason':this.state.reason,
+      'created_by': 1 //todo
+    })
     .then(response=> {
       console.log(response);
     }).catch(error => {
@@ -64,48 +64,44 @@ class OvertimeComponent extends Component {
 
   render() {
     return (
-      <Content title="Overtime" subTitle="Requests" browserTitle="Overtime">
-        <Row>
-          <Col md={6}>
-            <Row> 
+    <Content title="Overtime" subTitle="Requests" browserTitle="Overtime">
+      <Row>
+        <Col md={6}>
+          <Row>
               <Col xs={12}>
                 <Box title="Overtime Application" type="primary" collapsable footer={this.footer}>
-                <div className="form-group">
-                    <label>Date</label>
-                      <div>
-                        <DatePicker name="date_filed" selected={this.state.date_filed} onChange={this.handleChangeDateFiled}/>
-                      </div>
+                    <div className="form-group">
+                        <label>Date</label>
+                        <div>
+                            <DatePicker name="date_filed" selected={this.state.date_filed}
+                                onChange={this.handleChangeDateFiled} />
+                        </div>
                     </div>
                     <div className="form-group">
                         <label>From</label>
                         <div>
-                          <TimePicker name="from_time" value={this.state.from_time} onChange={this.handleFromTime} />
+                            <TimePicker name="from_time" value={this.state.from_time} onChange={this.handleFromTime} />
                         </div>
                     </div>
                     <div className="form-group">
                         <label>To</label>
-                      <div>
-                        <TimePicker name="to_time" value={this.state.to_time} onChange={this.handleToTime} />
-                      </div>
+                        <div>
+                            <TimePicker name="to_time" value={this.state.to_time} onChange={this.handleToTime} />
+                        </div>
                     </div>
-                
+
                     <div className="form-group">
                         <label>Reason</label>
-                        <textarea type="text" name="reason" value={this.state.reason} onChange={this.handleReason} className="form-control" placeholder="Enter ..." />
+                        <textarea type="text" name="reason" value={this.state.reason} onChange={this.handleReason}
+                            className="form-control" placeholder="Enter ..." />
                     </div>
-                  </Box>
-                </Col>
-            </Row>
-          </Col>
+                </Box>
+              </Col>
+          </Row>
+        </Col>
 
-          <Col md={6}>
-            <Box title="Request Status" type="primary" collapsable>
-              <div className="form-group">
-                  <label>todo</label>
-              </div>
-            </Box>
-          </Col>
-        </Row>
+        <RequestStatusComponent timeType="1" title="Overtime Requests"/>
+      </Row>
     </Content>);
   }
 }
