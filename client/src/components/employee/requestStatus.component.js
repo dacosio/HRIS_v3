@@ -56,8 +56,6 @@ class RequestStatusComponent extends Component {
     ];
 
     render() {
-      const {records} = this.state
-
       return (
         <Col md={6}>
             <Box title={this.state.title} type="primary" collapsable>
