@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AdminLTE, { Sidebar } from 'adminlte-2-react';
+import AdminLTE, { Sidebar} from 'adminlte-2-react';
 import ProfileComponent from './components/employee/profile.component';
 import AttendanceComponent from './components/employee/attendance.component';
 import EodComponent from './components/employee/eod.component';
@@ -46,7 +46,7 @@ class App extends Component {
     <Item key="finance" icon="fa-wallet" text="Finance" children={this.children_finance}/>
   ]
 
-  
+
 
   render() {
     return (

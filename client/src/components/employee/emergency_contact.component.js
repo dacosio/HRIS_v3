@@ -1,45 +1,62 @@
 import React, { Component } from 'react';
-import { Col, Box } from 'adminlte-2-react';
+import { Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 
 class EmergencyContactComponent extends Component {
 
   state = {
-    emergency_contacts: [],
-    errorMsg: ''
+    records: [],
   }
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/emergencys/1') //params todo
+      axios.get('http://localhost:8080/api/emergency') //params todo
       .then(response => {
         console.log(response.data)
-        this.setState({emergency_contacts: response.data})
+        this.setState({records: response.data})
       })
       .catch(error => {
         console.error(error);
-        this.setState({errorMsg: 'Error retrieving data'})
       })
     }
+
+    
+    columns = [
+      {
+        title: "First Name",
+        data: 'first_name',
+      },
+     {
+        title: "Last Name",
+        data: 'last_name',
+      },
+      {
+        title: "Address",
+        data: 'address' ,
+      },
+      {
+        title: "City",
+        data: 'city' ,
+      },
+      {
+        title: "State",
+        data: 'state' ,
+      },
+      {
+        title: 'Contact #',
+        data: 'contact_no'
+      }
+    ]
  
     render() {
-      const {emergency_contacts, errorMsg} = this.state
-
       return (
-       
-        <Col md={6}>
-            <Box title="Emergency Contact" type="primary" collapsable>
-                Name
-                  {
-                    emergency_contacts.length ?
-                    emergency_contacts.map(emergency_contact => <div key={emergency_contact.id}>{emergency_contact.first_name} {emergency_contact.last_name}</div>) :
-                    null
-                  }
-                  {errorMsg ? <div>{errorMsg}</div> : null}
-            </Box>
+        <Col md={8}>
+          <Box title="Emergency Contacts" type="warning" collapsable>
+              <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+          </Box>
         </Col>
       );
     }
-}
+};
 
 
 

@@ -62,7 +62,7 @@ class OvertimeComponent extends Component {
         <Col md={6}>
           <Row>
               <Col xs={12}>
-                <Box title="Overtime Application" type="primary" collapsable footer={this.footer}>
+                <Box title="Overtime Application" type="success" collapsable footer={this.footer}>
                     <div className="form-group">
                         <label>Date</label>
                         <div>
@@ -92,7 +92,6 @@ class OvertimeComponent extends Component {
               </Col>
           </Row>
         </Col>
-
         <RequestStatusComponent timeType="1" title="Overtime Requests"/>
       </Row>
     </Content>);

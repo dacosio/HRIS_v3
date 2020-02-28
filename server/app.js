@@ -21,6 +21,7 @@ var logsRouter = require('./routes/api/log');
 var rolesRouter = require('./routes/api/role');
 var undertimeOvertimeRouter = require('./routes/api/undertime_overtime');
 var usersRouter = require('./routes/api/user');
+var eodsRouter = require('./routes/api/eod');
 
 var app = express();
 app.use(cors());
@@ -64,6 +65,7 @@ app.use('/api/logs',logsRouter);
 app.use('/api/roles',rolesRouter);
 app.use('/api/time',undertimeOvertimeRouter);
 app.use('/api/users',usersRouter);
+app.use('/api/eods',eodsRouter);
 
 
 // catch 404 and forward to error handler

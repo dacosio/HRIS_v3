@@ -1,49 +1,112 @@
 import React, { Component } from 'react';
-import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
+import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 import DependentsComponent from './dependents.component';
 import EmergencyContactComponent from './emergency_contact.component';
+import SalaryComponent from '../finance/salary.component';
 
 class ProfileComponent extends Component {
 
   state = {
-    employees: [],
-    errorMsg: ''
+    first_name: '',
+    last_name:'',
+    position:'',
+    department_id: '',
+    address:'',
+    city:'',
+    state: '',
+    contact_no: '',
+    records: []
   }
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/employees/1') //params todo
-      .then(response => {
-        console.log(response.data)
-        this.setState({employees: response.data})
+      axios.get('http://localhost:8080/api/employees/') //params todo
+      .then(result => {
+        console.log(result.data)
+        result.data.forEach(res=> {
+          switch (res.department_id) {
+            case 1:
+              res.department_id = 'Engineering'
+              break;
+            case 2:
+              res.department_id = 'Human Resource Management'
+              break;
+            case 3:
+              res.department_id = 'Marketing and Sales'
+              break;
+            case 4:
+              res.department_id = 'Accounting and Finance'
+              break;
+            case 5:
+              res.department_id = 'Purchasing and Logistics'
+              break;
+            case 6:
+              res.department_id = 'Information System'
+              break;
+            case 7:
+              res.department_id = 'Software Development'
+              break;
+          }
+        })
+        
+        this.setState({records: result.data})
       })
       .catch(error => {
         console.error(error);
-        this.setState({errorMsg: 'Error retrieving data'})
       })
     }
+
+    
+    columns = [
+      {
+        title: "First Name",
+        data: 'first_name',
+      },
+    {
+        title: "Last Name",
+        data: 'last_name',
+      },
+      {
+        title: "Position Title",
+        data: 'position',
+      },
+      {
+        title: "Department",
+        data: 'department_id',
+      },
+      {
+        title: "Address",
+        data: 'address',
+      },
+      {
+        title: "City",
+        data: 'city',
+      },
+      {
+        title: "State",
+        data: 'state',
+      },
+      {
+        title: 'Contact #',
+        data: 'contact_no'
+      }
+  ];
  
     render() {
-      const {employees, errorMsg} = this.state
 
       return (<Content title="Profile" subTitle="Employee Profile" browserTitle="Profile">
         <Row>
-          <Col xs={12}>
-            <Box title="Employee Details" type="primary" collapsable footer={<Button type="success" pullRight text="Save" />}>
-                  Name
-                  {
-                    employees.length ?
-                    employees.map(employee => <div key={employee.id}>{employee.first_name} {employee.last_name}</div>) :
-                    null
-                  }
-                  {errorMsg ? <div>{errorMsg}</div> : null}
+          <Col md={8}>
+            <Box title="Employee Detail" type="primary" collapsable>
+                <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
             </Box>
-          </Col>
+         </Col>
+         <SalaryComponent/>
         </Row>
               
         <Row>
-        <DependentsComponent/>
-        <EmergencyContactComponent/>
+          <DependentsComponent/>
+          <EmergencyContactComponent/>
         </Row>
       </Content>);
     }

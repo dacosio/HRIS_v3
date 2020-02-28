@@ -1,19 +1,54 @@
 import React, { Component } from 'react';
-import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
+import { Content, Row, Col, Box, Button, SimpleTable } from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
+import moment from 'moment';
  
 import "react-datepicker/dist/react-datepicker.css";
  
 class LeaveComponent extends Component {
 
   state = {
-    from_date: new Date(),
-    to_date: new Date(),
+    from_date: moment().valueOf(),
+    to_date: moment().valueOf(),
     reason: '',
     leave_type: '1',
-    created_by: 1 //todo
+    created_by: 1, //todo
+    records: []
   };
+
+  componentDidMount() {
+      axios.get('http://localhost:8080/api/leaves/') //params todo
+        .then(result => {
+          console.log(result.data)
+          result.data.forEach(res => {
+            res.from_date = moment(res.from_date).format("YY/MM/DD");
+            res.to_date = moment(res.to_date).format("YY/MM/DD");
+            res.isAccepted = res.isAccepted? "Approved" : "Pending"
+            switch (res.leave_type) {
+              case 1:
+                res.leave_type = 'Vacation'
+                break;
+              case 2:
+                res.leave_type = 'Sick'
+                break;
+              case 3:
+                res.leave_type = 'Compassionate'
+                break;
+              case 4:
+                res.leave_type = 'Maternity'
+                break;
+              case 5:
+                res.leave_type = 'Paternity'
+                break;
+            }
+          })
+          this.setState({records: result.data})
+        })
+        .catch(error => {
+          console.error(error);
+        })
+  }
    
   handleChangeFrom = date => {
     this.setState({
@@ -46,7 +81,6 @@ class LeaveComponent extends Component {
   }
 
   handleSubmit = event => {
-    console.log(`${this.state.reason} ${this.state.from_date} ${this.state.to_date}`)
     event.preventDefault()
     axios.post('http://localhost:8080/api/leaves',this.state)
       .then(response=> {
@@ -60,15 +94,39 @@ class LeaveComponent extends Component {
     <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
 
+  columns = [
+    {
+      title: "Leave Type",
+      data: 'leave_type',
+    },
+  {
+      title: "From",
+      data: 'from_date',
+    },
+    {
+      title: "To",
+      data: 'to_date',
+    },
+    {
+      title: 'Reason',
+      data: 'reason'
+    },
+    {
+      title: "Status",
+      data: 'isAccepted'
+    }
+];
+
+
   render() {
     return (
       <Content title="Leaves" subTitle="Requests" browserTitle="Leaves">
       <Row>
-      <Col md={6}>
+      <Col md={4}>
       <Row> 
         <Col xs={12}>
           <form>
-            <Box title="Leave Application" type="primary" name="leave_type" collapsable footer={this.footer}>
+            <Box  title="Leave Application" type="primary" name="leave_type" collapsable footer={this.footer}>
               <div className="form-group">
                   <label>Leave Type</label>
                   <div>
@@ -113,13 +171,11 @@ class LeaveComponent extends Component {
       </Row>
       </Col>
       
-      <Col md={6}>
-          <Box title="Request Status" type="primary" collapsable>
-            <div className="form-group">
-                <label>todo</label>
-            </div>
-          </Box>
-        </Col>
+      <Col md={8}>
+            <Box title="Leave Requests" type="warning" collapsable>
+                <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+            </Box>
+      </Col>
       </Row>
     </Content>);
   }

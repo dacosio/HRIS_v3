@@ -1,42 +1,52 @@
 import React, { Component } from 'react';
-import { Col, Box } from 'adminlte-2-react';
+import { Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 
 class DependentsComponent extends Component {
 
   state = {
-    dependents: [],
-    errorMsg: ''
+    records: [],
   }
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/dependents/1') //params todo
-      .then(response => {
-        console.log(response.data)
-        this.setState({dependents: response.data})
+      axios.get('http://localhost:8080/api/dependents') //params todo
+      .then(result => {
+        console.log(result.data)
+        this.setState({records: result.data})
       })
       .catch(error => {
         console.error(error);
-        this.setState({errorMsg: 'Error retrieving data'})
       })
     }
+
+    columns = [
+      {
+        title: "First Name",
+        data: 'first_name',
+      },
+    {
+        title: "Last Name",
+        data: 'last_name',
+      },
+      {
+        title: "Relationship",
+        data: 'relationship',
+      },
+      {
+        title: 'Contact #',
+        data: 'contact_no'
+      }
+  ];
  
     render() {
-      const {dependents, errorMsg} = this.state
 
       return (
        
-        <Col md={6}>
-            <Box title="Dependents" type="primary" collapsable>
-                Name
-                  {
-                    dependents.length ?
-                    dependents.map(dependent => <div key={dependent.id}>{dependent.first_name} {dependent.last_name}</div>) :
-                    null
-                  }
-                  {errorMsg ? <div>{errorMsg}</div> : null}
-            </Box>
-        </Col>
+    <Col md={8}>
+        <Box title="Dependents" type="warning" collapsable>
+            <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+        </Box>
+    </Col>
       );
     }
 }

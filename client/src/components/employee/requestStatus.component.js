@@ -12,7 +12,7 @@ class RequestStatusComponent extends Component {
             title: props.title
         };
 
-        axios.get('http://localhost:8080/api/time')
+        axios.get('http://localhost:8080/api/time') //params todo
             .then(result => {
                 console.log(result);
 
@@ -38,16 +38,16 @@ class RequestStatusComponent extends Component {
             data: 'date_filed',
         },
         {
-            title: 'Reason',
-            data: 'reason'
-        },
-        {
             title: "From",
             data: 'from_time',
         },
         {
             title: "To",
             data: 'to_time',
+        },
+        {
+            title: 'Reason',
+            data: 'reason'
         },
         {
             title: "Status",
@@ -58,8 +58,8 @@ class RequestStatusComponent extends Component {
     render() {
       return (
         <Col md={6}>
-            <Box title={this.state.title} type="primary" collapsable>
-                <SimpleTable columns={this.columns} data={this.state.records} striped="true" hover="true" border="true"></SimpleTable>
+            <Box title={this.state.title} type="warning" collapsable>
+                <SimpleTable columns={this.columns} data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
             </Box>
         </Col>
       );

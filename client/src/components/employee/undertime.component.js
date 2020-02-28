@@ -17,7 +17,7 @@ class UndertimeComponent extends Component {
       from_time: moment(),
       to_time: moment(),
       reason: '',
-      time_type: 2,
+      time_type: 2, //todo under time input is being stored to overtime
       isAccepted: false,
       created_by: 1 //todo
     };
@@ -65,7 +65,7 @@ class UndertimeComponent extends Component {
           <Col md={6}>
             <Row> 
               <Col xs={12}>
-                <Box title="Undertime Application" type="primary" collapsable footer={this.footer}>
+                <Box title="Undertime Application" type="success" collapsable footer={this.footer}>
                   <div className="form-group">
                     <label>Date</label>
                     <div>
@@ -93,7 +93,7 @@ class UndertimeComponent extends Component {
             </Row>
           </Col>
       
-          <RequestStatusComponent timeType="2" title="Undertime Requests"/>
+          <RequestStatusComponent timeType="2" title="Undertime Requests"/>  
         </Row>
     </Content>);
   }

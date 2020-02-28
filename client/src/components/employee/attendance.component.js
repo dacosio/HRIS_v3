@@ -1,15 +1,31 @@
 import React, { Component } from 'react';
-import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
+import { Content, Row, Col, Box, Button, SimpleTable } from 'adminlte-2-react';
 import moment from 'moment';
+import axios from 'axios';
 
 
 class AttendanceComponent extends Component {
     state = {
-      time_in: new Date().toLocaleString(),
-      // time_in: moment().format("HH:MM:ss"),
-      time_out: moment().format("HH:mm:ss"),
+      time_in: moment().valueOf(),
+      time_out: moment().valueOf(),
       created_by : 1, //todo
-      text: "Time In"
+      records: []
+    }
+
+    componentDidMount() {
+      axios.get('http://localhost:8080/api/logs') //params todo
+        .then(result => {
+          console.log(result.data);
+          result.data.forEach(res => {
+          res.created_at = moment(res.created_at).format("YYYY-MMM-DD");
+          res.time_in = moment(res.time_in).format("HH:mm:ss a");
+          res.time_out = moment(res.time_out).format("HH:mm:ss a");
+          })
+          this.setState({records: result.data})
+        })
+        .catch(error => {
+          console.error(error);
+        })
     }
 
   handleTimeIn = time => {
@@ -24,12 +40,27 @@ class AttendanceComponent extends Component {
     })
   }
 
+  columns = [
+    {
+      title: "Date",
+      data: 'created_at',
+    },
+    {
+      title: "Time In",
+      data: 'time_in',
+    },
+  {
+      title: "Time Out",
+      data: 'time_out',
+    }
+];
+
 
     render() {
       return (<Content title="Attendance" subTitle="Employee Attendance" browserTitle="Attendance">
         <Row>
           <Col xs={3} md={3}>
-            <Box title="Actions" collapsable>
+            <Box title="Actions" type="danger">
              <Row>
              <Col xs={6}>
                 <div>
@@ -53,12 +84,11 @@ class AttendanceComponent extends Component {
             </Box>
           </Col>
           
-          <Col xs={9} md={9}>
-            <Box title="My first box" type="primary" collapsable>
-              Hello World
-              todo: list all attendance here
+          <Col md={9}>
+            <Box title="Time History" type="primary" collapsable>
+                <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
             </Box>
-          </Col>
+         </Col>
           
         </Row>
       </Content>);
