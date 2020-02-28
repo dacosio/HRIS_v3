@@ -1,8 +1,13 @@
-    var express = require('express');
+var express = require('express');
 var router = express.Router();
 const EmployeeService = require('../../services/employee.service');
+const DependentService = require('../../services/dependent.service');
+const EmergencyContactService = require('../../services/emergency_contact.service');
 
 const employeeService = new EmployeeService();
+const dependentService = new DependentService();
+const emergencyContactService = new EmergencyContactService();
+
 
 /********** These are all mounted to /api/employees *********/
 
@@ -15,6 +20,12 @@ router.get('/', function(req,res,next) {
         });
 });
 
+//get employee list for admin page --> employee, dependent, and emergency contact
+router.get('/employeeList', function(req,res,next) {
+    dependentService
+        .getAll()
+        .then(dependent => res.json(dependent))
+})
 
 //get a specific employees
 router.get('/:id', function(req,res,next) {
