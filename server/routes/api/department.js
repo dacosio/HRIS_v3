@@ -26,7 +26,7 @@ router.get('/:id', function(req,res,next) {
 //create departments
 router.post('/', function(req,res,next){
     let department = {
-        department: req.body.department,
+        department: req.body.department
     };
     departmentService
         .create(department)

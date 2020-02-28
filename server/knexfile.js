@@ -16,7 +16,7 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      database: 'toku',
+      database: 'hris',
       user:     'username',
       password: 'password'
     }
