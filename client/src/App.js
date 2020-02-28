@@ -8,6 +8,7 @@ import UndertimeComponent from './components/employee/undertime.component';
 import OvertimeComponent from './components/employee/overtime.component';
 import InterviewComponent from './components/recruitment/interviews.component'
 import OnBoardingComponent from './components/recruitment/onboarding.component';
+import EmployeeListComponent from './components/admin/employee_list.component';
 
 const { Item, UserPanel } = Sidebar;
 
@@ -24,8 +25,8 @@ class App extends Component {
 
   children_admin = [
     <Item key="employeeLists" text="Employees" to="/employeelists" icon="fa-users" />,
-    <Item key="dependentLists" text="Dependents" to="/dependentlists" icon="fa-user-friends" />,
-    <Item key="emergencyContactLists" text="Emergency Contacts" to="/contactlists" icon="fa-mobile" />
+    // <Item key="dependentLists" text="Dependents" to="/dependentlists" icon="fa-user-friends" />,
+    // <Item key="emergencyContactLists" text="Emergency Contacts" to="/contactlists" icon="fa-mobile" />
   ]
 
   children_recruitment = [
@@ -59,6 +60,7 @@ class App extends Component {
         <OvertimeComponent path="/overtime"/>
         <InterviewComponent path="/interviews"/>
         <OnBoardingComponent path="/onboarding"/>
+        <EmployeeListComponent path="/employeelists"/>
       </AdminLTE>
     );
   }
