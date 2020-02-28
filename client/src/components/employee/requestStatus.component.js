@@ -9,25 +9,23 @@ class RequestStatusComponent extends Component {
         super(props);
         this.state = {
             records: [],
-            title: props.title
+            title: props.titles
         };
 
         axios.get('http://localhost:8080/api/time') //params todo
             .then(result => {
-                console.log(result);
+                // console.log(result);
 
                 result.data.forEach(res => {
                     res.date_filed = moment(res.date_filed).format("YYYY/MM/DD");
                     res.isAccepted = res.isAccepted? "Approved" : "Pending";
                 });
-
+               
                 this.setState({
-                    records: this.state.records.concat(result.data
-                        .filter(res => res.time_type == props.timeType)
-                    )
+                    records: this.state.records.concat(result.data.filter(res => res.time_type == props.timeType))
                 });
 
-                console.log("state",this.state);
+                console.log("state",this.state.records);
             })
             .catch(err => console.log(err));
     }

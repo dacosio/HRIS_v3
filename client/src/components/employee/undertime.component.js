@@ -48,7 +48,7 @@ class UndertimeComponent extends Component {
 
     axios.post('http://localhost:8080/api/time',obj)
     .then(response=> {
-      console.log(response);
+      console.log(response.data);
     }).catch(error => {
       console.error(error);
     })
@@ -93,7 +93,7 @@ class UndertimeComponent extends Component {
             </Row>
           </Col>
       
-          <RequestStatusComponent timeType="2" title="Undertime Requests"/>  
+          <RequestStatusComponent timeType="2" titles="Undertime Requests"/>  
         </Row>
     </Content>);
   }

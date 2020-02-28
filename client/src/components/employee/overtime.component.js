@@ -92,7 +92,7 @@ class OvertimeComponent extends Component {
               </Col>
           </Row>
         </Col>
-        <RequestStatusComponent timeType="1" title="Overtime Requests"/>
+        <RequestStatusComponent timeType= "1" titles="Overtime Requests"/>
       </Row>
     </Content>);
   }

@@ -9,6 +9,7 @@ exports.up = function (knex) {
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('modified_at').defaultTo(null);
         table.integer('created_by').unsigned().notNullable();
+        
         table.foreign('created_by').references('employees.id');
 
     })

@@ -30,7 +30,8 @@ router.post('/', function(req,res,next){
         from_time: req.body.from_time,
         to_time: req.body.to_time,
         reason: req.body.reason,
-        created_by: 1 //todo
+        time_type: req.body.time_type,
+        created_by: req.body.created_by //todo
     };
     undertimeOvertimeService
         .create(time)
