@@ -8,6 +8,7 @@ class LogService {
             .select();
     }
 
+
     get(id) {
         return knex('logs')
             .where({

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const LogService = require('../../services/log.service');
+const moment = require('moment');
 
 const logService = new LogService();
 
@@ -26,8 +27,8 @@ router.get('/:id', function(req,res,next) {
 //create logs
 router.post('/', function(req,res,next){
     let log = {
-        time_in: req.body.time_in,
-        time_out: req.body.time_out,
+        time_in: new Date(),//req.body.time_in,
+        time_out: null,//req.body.time_out,
         created_by: 1 //todo
     };
     logService
@@ -39,9 +40,7 @@ router.post('/', function(req,res,next){
 //update the logs
 router.put('/:id', function(req,res,next){
     let log = {
-        time_in: req.body.time_in,
-        time_out: req.body.time_out,
-        created_by: 1 //todo
+        time_out: new Date(),
     };
     logService
         .update(req.params.id,log)
