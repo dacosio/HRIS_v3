@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
+import axios from 'axios';
 
 
 class EmployeeListComponent extends Component {
@@ -9,68 +10,50 @@ class EmployeeListComponent extends Component {
     records: []
   }
 
-    // componentDidMount() {
-    //   axios.get('http://localhost:8080/api/employees/') //params todo
-    //   .then(result => {
-    //     console.log(result.data)
-    //     result.data.forEach(res=> {
-    //       switch (res.department_id) {
-    //         case 1:
-    //           res.department_id = 'Engineering'
-    //           break;
-    //         case 2:
-    //           res.department_id = 'Human Resource Management'
-    //           break;
-    //         case 3:
-    //           res.department_id = 'Marketing and Sales'
-    //           break;
-    //         case 4:
-    //           res.department_id = 'Accounting and Finance'
-    //           break;
-    //         case 5:
-    //           res.department_id = 'Purchasing and Logistics'
-    //           break;
-    //         case 6:
-    //           res.department_id = 'Information System'
-    //           break;
-    //         case 7:
-    //           res.department_id = 'Software Development'
-    //           break;
-    //       }
-    //     })
-        
-    //     this.setState({records: result.data})
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //   })
-    // }
+    componentDidMount() {
+      axios.get('http://localhost:8080/api/employees/employeeList') //params todo
+      .then(result => {
+        console.log(result.data)
+        this.setState({records: result.data})
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    }
 
     
     columns = [
       {
         title: "ID",
-        data: 'employee.id',
+        data: 'id',
       },
       {
         title: "Employee",
-        data: 'first_name',
+        data: "employee",
+      },
+      {
+        title: "Contact #",
+        data: "contact_no",
       },
       {
         title: "Position",
-        data: 'first_name',
+        data: 'position',
       },
       {
         title: "Department",
-        data: 'first_name',
+        data: 'department',
       },
       {
         title: "Emergency Contact",
-        data: 'first_name',
+        data: 'emergency_contact',
+      },
+      {
+        title: "Emergency Contact #",
+        data: 'ecnum',
       },
       {
         title: "Dependent",
-        data: 'first_name',
+        data: 'dependents'
       }
     
   ];
