@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
+import { Content, Row, Col, Box, SimpleTable, Button } from 'adminlte-2-react';
 import axios from 'axios';
 
 
@@ -11,51 +11,46 @@ class EmployeeListComponent extends Component {
   }
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/employees/employeeList') //params todo
+      axios.get('http://localhost:8080/api/employees') //params todo
       .then(result => {
-        console.log(result.data)
-        this.setState({records: result.data})
+        
+        result.data.forEach(emp => {
+          emp.properties = <Button key="btnProperties" type="info" text="Properties" onClick={this.showEmployeeDetails(emp.id)}/>
+        });
+        this.setState({records: result.data});
+
+        console.log(this.state.records);
       })
       .catch(error => {
         console.error(error);
       })
     }
 
-    
+    showEmployeeDetails = id => {
+      console.log("selected employee", id);
+    };
+
     columns = [
       {
         title: "ID",
         data: 'id',
       },
       {
-        title: "Employee",
-        data: "employee",
+        title: "First Name",
+        data: "first_name",
+      },
+      {
+        title: "Last Name",
+        data: "last_name",
       },
       {
         title: "Contact #",
         data: "contact_no",
       },
       {
-        title: "Position",
-        data: 'position',
-      },
-      {
-        title: "Department",
-        data: 'department',
-      },
-      {
-        title: "Emergency Contact",
-        data: 'emergency_contact',
-      },
-      {
-        title: "Emergency Contact #",
-        data: 'ecnum',
-      },
-      {
-        title: "Dependent",
-        data: 'dependents'
+        title: "Action",
+        data: 'properties',
       }
-    
   ];
  
     render() {
