@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Content, Row, Col, Box, Button, SimpleTable } from 'adminlte-2-react';
+import { Content, Row, Col, Box, Button, SimpleTable} from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
 import moment from 'moment';
@@ -118,6 +118,8 @@ class LeaveComponent extends Component {
 ];
 
 
+
+
   render() {
     return (
       <Content title="Leaves" subTitle="Requests" browserTitle="Leaves">
@@ -177,6 +179,7 @@ class LeaveComponent extends Component {
             </Box>
       </Col>
       </Row>
+
     </Content>);
   }
 }
