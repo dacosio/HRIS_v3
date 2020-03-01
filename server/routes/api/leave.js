@@ -41,7 +41,7 @@ router.post('/', function(req,res,next){
         from_date: req.body.from_date,
         to_date: req.body.to_date,
         reason: req.body.reason,
-        created_by: 1 //todo req.session.passport.user.id
+        created_by: 1 //todo
     };
     leaveService
         .create(leave)

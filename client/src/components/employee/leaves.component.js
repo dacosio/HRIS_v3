@@ -9,8 +9,8 @@ import "react-datepicker/dist/react-datepicker.css";
 class LeaveComponent extends Component {
 
   state = {
-    from_date: moment().valueOf(),
-    to_date: moment().valueOf(),
+    from_date: new Date(),
+    to_date: new Date(),
     reason: '',
     leave_type: '1',
     created_by: 1, //todo
@@ -54,7 +54,7 @@ class LeaveComponent extends Component {
     this.setState({
       from_date: date
     });
-    // console.log(date);
+    console.log(date);
     
   };
 
@@ -62,7 +62,7 @@ class LeaveComponent extends Component {
     this.setState({
     to_date: date
     });
-    // console.log(date)
+    console.log(date)
   };
 
   leaveTypeChange = event => {
@@ -81,13 +81,25 @@ class LeaveComponent extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault()
-    axios.post('http://localhost:8080/api/leaves',this.state)
-      .then(response=> {
-        console.log(response);
-      }).catch(error => {
-        console.error(error);
+    event.preventDefault();
+    if(this.state.reason){
+      axios.post('http://localhost:8080/api/leaves',this.state)
+        .then(response=> {
+          console.log(response);
+        }).catch(error => {
+          console.error(error);
+        })
+      this.setState({
+        from_date: new Date(),
+        to_date: new Date(),
+        reason: '',
+        leave_type: '1',
       })
+      alert('Leave Request Submitted')
+    }
+    else{
+      alert('Fill in Reason')
+    }
   }
 
   footer = [
@@ -116,9 +128,6 @@ class LeaveComponent extends Component {
       data: 'isAccepted'
     }
 ];
-
-
-
 
   render() {
     return (
