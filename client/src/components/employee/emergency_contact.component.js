@@ -88,35 +88,44 @@ class EmergencyContactComponent extends Component {
   handleSubmit = event => {
     axios.post('http://localhost:8080/api/emergency',this.state)
       .then(response=> {
-        console.log(response);
+        // console.log(response.data[0]);
+        let {records} = this.state;
+        records.push(response.data[0])
+        
+        this.setState({
+          records,
+          first_name: '',
+          last_name: '',
+          relationship: '',
+          contact_no: '',
+          address: '',
+          city: '',
+          state: '',
+          zip_code: ''
+        })
       }).catch(error => {
         console.error(error);
       })
   }
 
+  handleClear = event => {
+    this.setState({
+      first_name: '',
+      last_name: '',
+      relationship: '',
+      contact_no: '',
+      address: '',
+      city: '',
+      state: '',
+      zip_code: ''
+    })
+  }
 
     
 
-    columns = [
-      {
-        title: "First Name",
-        data: 'first_name',
-      },
-    {
-        title: "Last Name",
-        data: 'last_name',
-      },
-      {
-        title: "Relationship",
-        data: 'relationship',
-      },
-      {
-        title: 'Contact #',
-        data: 'contact_no'
-      }
-  ];
 
-  footer = [<Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />]
+  footer = [<Button key="btnSubmitEc" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
+  <Button key="btnSubmitEc2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />]
 
  
     render() {
@@ -161,9 +170,32 @@ class EmergencyContactComponent extends Component {
         </Col>
       
       <Col md={6}>
-          <Box title="Emergency Contact" type="info" collapsable>
+          {/* <Box title="Emergency Contact" type="info" collapsable>
               <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
-          </Box>
+          </Box> */}
+          <Box type="primary" collapsable title="Dependents">
+                <table className="table table-head-fixed text-nowrap" id="EmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>Emergency Contact Name</th>
+                            <th>Relationship</th>
+                            <th>Contact Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          {this.state.records.map(ec => {
+                              return  (<tr key={ec.id}>
+                                          <td>{ec.first_name} {ec.last_name}</td>
+                                          <td>{ec.relationship.charAt(0).toUpperCase() + ec.relationship.slice(1)}</td>
+                                          <td>{ec.contact_no}</td>
+                                          <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(ec.first_name,ec.last_name,ec.birthday,ec.relationship,ec.contact_no)}></Button></td>
+                                          <td><Button type="danger" text="Delete" onClick={this.handleDelete}></Button></td>
+                                      </tr>);
+                                  })}
+                    </tbody>
+                </table>
+            </Box>
       </Col>
       </Row>
 

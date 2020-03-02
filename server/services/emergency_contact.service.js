@@ -18,7 +18,7 @@ class EmergencyContactService {
 
     create(obj) {
         return knex('emergency_contacts')
-            .returning('id')
+            .returning(['id', 'first_name', 'last_name','relationship', 'contact_no'])
             .insert(obj);
     }
 

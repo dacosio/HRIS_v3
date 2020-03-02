@@ -83,7 +83,7 @@ class EodComponent extends Component {
   
 
     footer = [
-      <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+      <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
     ];
 
     columns = [

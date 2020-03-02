@@ -39,7 +39,7 @@ class InterviewComponent extends Component {
   }
 
   footer = [
-    <Button key="btnSubmit" type="success" pullRight text="Save" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitInt" type="success" pullRight text="Save" onClick={this.handleSubmit} />, 
   ];
 
   render() {

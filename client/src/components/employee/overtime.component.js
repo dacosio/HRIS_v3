@@ -52,7 +52,7 @@ class OvertimeComponent extends Component {
   };
 
   footer = [
-    <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitOt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
 
   render() {

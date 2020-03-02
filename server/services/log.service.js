@@ -19,7 +19,7 @@ class LogService {
 
     create(obj) {
         return knex('logs')
-            .returning('id')
+            .returning(['created_at','time_in', 'time_out'])
             .insert(obj);
     }
 

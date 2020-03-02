@@ -37,24 +37,18 @@ class AttendanceComponent extends Component {
         })
     }
 
-  // handleTimeIn = time => {
-  //   this.setState({
-  //     time_in: time,
-  //   })
-  // }
-
   handleTimeIn = event => {
-    event.preventDefault();
     axios.post('http://localhost:8080/api/logs',{})
     .then(response=> {
-      console.log(response);
+      console.log(response.data[0]);
+      let {records} = this.state;
+      records.push(response.data[0])
     }).catch(error => {
       console.error(error);
     })
   };
 
   handleTimeOut = event => {
-    event.preventDefault();
     axios.put('http://localhost:8080/api/logs/'+this.state.log_today.id,
     this.state.log_today)
     .then(response=> {
@@ -90,7 +84,7 @@ class AttendanceComponent extends Component {
                         {
                             !this.state.log_today && 
                             <div>
-                                <Button type="success" text="Time In" onClick={this.handleTimeIn} />
+                                <Button type="success" text="Time In" onClick={this.handleTimeIn}/>
                             </div>
                         }
                         <br />

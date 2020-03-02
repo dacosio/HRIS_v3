@@ -39,7 +39,7 @@ class OnBoardingComponent extends Component {
   }
 
   footer = [
-    <Button key="btnSubmit" type="success" pullRight text="Save" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitOnBoard" type="success" pullRight text="Save" onClick={this.handleSubmit} />, 
   ];
 
   render() {

@@ -18,8 +18,9 @@ class DependentService {
 
     create(obj) {
         return knex('dependents')
-            .returning('id')
-            .insert(obj);
+            .returning(['id', 'first_name', 'last_name','birthday','relationship', 'contact_no'])
+            // .returning('id')
+            .insert(obj)
     }
 
     update(id,obj) {

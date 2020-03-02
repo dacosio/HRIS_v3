@@ -19,6 +19,8 @@ class ProfileComponent extends Component {
     records: []
   }
 
+
+
     componentDidMount() {
       axios.get('http://localhost:8080/api/employees/') //params todo
       .then(result => {
@@ -105,8 +107,7 @@ class ProfileComponent extends Component {
         </Row>
               
         <Row>
-          <DependentsComponent/>
-          <EmergencyContactComponent/>
+          
         </Row>
       </Content>);
     }

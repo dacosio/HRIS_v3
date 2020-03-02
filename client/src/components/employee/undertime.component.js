@@ -55,7 +55,7 @@ class UndertimeComponent extends Component {
   };
 
   footer = [
-    <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitUt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
   records = [];
   render() {

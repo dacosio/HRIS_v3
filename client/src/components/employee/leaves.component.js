@@ -18,6 +18,8 @@ class LeaveComponent extends Component {
   };
 
   componentDidMount() {
+    console.log(this.refs.reason.value)
+    console.log(this.refs.from_date.valueOf())
       axios.get('http://localhost:8080/api/leaves/') //params todo
         .then(result => {
           console.log(result.data)
@@ -100,10 +102,11 @@ class LeaveComponent extends Component {
     else{
       alert('Fill in Reason')
     }
+    
   }
 
   footer = [
-    <Button key="btnSubmit" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitLeave" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
 
   columns = [
@@ -137,11 +140,11 @@ class LeaveComponent extends Component {
       <Row> 
         <Col xs={12}>
           <form>
-            <Box  title="Leave Application" type="primary" name="leave_type" collapsable footer={this.footer}>
+            <Box  title="Leave Application" type="primary" name="leave_type" footer={this.footer}>
               <div className="form-group">
                   <label>Leave Type</label>
                   <div>
-                    <select value= {this.state.leave_type} onChange={this.leaveTypeChange}>
+                    <select ref="leave_type" value= {this.state.leave_type} onChange={this.leaveTypeChange}>
                       <option value='1'>Vacation</option>
                       <option value='2'>Sick</option>
                       <option value='3'>Compassionate</option>
@@ -153,7 +156,7 @@ class LeaveComponent extends Component {
               <div className="form-group">
                   <label>From</label>
                   <div>
-                    <DatePicker
+                    <DatePicker ref="from_date"
                       selected={this.state.from_date}
                       onChange={this.handleChangeFrom}
                       name="from_date"
@@ -164,6 +167,7 @@ class LeaveComponent extends Component {
                   <label>To</label>
                 <div>
                 <DatePicker
+                      ref="to_date"
                       selected={this.state.to_date}
                       onChange={this.handleChangeTo}
                       name="to_date"
@@ -173,7 +177,7 @@ class LeaveComponent extends Component {
               
               <div className="form-group">
                   <label>Reason</label>
-                  <textarea type="text" name="reason" value={this.state.reason} className="form-control" placeholder="Enter ..." onChange={this.handleReason} />
+                  <textarea type="text" ref="reason" name="reason" value={this.state.reason} className="form-control" placeholder="Enter ..." onChange={this.handleReason} />
               </div>
           
               </Box>
