@@ -40,9 +40,8 @@ class AttendanceComponent extends Component {
   handleTimeIn = event => {
     axios.post('http://localhost:8080/api/logs',{})
     .then(response=> {
-      console.log(response.data[0]);
-      let {records} = this.state;
-      records.push(response.data[0])
+      // console.log(response.data);
+      
     }).catch(error => {
       console.error(error);
     })
@@ -52,7 +51,6 @@ class AttendanceComponent extends Component {
     axios.put('http://localhost:8080/api/logs/'+this.state.log_today.id,
     this.state.log_today)
     .then(response=> {
-      console.log(response);
     }).catch(error => {
       console.error(error);
     })
@@ -77,32 +75,32 @@ class AttendanceComponent extends Component {
     render() {
         return (<Content title="Attendance" subTitle="Employee Attendance" browserTitle="Attendance">
             <Row>
-                <Col xs={3} md={3}>
+                <Col md={3}>
                 <Box title="Actions" type="danger">
                     <Row>
                         <Col xs={6}>
+
                         {
                             !this.state.log_today && 
                             <div>
                                 <Button type="success" text="Time In" onClick={this.handleTimeIn}/>
                             </div>
+                         
                         }
-                        <br />
+                        
                         {
                             (this.state.log_today && !this.state.log_today.time_out) && 
                             <div>
                                 <Button type="success" text="Time Out" onClick={this.handleTimeOut} />
                             </div>
                         }
+
                         </Col>
                         <Col xs={6}>
                         <div>
-                            {/* {this.state.time_in} */}
+                            {/* {this.state.records.forEach(time => time.time_in )} */}
                         </div>
-                        <br />
-                        <div>
-                            {/* {this.state.time_out} */}
-                        </div>
+                        
                         </Col>
                     </Row>
                 </Box>

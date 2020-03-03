@@ -18,33 +18,8 @@ class LeaveComponent extends Component {
   };
 
   componentDidMount() {
-    console.log(this.refs.reason.value)
-    console.log(this.refs.from_date.valueOf())
       axios.get('http://localhost:8080/api/leaves/') //params todo
         .then(result => {
-          console.log(result.data)
-          result.data.forEach(res => {
-            res.from_date = moment(res.from_date).format("YY/MM/DD");
-            res.to_date = moment(res.to_date).format("YY/MM/DD");
-            res.isAccepted = res.isAccepted? "Approved" : "Pending"
-            switch (res.leave_type) {
-              case 1:
-                res.leave_type = 'Vacation'
-                break;
-              case 2:
-                res.leave_type = 'Sick'
-                break;
-              case 3:
-                res.leave_type = 'Compassionate'
-                break;
-              case 4:
-                res.leave_type = 'Maternity'
-                break;
-              case 5:
-                res.leave_type = 'Paternity'
-                break;
-            }
-          })
           this.setState({records: result.data})
         })
         .catch(error => {
@@ -56,7 +31,7 @@ class LeaveComponent extends Component {
     this.setState({
       from_date: date
     });
-    console.log(date);
+    // console.log(date);
     
   };
 
@@ -64,15 +39,14 @@ class LeaveComponent extends Component {
     this.setState({
     to_date: date
     });
-    console.log(date)
+    // console.log(date)
   };
 
   leaveTypeChange = event => {
     this.setState({
       leave_type: event.target.value
     })
-    // console.log(event.target.value);
-  }
+}
 
   handleReason = event => {
     this.setState({
@@ -83,54 +57,49 @@ class LeaveComponent extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
-    if(this.state.reason){
-      axios.post('http://localhost:8080/api/leaves',this.state)
+    axios.post('http://localhost:8080/api/leaves',this.state)
         .then(response=> {
-          console.log(response);
-        }).catch(error => {
-          console.error(error);
-        })
-      this.setState({
-        from_date: new Date(),
-        to_date: new Date(),
-        reason: '',
-        leave_type: '1',
-      })
-      alert('Leave Request Submitted')
-    }
-    else{
-      alert('Fill in Reason')
-    }
+          console.log(response.data[0]);
+          let {records} = this.state;
+          
+          records.push(response.data[0])
+          console.log(records[records.length-1])
+
+          
+          this.setState({
+            records,
+            reason: '',
+
+          })
     
-  }
+  })}
 
   footer = [
     <Button key="btnSubmitLeave" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
 
-  columns = [
-    {
-      title: "Leave Type",
-      data: 'leave_type',
-    },
-  {
-      title: "From",
-      data: 'from_date',
-    },
-    {
-      title: "To",
-      data: 'to_date',
-    },
-    {
-      title: 'Reason',
-      data: 'reason'
-    },
-    {
-      title: "Status",
-      data: 'isAccepted'
-    }
-];
+//   columns = [
+//     {
+//       title: "Leave Type",
+//       data: 'leave_type',
+//     },
+//   {
+//       title: "From",
+//       data: 'from_date',
+//     },
+//     {
+//       title: "To",
+//       data: 'to_date',
+//     },
+//     {
+//       title: 'Reason',
+//       data: 'reason'
+//     },
+//     {
+//       title: "Status",
+//       data: 'isAccepted'
+//     }
+// ];
 
   render() {
     return (
@@ -187,8 +156,33 @@ class LeaveComponent extends Component {
       </Col>
       
       <Col md={8}>
-            <Box title="Leave Requests" type="warning" collapsable>
+            {/* <Box title="Leave Requests" type="warning" collapsable>
                 <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+            </Box> */}
+            <Box type="primary" collapsable title="Dependents">
+                <table className="table table-head-fixed text-nowrap" id="EmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>Leave Type</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          {this.state.records.map(leave => {
+                              return  (<tr key={leave.id}>
+                                          <td>{leave.leave_type==1?"Vacation": leave.leave_type ==2?"Sick": leave.leave_type==3?"Compassionate":leave.leave_type==4?"Maternity":"Paternity"}</td>
+                                          <td>{moment(leave.from_date).format("YY/MM/DD")}</td>
+                                          <td>{moment(leave.to_date).format("YY/MM/DD")}</td>
+                                          <td>{leave.reason}</td>
+                                          <td>{leave.isAccepted? "Approved" : "Pending"}</td>
+                                         
+                                      </tr>);
+                                  })}
+                    </tbody>
+                </table>
             </Box>
       </Col>
       </Row>

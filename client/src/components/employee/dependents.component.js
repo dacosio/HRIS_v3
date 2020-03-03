@@ -77,7 +77,7 @@ class DependentsComponent extends Component {
   handleSubmit = event => {
     axios.post('http://localhost:8080/api/dependents/',this.state) //todo
       .then(response=> {
-        // console.log(response.data[0])
+        console.log(response.data[0])
         let {records} = this.state;
         records.push(response.data[0])
         

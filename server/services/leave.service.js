@@ -41,7 +41,7 @@ get(id) {
 
 create(obj) {
     return knex('leaves')
-        .returning('id')
+        .returning(['id','from_date','to_date','reason','leave_type'])
         .insert(obj);
 }
 

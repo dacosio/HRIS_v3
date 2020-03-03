@@ -173,7 +173,7 @@ class EmergencyContactComponent extends Component {
           {/* <Box title="Emergency Contact" type="info" collapsable>
               <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
           </Box> */}
-          <Box type="primary" collapsable title="Dependents">
+          <Box type="primary" collapsable title="Emergency Contacts">
                 <table className="table table-head-fixed text-nowrap" id="EmployeesTable">
                     <thead>
                         <tr>
