@@ -27,7 +27,7 @@ class UndertimeComponent extends Component {
         // console.log(result);
         
         this.setState({
-            records: result.data
+          records: this.state.records.concat(result.data.filter(res => res.time_type == 2))
         });
 
         // console.log("state",this.state.records);
@@ -119,7 +119,7 @@ class UndertimeComponent extends Component {
           </Col>
       
           <Col md={6}>
-          <Box type="primary" collapsable title="Attendance">
+          <Box type="primary" collapsable title="Undertime Request">
                 <table className="table table-head-fixed" id="EmployeesTable">
                     <thead>
                         <tr>

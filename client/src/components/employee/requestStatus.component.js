@@ -24,7 +24,6 @@ class RequestStatusComponent extends Component {
                 this.setState({
                     records: this.state.records.concat(result.data.filter(res => res.time_type == props.timeType))
                 });
-
                 console.log("state",this.state.records);
             })
             .catch(err => console.log(err));

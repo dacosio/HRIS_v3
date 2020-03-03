@@ -134,7 +134,7 @@ class LeaveComponent extends Component {
       
       <Col md={8}>
          
-            <Box type="primary" collapsable title="Dependents">
+            <Box type="primary" collapsable title="Leave Requests">
                 <table className="table table-head-fixed" id="EmployeesTable">
                     <thead>
                         <tr>

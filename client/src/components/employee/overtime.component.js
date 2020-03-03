@@ -17,9 +17,26 @@ class OvertimeComponent extends Component {
     to_time: moment(),
     reason: '',
     time_type: 1,
-    created_by: 1 //todo
+    isAccepted: false,
+    created_by: 1, //todo
+    records: []
   };
     
+  componentDidMount(){
+    axios.get('http://localhost:8080/api/time') //params todo
+    .then(result => {
+        // console.log(result);
+        
+        this.setState({
+          records: this.state.records.concat(result.data.filter(res => res.time_type == 1))
+
+        });
+
+        // console.log("state",this.state.records);
+    })
+    .catch(err => console.log(err));
+  }
+
   handleChangeDateFiled = date => {
     this.setState({'date_filed': date});
   };
@@ -37,15 +54,27 @@ class OvertimeComponent extends Component {
   };
 
   handleSubmit = event => {
-    event.preventDefault();
-
     let obj = Object.assign({}, this.state);
     obj.from_time = obj.from_time.format('HH:mm:ss');
     obj.to_time = obj.to_time.format('HH:mm:ss');
 
     axios.post('http://localhost:8080/api/time',obj)
     .then(response=> {
-      console.log(response);
+      console.log(response.data[0]);
+      let {records} = this.state;
+          
+      records.push(response.data[0])
+
+      this.setState({
+        records,
+        date_filed: new Date(),
+        from_time: moment(),
+        to_time: moment(),
+        reason: '',
+        time_type: 1,
+        isAccepted: false,
+      })
+
     }).catch(error => {
       console.error(error);
     })
@@ -92,7 +121,32 @@ class OvertimeComponent extends Component {
               </Col>
           </Row>
         </Col>
-        <RequestStatusComponent timeType= "1" titles="Overtime Requests"/>
+        <Col md={6}>
+          <Box type="primary" collapsable title="Overtime Request">
+                <table className="table table-head-fixed" id="EmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.records.map(ot => {
+                          return  (<tr key={ot.id}>
+                                      <td>{moment(ot.date_filed).format("YYYY-MM-DD")}</td>
+                                      <td>{ot.from_time}</td>
+                                      <td>{ot.to_time}</td>
+                                      <td>{ot.reason}</td>
+                                      <td>{ot.isAccepted? "Approved" : "Pending"}</td>
+                                  </tr>);
+                              })}
+                    </tbody>
+                </table>
+            </Box>
+          </Col>
       </Row>
     </Content>);
   }
