@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
-import DependentsComponent from './dependents.component';
-import EmergencyContactComponent from './emergency_contact.component';
 import SalaryComponent from '../finance/salary.component';
+import ProfileDependentComponent from './profile.dependent.component';
+import ProfileEmergencyComponent from './profile.emergency.component';
+
 
 class ProfileComponent extends Component {
 
@@ -52,6 +53,7 @@ class ProfileComponent extends Component {
         })
         
         this.setState({records: result.data})
+        console.log(result.data)
       })
       .catch(error => {
         console.error(error);
@@ -59,7 +61,7 @@ class ProfileComponent extends Component {
     }
 
     
-    columns = [
+    columns_profile = [
       {
         title: "First Name",
         data: 'first_name',
@@ -93,22 +95,22 @@ class ProfileComponent extends Component {
         data: 'contact_no'
       }
   ];
+
  
     render() {
 
       return (<Content title="Profile" subTitle="Employee Profile" browserTitle="Profile">
         <Row>
           <Col md={8}>
-            <Box title="Employee Detail" type="primary" collapsable>
-                <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+            <Box title="Employee Detail" type="primary">
+                <SimpleTable columns={this.columns_profile}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
             </Box>
+              <ProfileDependentComponent/>
+              <ProfileEmergencyComponent/>
          </Col>
          <SalaryComponent/>
         </Row>
-              
-        <Row>
-          
-        </Row>
+         
       </Content>);
     }
 }

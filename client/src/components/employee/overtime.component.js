@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import TimePicker from 'rc-time-picker';
 import DatePicker from "react-datepicker";
-import RequestStatusComponent from './requestStatus.component';
 
 import 'rc-time-picker/assets/index.css';
 
