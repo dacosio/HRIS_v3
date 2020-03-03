@@ -27,21 +27,6 @@ class EodComponent extends Component {
       })
   }
 
-  // componentWillMount() {
-  //   axios.get('http://localhost:8080/api/eods')
-  //     .then(result => {
-  //      this.setState({
-  //        next_day_target: result.data.filter(res => res.created_at == "2020-02-27T20:28:09.272Z" )//todo
-        
-  //       })
-
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-        
-  //     })
-  // }
-
     handleAccomplishmentChange = (event) => {
       this.setState({
         accomplishments : event.target.value
@@ -91,28 +76,12 @@ class EodComponent extends Component {
       <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
     ];
 
-    // columns = [
-    //   {
-    //     title: "Date",
-    //     data: "created_at",
-    //   },
-    //   {
-    //     title: "Accomplishments",
-    //     data: "accomplishments"
-    //   }
-    // ] 
-
-    // columns_target = [
-    //   {
-    //     title: "Today's Target",
-    //     data: "next_day_target"
-    //   }
-    // ]
+  
 
     render() {
       
       const target = this.state.records.filter(res => moment(res.created_at).format("DD-MM-YYYY") == moment().subtract(1, "days").format("DD-MM-YYYY"));
-console.log("filtered", target);
+// console.log("filtered", target);
       return (<Content title="EOD" subTitle="End of Day Log" browserTitle="EOD">
 
         <Row>

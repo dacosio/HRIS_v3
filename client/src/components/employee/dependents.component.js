@@ -162,11 +162,8 @@ class DependentsComponent extends Component {
         </Col>
         
         <Col md={6}>
-            {/* <Box title="Dependents" type="info" collapsable>
-                <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
-            </Box> */}
             <Box type="primary" collapsable title="Dependents">
-                <table className="table table-head-fixed text-nowrap" id="EmployeesTable">
+                <table className="table table-head-fixed" id="EmployeesTable">
                     <thead>
                         <tr>
                             <th>Dependent Name</th>

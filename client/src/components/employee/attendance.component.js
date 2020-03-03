@@ -86,30 +86,10 @@ console.log(this.state.records);
       
       if(log_today)
           this.setState({"log_today": log_today});
-
-      //todo reload record
-      //update state of button
-
     }).catch(error => {
       console.error(error);
     })
   };
-
-//   columns = [
-//     {
-//       title: "Date",
-//       data: 'created_at',
-//     },
-//     {
-//       title: "Time In",
-//       data: 'time_in',
-//     },
-//   {
-//       title: "Time Out",
-//       data: 'time_out',
-//     }
-// ];
-
 
     render() {
         return (<Content title="Attendance" subTitle="Employee Attendance" browserTitle="Attendance">
@@ -117,7 +97,6 @@ console.log(this.state.records);
                 <Col md={3}>
                 <Box title="Actions" type="danger">
                     <Row>
-                        <Col xs={6}>
 
                         {
                             !this.state.log_today && 
@@ -134,23 +113,12 @@ console.log(this.state.records);
                             </div>
                         }
 
-                        </Col>
-                        <Col xs={6}>
-                        <div>
-                            {/* {this.state.records.forEach(time => time.time_in )} */}
-                        </div>
                         
-                        </Col>
                     </Row>
                 </Box>
                 </Col>
 
                 <Col md={9}>
-                  {/* <Box title="Time History" type="primary" collapsable>
-                      <SimpleTable columns={this.columns} data={this.state.records} responsive="true" striped="true" hover="true"
-                          border="true"></SimpleTable>
-                  </Box> */}
-
                   <Box type="primary" collapsable title="Attendance">
                       <table className="table table-head-fixed" id="EmployeesTable">
                           <thead>
@@ -173,7 +141,6 @@ console.log(this.state.records);
                       </table>
                     </Box>
                 </Col>
-
             </Row>
         </Content>);
     }

@@ -18,7 +18,7 @@ class UndertimeOvertimeService {
 
     create(obj) {
         return knex('undertime_overtime')
-            .returning('id')
+            .returning(['id','date_filed','from_time','to_time','reason', 'time_type','isAccepted'])
             .insert(obj);
     }
 

@@ -4,24 +4,37 @@ import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import TimePicker from 'rc-time-picker';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
-import RequestStatusComponent from './requestStatus.component';
 
 import 'rc-time-picker/assets/index.css';
 
 class UndertimeComponent extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      date_filed: new Date(),
-      from_time: moment(),
-      to_time: moment(),
-      reason: '',
-      time_type: 2, //todo under time input is being stored to overtime
-      isAccepted: false,
-      created_by: 1 //todo
-    };
+  state = {
+    date_filed: new Date(),
+    from_time: moment(),
+    to_time: moment(),
+    reason: '',
+    time_type: 2,
+    isAccepted: false,
+    created_by: 1, //todo
+    records : []
+  };
+ 
+
+  componentDidMount(){
+    axios.get('http://localhost:8080/api/time') //params todo
+    .then(result => {
+        // console.log(result);
+        
+        this.setState({
+            records: result.data
+        });
+
+        // console.log("state",this.state.records);
+    })
+    .catch(err => console.log(err));
   }
+
   
   handleChangeDateFiled = date => {
     this.setState({'date_filed': date});
@@ -40,24 +53,36 @@ class UndertimeComponent extends Component {
   };
 
   handleSubmit = event => {
-    event.preventDefault();
-
     let obj = Object.assign({}, this.state);
     obj.from_time = obj.from_time.format('HH:mm:ss');
     obj.to_time = obj.to_time.format('HH:mm:ss');
 
     axios.post('http://localhost:8080/api/time',obj)
     .then(response=> {
-      console.log(response.data);
+      console.log(response.data[0]);
+      let {records} = this.state;
+          
+      records.push(response.data[0])
+
+      this.setState({
+        records,
+        date_filed: new Date(),
+        from_time: moment(),
+        to_time: moment(),
+        reason: '',
+        time_type: 2,
+        isAccepted: false,
+      })
+
     }).catch(error => {
       console.error(error);
     })
   };
 
   footer = [
-    <Button key="btnSubmitUt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitUt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />
   ];
-  // records = [];
+
   render() {
     return (
       <Content title="Undertime" subTitle="Requests" browserTitle="Undertime">
@@ -94,9 +119,30 @@ class UndertimeComponent extends Component {
           </Col>
       
           <Col md={6}>
-            {/* <Box title="Undertime Requests" type="warning" collapsable>
-                <SimpleTable columns={this.columns} data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
-            </Box> */}
+          <Box type="primary" collapsable title="Attendance">
+                <table className="table table-head-fixed" id="EmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Reason</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.records.map(ut => {
+                          return  (<tr key={ut.id}>
+                                      <td>{moment(ut.date_filed).format("YYYY-MM-DD")}</td>
+                                      <td>{ut.from_time}</td>
+                                      <td>{ut.to_time}</td>
+                                      <td>{ut.reason}</td>
+                                      <td>{ut.isAccepted? "Approved" : "Pending"}</td>
+                                  </tr>);
+                              })}
+                    </tbody>
+                </table>
+            </Box>
           </Col>
         </Row>
     </Content>);

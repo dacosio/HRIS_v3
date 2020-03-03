@@ -69,7 +69,6 @@ class LeaveComponent extends Component {
           this.setState({
             records,
             reason: '',
-
           })
     
   })}
@@ -78,28 +77,6 @@ class LeaveComponent extends Component {
     <Button key="btnSubmitLeave" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
 
-//   columns = [
-//     {
-//       title: "Leave Type",
-//       data: 'leave_type',
-//     },
-//   {
-//       title: "From",
-//       data: 'from_date',
-//     },
-//     {
-//       title: "To",
-//       data: 'to_date',
-//     },
-//     {
-//       title: 'Reason',
-//       data: 'reason'
-//     },
-//     {
-//       title: "Status",
-//       data: 'isAccepted'
-//     }
-// ];
 
   render() {
     return (
@@ -156,11 +133,9 @@ class LeaveComponent extends Component {
       </Col>
       
       <Col md={8}>
-            {/* <Box title="Leave Requests" type="warning" collapsable>
-                <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
-            </Box> */}
+         
             <Box type="primary" collapsable title="Dependents">
-                <table className="table table-head-fixed text-nowrap" id="EmployeesTable">
+                <table className="table table-head-fixed" id="EmployeesTable">
                     <thead>
                         <tr>
                             <th>Leave Type</th>
