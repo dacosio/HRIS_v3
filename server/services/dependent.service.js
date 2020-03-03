@@ -25,12 +25,14 @@ class DependentService {
 
     update(id,obj) {
         return knex('dependents')
+            .returning(['id', 'first_name', 'last_name','birthday','relationship', 'contact_no'])
             .where('id','=',id)
             .update(obj);
     }
 
     delete(id) {
         return knex('dependents')
+            .returning(['id', 'first_name', 'last_name','birthday','relationship', 'contact_no'])
             .where('id','=',id)
             .del()
     }

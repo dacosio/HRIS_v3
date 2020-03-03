@@ -85,7 +85,7 @@ class EodComponent extends Component {
       return (<Content title="EOD" subTitle="End of Day Log" browserTitle="EOD">
 
         <Row>
-          <Col md={6}>
+          <Col md={8}>
             {/* <Box title="Accomplishment History" type="primary" collapsable>
                 <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
                 
@@ -101,7 +101,7 @@ class EodComponent extends Component {
                     <tbody>
                           {this.state.records.map(eod => {
                               return  (<tr key={eod.id}>
-                                          <td>{moment(eod.created_at).format("YY/MM/DD")}</td>
+                                          <td>{moment(eod.created_at).format("YYYY-MMM-DD")}</td>
                                           <td>{eod.accomplishments}</td>
                                          
                                       </tr>);
@@ -110,11 +110,11 @@ class EodComponent extends Component {
                 </table>
             </Box>
           </Col>
-          <Col md={6}>
+          <Col md={4}>
             {/* <Box title="Today's Target" type="primary" collapsable>
                   <SimpleTable columns={this.columns_target}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
             </Box> */}
-            <Box type="primary" collapsable title="Target">
+            <Box type="info" title="Target">
                 <table className="table table-head-fixed" id="EmployeesTable">
                     <thead>
                         <tr>
@@ -123,7 +123,7 @@ class EodComponent extends Component {
                     </thead>
 
                     <tbody>
-                              {target.map(res => (<tr><td>{res.accomplishments}</td></tr>))}
+                              {target.map(res => (<tr><td>{res.next_day_target}</td></tr>))}
                     </tbody>
                 </table>
             </Box>
@@ -132,7 +132,7 @@ class EodComponent extends Component {
 
         <Row>
           <Col xs={12}>
-            <Box title="Log" type="success" collapsable footer={this.footer}>
+            <Box title="Log" type="success" collapsable closable footer={this.footer}>
             <div className="form-group">
                 <label>Accomplishments</label>
                 <textarea type="text" className="form-control" value={this.state.accomplishments} placeholder="Enter ..." onChange={this.handleAccomplishmentChange}/>

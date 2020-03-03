@@ -149,8 +149,8 @@ class LeaveComponent extends Component {
                           {this.state.records.map(leave => {
                               return  (<tr key={leave.id}>
                                           <td>{leave.leave_type==1?"Vacation": leave.leave_type ==2?"Sick": leave.leave_type==3?"Compassionate":leave.leave_type==4?"Maternity":"Paternity"}</td>
-                                          <td>{moment(leave.from_date).format("YY/MM/DD")}</td>
-                                          <td>{moment(leave.to_date).format("YY/MM/DD")}</td>
+                                          <td>{moment(leave.from_date).format("YY/MMM/DD")}</td>
+                                          <td>{moment(leave.to_date).format("YY/MMM/DD")}</td>
                                           <td>{leave.reason}</td>
                                           <td>{leave.isAccepted? "Approved" : "Pending"}</td>
                                          

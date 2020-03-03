@@ -21,7 +21,7 @@ export default class ProfileDependentComponent extends Component {
       .then(result => {
         
         result.data.forEach(res=> {
-            res.birthday = moment(res.birthday).format("YYYY-MM-DD");
+            res.birthday = moment(res.birthday).format("YYYY-MMM-DD");
             res.relationship = res.relationship.charAt(0).toUpperCase() +res.relationship.slice(1);
         })
 

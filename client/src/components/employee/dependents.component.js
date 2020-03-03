@@ -17,6 +17,7 @@ class DependentsComponent extends Component {
     records : [],
     isEdit: false,
     editRecords: {
+      id: null,
       first_name: '',
       last_name: '',
       birthday: new Date(),
@@ -105,24 +106,38 @@ class DependentsComponent extends Component {
     })
   }
 
-  handleEdit = (first_name,last_name,birthday,relationship,contact_no) => {
-    console.log(first_name,last_name,birthday,relationship,contact_no)
-      this.setState({
-        editRecords: {
-          first_name,
-          last_name,
-          birthday,
-          relationship,
-          contact_no
-        }
-      })
-      console.log(first_name)
+  handleEdit = (id) => {
+    console.log("edit", id)
+
+    // this.setState({
+    //     editRecords: {
+    //       first_name,
+    //       last_name,
+    //       birthday,
+    //       relationship,
+    //       contact_no
+    //     }
+    //   })
     }
   
 
-  // handleDelete = event => {
-  //   console.log("delete")
-  // }
+  handleDelete = (id) => {
+    console.log("delete", id)
+    axios.delete('http://localhost:8080/api/dependents/' + id)
+            .then(response => {
+              const newRecords = this.state.records.filter(res => {
+                return res.id != id
+              })
+
+            this.setState({
+              records: [...newRecords]
+            })
+              
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+  }
 
 
   footer = [
@@ -180,8 +195,8 @@ class DependentsComponent extends Component {
                                           <td>{moment(dep.birthday).format("YYYY-MMM-DD")}</td>
                                           <td>{dep.relationship.charAt(0).toUpperCase() + dep.relationship.slice(1)}</td>
                                           <td>{dep.contact_no}</td>
-                                          <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(dep.first_name,dep.last_name,dep.birthday,dep.relationship,dep.contact_no)}></Button></td>
-                                          <td><Button type="danger" text="Delete" onClick={this.handleDelete}></Button></td>
+                                          <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(dep.id)}></Button></td>
+                                          <td><Button type="danger" text="Delete" onClick={() => this.handleDelete(dep.id)}></Button></td>
                                       </tr>);
                                   })}
                     </tbody>

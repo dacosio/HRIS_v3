@@ -135,7 +135,7 @@ class OvertimeComponent extends Component {
                     <tbody>
                       {this.state.records.map(ot => {
                           return  (<tr key={ot.id}>
-                                      <td>{moment(ot.date_filed).format("YYYY-MM-DD")}</td>
+                                      <td>{moment(ot.date_filed).format("YYYY-MMM-DD")}</td>
                                       <td>{ot.from_time}</td>
                                       <td>{ot.to_time}</td>
                                       <td>{ot.reason}</td>

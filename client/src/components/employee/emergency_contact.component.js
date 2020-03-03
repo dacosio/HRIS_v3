@@ -121,6 +121,23 @@ class EmergencyContactComponent extends Component {
     })
   }
 
+  handleDelete = (id) => {
+    console.log("delete", id)
+    axios.delete('http://localhost:8080/api/emergency/' + id)
+            .then(response => {
+              const newRecords = this.state.records.filter(res => {
+                return res.id != id
+              })
+
+            this.setState({
+              records: [...newRecords]
+            })
+              
+            })
+            .catch((error) => {
+                console.error(error);
+            })
+  }
     
 
 
@@ -187,8 +204,8 @@ class EmergencyContactComponent extends Component {
                                           <td>{ec.first_name} {ec.last_name}</td>
                                           <td>{ec.relationship.charAt(0).toUpperCase() + ec.relationship.slice(1)}</td>
                                           <td>{ec.contact_no}</td>
-                                          <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(ec.first_name,ec.last_name,ec.birthday,ec.relationship,ec.contact_no)}></Button></td>
-                                          <td><Button type="danger" text="Delete" onClick={this.handleDelete}></Button></td>
+                                          <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(ec.id)}></Button></td>
+                                          <td><Button type="danger" text="Delete" onClick={() => this.handleDelete(ec.id)}></Button></td>
                                       </tr>);
                                   })}
                     </tbody>

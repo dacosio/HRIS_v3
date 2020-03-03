@@ -8,6 +8,7 @@ import {
     Button
 } from 'adminlte-2-react';
 import axios from 'axios';
+import moment from 'moment';
 import DependentsComponent from '../employee/dependents.component';
 import EmergencyContactComponent from '../employee/emergency_contact.component';
 
@@ -26,6 +27,7 @@ class EmployeeListComponent extends Component {
 
         axios.get('http://localhost:8080/api/employees/employeeList') //params todo
             .then(result => {
+                console.log(result)
                 this.setState({
                     records: result.data
                 });
@@ -59,7 +61,7 @@ class EmployeeListComponent extends Component {
                 <Row>
                     <Col md={12}>
                         <Box type="primary">
-                            <table className="table table-head-fixed text-nowrap" id="EmployeesTable">
+                            <table className="table table-head-fixed" id="EmployeesTable">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -74,7 +76,7 @@ class EmployeeListComponent extends Component {
                                     {this.state.records.map(emp => {return (<tr key={emp.id}>
                                             <td>{emp.id}</td>
                                             <td>{emp.first_name} {emp.last_name}</td>
-                                            <td>{emp.date_hired}</td>
+                                            <td>{moment(emp.date_hired).format("YYYY-MMM-DD")}</td>
                                             <td>{emp.department}</td>
                                             <td>{emp.position}</td>
                                             <td><Button onClick={() => this.showEmployeeDetails(emp)} type="info" text="Properties"></Button></td>
