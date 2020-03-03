@@ -19,12 +19,13 @@ class LogService {
 
     create(obj) {
         return knex('logs')
-            .returning(['created_at','time_in', 'time_out'])
+            .returning(['id','created_at','time_in', 'time_out'])
             .insert(obj);
     }
 
     update(id,obj) {
         return knex('logs')
+            .returning(['id','created_at','time_in', 'time_out'])
             .where('id','=',id)
             .update(obj);
     }

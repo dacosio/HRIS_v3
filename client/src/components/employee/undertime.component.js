@@ -57,7 +57,7 @@ class UndertimeComponent extends Component {
   footer = [
     <Button key="btnSubmitUt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
   ];
-  records = [];
+  // records = [];
   render() {
     return (
       <Content title="Undertime" subTitle="Requests" browserTitle="Undertime">
@@ -93,7 +93,11 @@ class UndertimeComponent extends Component {
             </Row>
           </Col>
       
-          <RequestStatusComponent timeType="2" titles="Undertime Requests"/>  
+          <Col md={6}>
+            {/* <Box title="Undertime Requests" type="warning" collapsable>
+                <SimpleTable columns={this.columns} data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+            </Box> */}
+          </Col>
         </Row>
     </Content>);
   }

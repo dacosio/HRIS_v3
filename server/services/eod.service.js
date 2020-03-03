@@ -18,7 +18,7 @@ class EodService {
 
     create(obj) {
         return knex('end_of_day')
-            .returning('id')
+            .returning(['id','accomplishments','impediments','concerns','next_day_target','created_at','created_by'])
             .insert(obj);
     }
 

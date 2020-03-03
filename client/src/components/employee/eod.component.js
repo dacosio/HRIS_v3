@@ -19,12 +19,7 @@ class EodComponent extends Component {
   componentDidMount() {
     axios.get('http://localhost:8080/api/eods')
       .then(result => {
-        console.log('didmount',result.data);
-        result.data.forEach(res => {
-          res.created_at = moment(res.created_at).format("YY/MM/DD");
-        })
         this.setState({records: result.data})
-        
       })
       .catch(error => {
         console.error(error);
@@ -72,10 +67,20 @@ class EodComponent extends Component {
     }
 
     handleSubmit = event => {
-      console.log(event);
       axios.post('http://localhost:8080/api/eods',this.state)
         .then(response=> {
-          console.log(response);
+          console.log(response.data[0]);
+          let {records} = this.state;
+          
+          records.push(response.data[0])
+
+          this.setState({
+            records,
+            accomplishments: '',
+            impediments: '',
+            concerns: '',
+            next_day_target: '',
+          })
         }).catch(error => {
           console.error(error);
         })
@@ -86,37 +91,73 @@ class EodComponent extends Component {
       <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
     ];
 
-    columns = [
-      {
-        title: "Date",
-        data: "created_at",
-      },
-      {
-        title: "Accomplishments",
-        data: "accomplishments"
-      }
-    ] 
+    // columns = [
+    //   {
+    //     title: "Date",
+    //     data: "created_at",
+    //   },
+    //   {
+    //     title: "Accomplishments",
+    //     data: "accomplishments"
+    //   }
+    // ] 
 
-    columns_target = [
-      {
-        title: "Today's Target",
-        data: "next_day_target"
-      }
-    ]
+    // columns_target = [
+    //   {
+    //     title: "Today's Target",
+    //     data: "next_day_target"
+    //   }
+    // ]
 
     render() {
+      
+      const target = this.state.records.filter(res => moment(res.created_at).format("DD-MM-YYYY") == moment().subtract(1, "days").format("DD-MM-YYYY"));
+console.log("filtered", target);
       return (<Content title="EOD" subTitle="End of Day Log" browserTitle="EOD">
 
         <Row>
           <Col md={6}>
-            <Box title="Accomplishment History" type="primary" collapsable>
+            {/* <Box title="Accomplishment History" type="primary" collapsable>
                 <SimpleTable columns={this.columns}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+                
+            </Box> */}
+            <Box type="primary" collapsable title="Accomplishments">
+                <table className="table table-head-fixed" id="EmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Accomplishments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                          {this.state.records.map(eod => {
+                              return  (<tr key={eod.id}>
+                                          <td>{moment(eod.created_at).format("YY/MM/DD")}</td>
+                                          <td>{eod.accomplishments}</td>
+                                         
+                                      </tr>);
+                                  })}
+                    </tbody>
+                </table>
             </Box>
           </Col>
           <Col md={6}>
-          <Box title="Today's Target" type="primary" collapsable>
-                <SimpleTable columns={this.columns_target}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
-          </Box>
+            {/* <Box title="Today's Target" type="primary" collapsable>
+                  <SimpleTable columns={this.columns_target}  data={this.state.records} responsive="true" striped="true" hover="true" border="true"></SimpleTable>
+            </Box> */}
+            <Box type="primary" collapsable title="Target">
+                <table className="table table-head-fixed" id="EmployeesTable">
+                    <thead>
+                        <tr>
+                            <th>Target Today</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                              {target.map(res => (<tr><td>{res.accomplishments}</td></tr>))}
+                    </tbody>
+                </table>
+            </Box>
           </Col>
         </Row>
 
