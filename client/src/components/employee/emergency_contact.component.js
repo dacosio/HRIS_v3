@@ -201,7 +201,7 @@ class EmergencyContactComponent extends Component {
                     <tbody>
                           {this.state.records.map(ec => {
                               return  (<tr key={ec.id}>
-                                          <td>{ec.first_name} {ec.last_name}</td>
+                                          <td>{ec.first_name.charAt(0).toUpperCase()+ ec.first_name.slice(1)} {ec.last_name.charAt(0).toUpperCase()+ ec.last_name.slice(1)}</td>
                                           <td>{ec.relationship.charAt(0).toUpperCase() + ec.relationship.slice(1)}</td>
                                           <td>{ec.contact_no}</td>
                                           <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(ec.id)}></Button></td>

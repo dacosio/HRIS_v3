@@ -11,12 +11,12 @@ import 'rc-time-picker/assets/index.css';
 class OnBoardingComponent extends Component {
  
   state = {
-    date: new Date(),
-    time: moment(),
+    startDate: new Date(),
     first_name: '',
     last_name: '',
     contact: '',
     department: 'Engineering',
+    role: 'employee',
     isDone: false //todo
     };
     
@@ -24,18 +24,17 @@ class OnBoardingComponent extends Component {
         this.setState({
             [e.target.name] : e.target.value
         })
+        console.log(e.target.value)
     }
 
+    handleChangeDate = e => {
+        this.setState({
+            startDate: new Date()
+        })
+    }
 
-  handleSubmit = event => {
-    event.preventDefault()
-    console.log(this.state)    
-    // axios.post('http://localhost:8080/api/time',this.state)
-    // .then(response=> {
-    //   console.log(response);
-    // }).catch(error => {
-    //   console.error(error);
-    // })
+   handleSubmit = event => {
+   
   }
 
   footer = [
@@ -46,41 +45,46 @@ class OnBoardingComponent extends Component {
     return (
       <Content title="Onboarding" subTitle="Schedule" browserTitle="On Boarding">
               
-            <Box title="New Employee" type="primary" collapsable footer={this.footer}>
+            <Box title="New Employee" type="primary" footer={this.footer}>
                 <Row>
-                    <Col md={2}>
+                    <Col lg={4}>
                         <div className="form-group">
                             <label>Date</label>
                             <div>
-                                <DatePicker name="date" selected={this.state.date} onChange={this.handleChange}/>
+                                <DatePicker name="startDate" selected={this.state.startDate} onChange={this.handleChangeDate}/>
                             </div>
                         </div>
                     </Col>
-                    <Col md={2}>
-                        <div className="form-group">
-                            <label>Time</label>
-                            <div>
-                            <TimePicker name="time" value={this.state.time} onChange={this.handleChange} />
-                            </div>
-                        </div>
-                    </Col>
-                    <Col md={8}>
+                   
+                    <Col lg={4}>
                     <div className="form-group">
-                  <label>Department</label>
-                    <div>
-                        <select value= {this.state.department} name="department" onChange={this.handleChange}>
-                        <option value='Engineering'>Engineering</option>
-                        <option value='Human Resource Management'>Human Resource Management</option>
-                        <option value='Marketing and Sales'>Marketing and Sales</option>
-                        <option value='Accounting and Finance'>Accounting and Finance</option>
-                        <option value='Purchasing and Logistics'>Purchasing and Logistics</option>
-                        <option value='Operations'>Operations</option>
-                        <option value='Information System'>Information System</option>
-                        <option value='Software Development'>Software Development</option>
-                        </select>
-                    </div>
-                </div>
+                        <label>Department</label>
+                            <div>
+                                <select value= {this.state.department} name="department" onChange={this.handleChange}>
+                                <option value='Engineering'>Engineering</option>
+                                <option value='Human Resource Management'>Human Resource Management</option>
+                                <option value='Marketing and Sales'>Marketing and Sales</option>
+                                <option value='Accounting and Finance'>Accounting and Finance</option>
+                                <option value='Purchasing and Logistics'>Purchasing and Logistics</option>
+                                <option value='Operations'>Operations</option>
+                                <option value='Information System'>Information System</option>
+                                <option value='Software Development'>Software Development</option>
+                                </select>
+                            </div>
+                     </div>
                     </Col>
+                    <Col lg={4}>
+                    <div className="form-group">
+                        <label>Role</label>
+                            <div>
+                                <select value= {this.state.role} name="role" onChange={this.handleChange}>
+                                <option value='employee'>Associate</option>
+                                <option value='admin'>Administrator</option>
+                                <option value='tl'>Team Leader</option>
+                                </select>
+                            </div>
+                     </div>
+                     </Col>
                 </Row>
                 
                 <Row>
@@ -105,17 +109,7 @@ class OnBoardingComponent extends Component {
                 </Row>        
             </Box>
 
-          <Row>
-          <Col xs={12}>
-            <Box title="Scheduled" type="primary" collapsable>
-            <div className="form-group">
-                <label>Scheduled Onboarding will be appended here</label>
-            </div>
-            </Box>
-          </Col>
-        </Row>
-
-    </Content>);
+        </Content>);
   }
 }
 

@@ -70,7 +70,6 @@ class LeaveComponent extends Component {
             records,
             reason: '',
           })
-    
   })}
 
   footer = [

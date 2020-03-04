@@ -15,15 +15,6 @@ class DependentsComponent extends Component {
     relationship: '',
     contact_no: '',
     records : [],
-    isEdit: false,
-    editRecords: {
-      id: null,
-      first_name: '',
-      last_name: '',
-      birthday: new Date(),
-      relationship: '',
-      contact_no: ''
-    }
   }
 
   componentDidMount() {
@@ -108,16 +99,25 @@ class DependentsComponent extends Component {
 
   handleEdit = (id) => {
     console.log("edit", id)
-
+    console.log(this.state.records)
+    let dep = this.state.records.find(dep => dep.id == id)
+    console.log("dep", moment(dep.birthday).format("YYYY-MMM-DD"))
+    
     // this.setState({
-    //     editRecords: {
-    //       first_name,
-    //       last_name,
-    //       birthday,
-    //       relationship,
-    //       contact_no
-    //     }
+    //   first_name: dep.first_name,
+    //   last_name: dep.last_name,
+    //   relationship: dep.relationship,
+    //   contact_no: dep.contact_no
+    // })
+
+    // axios.put('http://localhost:8080/api/logs/'+ id, dep)
+    //   .then(response => {
+    //     console.log(response)
     //   })
+    //   .catch(error=> {
+    //     console.error(error)
+    //   })
+
     }
   
 
@@ -191,7 +191,7 @@ class DependentsComponent extends Component {
                     <tbody>
                           {this.state.records.map(dep => {
                               return  (<tr key={dep.id}>
-                                          <td>{dep.first_name} {dep.last_name}</td>
+                                          <td>{dep.first_name.charAt(0).toUpperCase() + dep.first_name.slice(1)} {dep.last_name.charAt(0).toUpperCase() + dep.last_name.slice(1)}</td>
                                           <td>{moment(dep.birthday).format("YYYY-MMM-DD")}</td>
                                           <td>{dep.relationship.charAt(0).toUpperCase() + dep.relationship.slice(1)}</td>
                                           <td>{dep.contact_no}</td>
