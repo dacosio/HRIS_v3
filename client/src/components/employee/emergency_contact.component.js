@@ -14,6 +14,7 @@ class EmergencyContactComponent extends Component {
     state: '',
     zip_code: '',
     records : [],
+    editing: false
   }
 
   componentDidMount() {
@@ -121,6 +122,63 @@ class EmergencyContactComponent extends Component {
     })
   }
 
+  handleEdit = (id) => {
+    console.log("edit", id)
+    console.log(this.state.records)
+    let ec = this.state.records.find(ec => ec.id == id)
+    
+    this.setState({
+      editing: true,
+      first_name: ec.first_name,
+      last_name: ec.last_name,
+      relationship: ec.relationship,
+      contact_no: ec.contact_no,
+      address: ec.address,
+      city: ec.city,
+      state: ec.state,
+      zip_code: ec.zip_code,
+    })
+  }
+
+  updateDependent = event => {
+    console.log('state',this.state.records)
+    console.log('records',this.state.records[0].id)
+
+    axios.put('http://localhost:8080/api/emergency/' + this.state.records[0].id, this.state)
+      .then(response => {
+        console.log('updateEc', response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+
+     
+       
+    // console.log(updatedRecords)
+    
+    this.setState({
+      first_name: '',
+    last_name: '',
+    relationship: '',
+    contact_no: '',
+    address: '',
+    city: '',
+    state: '',
+    zip_code: ''
+    })
+  }
+  
+  cancelEditing = (editing) => {
+    this.setState({
+      editing,
+      first_name: '',
+      last_name: '',
+      birthday: new Date(),
+      relationship: '',
+      contact_no: '',
+    })
+  }
+
   handleDelete = (id) => {
     console.log("delete", id)
     axios.delete('http://localhost:8080/api/emergency/' + id)
@@ -141,16 +199,22 @@ class EmergencyContactComponent extends Component {
     
 
 
-  footer = [<Button key="btnSubmitEc" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
-  <Button key="btnSubmitEc2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />]
+  footer_add = [
+    <Button key="btnSubmitAdd1" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
+    <Button key="btnSubmitAdd2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />
+  ];
 
+  footer_edit = [
+    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} />,
+    <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} />
+  ];
  
     render() {
-
+      const {editing} = this.state;
       return (
         <Row>
         <Col md={6}>
-          <Box title="Emergency Contact" type="success" collapsable footer={this.footer}>
+        {editing ? (<Box title="Edit Emergency Contact" type="success" collapsable footer={this.footer}>
           <div className="form-group">
               <label>First Name</label>
               <input type="text" className="form-control" required name="first_name" value={this.state.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
@@ -184,6 +248,43 @@ class EmergencyContactComponent extends Component {
               <input type="number" className="form-control" name="zip_code" value={this.state.zip_code} placeholder="Enter ..." onChange={this.handleZipCode} />
           </div>
           </Box>
+
+        ):<Box title="Add Emergency Contact" type="success" collapsable footer={this.footer}>
+          <div className="form-group">
+              <label>First Name</label>
+              <input type="text" className="form-control" required name="first_name" value={this.state.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
+          </div>
+          <div className="form-group">
+              <label>Last Name</label>
+              <input type="text" className="form-control" required name="last_name" value={this.state.last_name} placeholder="Enter ..." onChange={this.handleLastName} />
+          </div>
+          <div className="form-group">
+              <label>Relationship</label>
+              <input type="text" className="form-control" required name="relationship" value={this.state.relationship} placeholder="Enter ..." onChange={this.handleRelationship} />
+          </div>
+          <div className="form-group">
+              <label>Contact Number</label>
+              <input type="text" className="form-control" required name="contact_no" value={this.state.contact_no} placeholder="Enter ..." onChange={this.handleContact} />
+          </div>
+          <div className="form-group">
+              <label>Address</label>
+              <input type="text" className="form-control" required name="address" value={this.state.address} placeholder="Enter ..." onChange={this.handleAddress} />
+          </div>
+          <div className="form-group">
+              <label>City</label>
+              <input type="text" className="form-control" required name="city" value={this.state.city} placeholder="Enter ..." onChange={this.handleCity} />
+          </div>
+          <div className="form-group">
+              <label>State</label>
+              <input type="text" className="form-control" required name="state" value={this.state.state} placeholder="Enter ..." onChange={this.handleState} />
+          </div>
+          <div className="form-group">
+              <label>Zip Code</label>
+              <input type="number" className="form-control" name="zip_code" value={this.state.zip_code} placeholder="Enter ..." onChange={this.handleZipCode} />
+          </div>
+          </Box>
+          }
+          
         </Col>
       
       <Col md={6}>
