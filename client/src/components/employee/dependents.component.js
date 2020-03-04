@@ -7,15 +7,21 @@ import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css";
 
 class DependentsComponent extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      first_name: '',
+      last_name: '',
+      birthday: new Date(),
+      relationship: '',
+      contact_no: '',
+      records : [],
+      editing: false
+    }
 
-  state = {
-    first_name: '',
-    last_name: '',
-    birthday: new Date(),
-    relationship: '',
-    contact_no: '',
-    records : [],
   }
+
+
 
   componentDidMount() {
     axios.get('http://localhost:8080/api/dependents/') //params todo
@@ -101,24 +107,56 @@ class DependentsComponent extends Component {
     console.log("edit", id)
     console.log(this.state.records)
     let dep = this.state.records.find(dep => dep.id == id)
-    console.log("dep", moment(dep.birthday).format("YYYY-MMM-DD"))
+    let bday = moment(dep.birthday).format("YYYY-MM-DD")
+    console.log("new birthday",bday)
     
-    // this.setState({
-    //   first_name: dep.first_name,
-    //   last_name: dep.last_name,
-    //   relationship: dep.relationship,
-    //   contact_no: dep.contact_no
-    // })
+    this.setState({
+      editing: true,
+      first_name: dep.first_name,
+      last_name: dep.last_name,
+      birthday: new Date(),
+      relationship: dep.relationship,
+      contact_no: dep.contact_no,
+    })
+  }
 
-    // axios.put('http://localhost:8080/api/logs/'+ id, dep)
-    //   .then(response => {
-    //     console.log(response)
-    //   })
-    //   .catch(error=> {
-    //     console.error(error)
-    //   })
+  updateDependent = event => {
+    console.log('state',this.state.records)
+    console.log('records',this.state.records[0].id)
 
-    }
+    axios.put('http://localhost:8080/api/logs/' + this.state.records[0].id, this.state)
+      .then(response => {
+        console.log('updateDependent', response.data)
+      })
+      .catch(error => {
+        console.error(error)
+      })
+
+     
+       
+    // console.log(updatedRecords)
+    
+    this.setState({
+      first_name: '',
+      last_name: '',
+      birthday: new Date(),
+      relationship: '',
+      contact_no: '',
+    })
+  }
+  
+  cancelEditing = (editing) => {
+    this.setState({
+      editing,
+      first_name: '',
+      last_name: '',
+      birthday: new Date(),
+      relationship: '',
+      contact_no: '',
+    })
+  }
+
+  
   
 
   handleDelete = (id) => {
@@ -140,17 +178,23 @@ class DependentsComponent extends Component {
   }
 
 
-  footer = [
-    <Button key="btnSubmitDp1" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
-    <Button key="btnSubmitDp2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />
-  ]
+  footer_add = [
+    <Button key="btnSubmitAdd1" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
+    <Button key="btnSubmitAdd2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />
+  ];
+
+  footer_edit = [
+    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} />,
+    <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} />
+  ];
 
     render() {
-
+      const {editing} = this.state;
       return (
         <Row>
         <Col md={6}>
-          <Box title="Dependents" type="success" collapsable footer={this.footer}>
+        {editing ? (
+          <Box title="Edit Dependents" type="danger" collapsable footer={this.footer_edit}>
             <div className="form-group">
                 <label for="first_name_dep">First Name</label>
                 <input type="text" id="first_name_dep" className="form-control" required value={this.state.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
@@ -174,6 +218,34 @@ class DependentsComponent extends Component {
                 <input type="text" id="contact_no_dep"className="form-control" required value={this.state.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
             </div>
           </Box>
+          
+        ):<Box title="Add Dependents" type="success" collapsable footer={this.footer_add}>
+            <div className="form-group">
+                <label for="first_name_dep">First Name</label>
+                <input type="text" id="first_name_dep" className="form-control" required value={this.state.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
+            </div>
+            <div className="form-group">
+                <label for="last_name_dep">Last Name</label>
+                <input type="text" id="last_name_dep" className="form-control" required value={this.state.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
+            </div>
+            <div className="form-group">
+                <label for="birthday_dep">Birthday</label>
+                  <div id="birthday_dep">
+                    <DatePicker selected={this.state.birthday} required onChange={this.handleBirthday} name="birthday"/>
+                  </div>
+            </div>
+            <div className="form-group">
+                <label for="relationship_dep">Relationship</label>
+                <input type="text" id="relationship_dep"className="form-control" required value={this.state.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
+            </div>
+            <div className="form-group">
+                <label for="contact_no_dep">Contact Number</label>
+                <input type="text" id="contact_no_dep"className="form-control" required value={this.state.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
+            </div>
+          </Box>
+        
+        }
+          
         </Col>
         
         <Col md={6}>
