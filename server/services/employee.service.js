@@ -24,7 +24,7 @@ class EmployeeService {
 
     create(obj) {
         return knex('employees')
-            .returning('id')
+            .returning(['id',"first_name","last_name","position","birthday","gender","contact_no","date_hired","address","city","state","zip_code","department_id","role_id","supervisor_id"])
             .insert(obj);
     }
 

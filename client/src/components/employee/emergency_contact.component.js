@@ -17,7 +17,7 @@ class EmergencyContactComponent extends Component {
     editing: false
   }
 
-  componentDidMount() {
+  loadEc = () => {
     axios.get('http://localhost:8080/api/emergency') //params todo
     .then(result => {
       console.log(result.data)
@@ -26,6 +26,10 @@ class EmergencyContactComponent extends Component {
     .catch(error => {
       console.error(error);
     })
+  }
+
+  componentDidMount() {
+    this.loadEc();
   }
   
   handleFirstName = (event) => {
@@ -147,6 +151,12 @@ class EmergencyContactComponent extends Component {
     axios.put('http://localhost:8080/api/emergency/' + this.state.records[0].id, this.state)
       .then(response => {
         console.log('updateEc', response.data)
+        var updatedEc = response.data[0];
+
+
+        var previousEc = this.state.records.filter(dep => dep.id != updatedEc.id);
+        this.setState({"records": [...previousEc, updatedEc], "editing": false});
+
       })
       .catch(error => {
         console.error(error)
@@ -158,14 +168,14 @@ class EmergencyContactComponent extends Component {
     
     this.setState({
       first_name: '',
-    last_name: '',
-    relationship: '',
-    contact_no: '',
-    address: '',
-    city: '',
-    state: '',
-    zip_code: ''
-    })
+      last_name: '',
+      relationship: '',
+      contact_no: '',
+      address: '',
+      city: '',
+      state: '',
+      zip_code: ''
+      })
   }
   
   cancelEditing = (editing) => {
@@ -173,10 +183,13 @@ class EmergencyContactComponent extends Component {
       editing,
       first_name: '',
       last_name: '',
-      birthday: new Date(),
       relationship: '',
       contact_no: '',
-    })
+      address: '',
+      city: '',
+      state: '',
+      zip_code: ''
+      })
   }
 
   handleDelete = (id) => {
@@ -200,13 +213,13 @@ class EmergencyContactComponent extends Component {
 
 
   footer_add = [
-    <Button key="btnSubmitAdd1" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
-    <Button key="btnSubmitAdd2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />
+    <Button key="btnSubmitAdd1" type="success" pullRight text="Submit" onClick={this.handleSubmit} margin="true"/>,
+    <Button key="btnSubmitAdd2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} margin="true"/>
   ];
 
   footer_edit = [
-    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} />,
-    <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} />
+    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} margin="true"/>,
+    <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} margin="true"/>
   ];
  
     render() {
@@ -214,7 +227,7 @@ class EmergencyContactComponent extends Component {
       return (
         <Row>
         <Col md={6}>
-        {editing ? (<Box title="Edit Emergency Contact" type="success" collapsable footer={this.footer}>
+        {editing ? (<Box title="Edit Emergency Contact" type="success" collapsable footer={this.footer_edit}>
           <div className="form-group">
               <label>First Name</label>
               <input type="text" className="form-control" required name="first_name" value={this.state.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
@@ -249,7 +262,7 @@ class EmergencyContactComponent extends Component {
           </div>
           </Box>
 
-        ):<Box title="Add Emergency Contact" type="success" collapsable footer={this.footer}>
+        ):<Box title="Add Emergency Contact" type="success" collapsable footer={this.footer_add}>
           <div className="form-group">
               <label>First Name</label>
               <input type="text" className="form-control" required name="first_name" value={this.state.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import AdminLTE, { Sidebar} from 'adminlte-2-react';
+import AdminLTE, { Sidebar, Navbar} from 'adminlte-2-react';
 import ProfileComponent from './components/employee/profile.component';
 import AttendanceComponent from './components/employee/attendance.component';
 import EodComponent from './components/employee/eod.component';
@@ -11,6 +11,7 @@ import OnBoardingComponent from './components/recruitment/onboarding.component';
 import EmployeeListComponent from './components/admin/employee_list.component';
 
 const { Item, UserPanel } = Sidebar;
+const {Entry} = Navbar;
 
 class App extends Component {
 
@@ -40,18 +41,26 @@ class App extends Component {
 
 
   sidebar = [
-    <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />,
+    <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />, //todo
     <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
     <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
     <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>,
     <Item key="finance" icon="fa-wallet" text="Finance" children={this.children_finance}/>
   ]
 
+  logout = event => {
+    console.log("hello")
+  }
 
 
   render() {
     return (
       <AdminLTE title={["HR Info System"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
+
+        <Navbar.Core>
+          <Entry headerText="logout" icon="fa-sign-out-alt" onClick={this.logout}/>
+        </Navbar.Core>
+
         <ProfileComponent path="/profile" />
         <AttendanceComponent path="/attendance" />
         <EodComponent path="/eod"/>

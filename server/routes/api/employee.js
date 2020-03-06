@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const EmployeeService = require('../../services/employee.service');
-
+const UserService = require('../../services/user.service');
 const employeeService = new EmployeeService();
+const userService = new UserService();
 
 
 
@@ -21,7 +22,7 @@ router.get('/', function(req,res,next) {
 router.get('/employeeList', function(req,res,next) {
     employeeService
         .getAllDetail()
-        .then(result => res.json(result))
+        .then(result => res.json(result ))
 })
 
 //get a specific employees
@@ -44,12 +45,26 @@ router.post('/', function(req,res,next){
         city: req.body.city,
         state: req.body.state,
         zip_code: req.body.zip_code,
-        department_id: 1, //todo
-        role_id: 1 //todo
+        department_id: req.body.department_id, //todo
+        role_id: req.body.role_id, //todo
+        supervisor_id: req.body.supervisor_id
     };
     employeeService
         .create(employee)
-        .then(id => res.json(id))
+        .then(employeeObj => {
+        
+            return userService
+                .create({
+                    email: req.body.email,
+                    password: req.body.password,
+                    employee_id: employeeObj[0].id
+                });
+        })
+        .then(userObj => res.json(userObj))
+        .catch(error=>{
+            console.error('There is an error',error)
+        })
+     
 });
 
 

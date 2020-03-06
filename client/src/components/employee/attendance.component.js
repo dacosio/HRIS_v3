@@ -80,7 +80,7 @@ class AttendanceComponent extends Component {
         "records": [...previousLogs,
           logToday]
       });
-console.log(this.state.records);
+      console.log(this.state.records);
       const date_today = moment().format("YYYY-MMM-DD");
       let log_today = this.state.records.find(log => log.created_at == date_today);
       
@@ -97,11 +97,11 @@ console.log(this.state.records);
                 <Col md={3}>
                 <Box title="Actions" type="danger">
                     <Row>
-
+                        <Col md={6}>
                         {
                             !this.state.log_today && 
                             <div>
-                                <Button type="success" text="Time In" onClick={this.handleTimeIn}/>
+                                <Button type="success" text="Time In" onClick={this.handleTimeIn} margin="true"/>
                             </div>
                          
                         }
@@ -109,11 +109,11 @@ console.log(this.state.records);
                         {
                             (this.state.log_today && !this.state.log_today.time_out) && 
                             <div>
-                                <Button type="success" text="Time Out" onClick={this.handleTimeOut} />
+                                <Button type="success" text="Time Out" onClick={this.handleTimeOut} margin="true"/>
                             </div>
                         }
 
-                        
+                      </Col>
                     </Row>
                 </Box>
                 </Col>

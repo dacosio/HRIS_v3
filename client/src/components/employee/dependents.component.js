@@ -22,8 +22,7 @@ class DependentsComponent extends Component {
   }
 
 
-
-  componentDidMount() {
+  loadDependents = () => {
     axios.get('http://localhost:8080/api/dependents/') //params todo
       .then(result => {
         console.log(result.data)
@@ -34,8 +33,14 @@ class DependentsComponent extends Component {
       .catch(error => {
         console.error(error);
       })
+  };
+
+  componentDidMount() {
+    this.loadDependents();
   }
   
+  
+
   handleFirstName = (event) => {
     this.setState({
       first_name : event.target.value
@@ -124,9 +129,14 @@ class DependentsComponent extends Component {
     console.log('state',this.state.records)
     console.log('records',this.state.records[0].id)
 
-    axios.put('http://localhost:8080/api/logs/' + this.state.records[0].id, this.state)
+    axios.put('http://localhost:8080/api/dependents/' + this.state.records[0].id, this.state)
       .then(response => {
-        console.log('updateDependent', response.data)
+        console.log('updateDependent', response.data[0]);
+        var updatedDependent = response.data[0];
+
+        var previousDependents = this.state.records.filter(dep => dep.id != updatedDependent.id);
+        this.setState({"records": [...previousDependents, updatedDependent], "editing": false});
+
       })
       .catch(error => {
         console.error(error)
@@ -179,13 +189,13 @@ class DependentsComponent extends Component {
 
 
   footer_add = [
-    <Button key="btnSubmitAdd1" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
-    <Button key="btnSubmitAdd2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} />
+    <Button key="btnSubmitAdd1" type="success" pullRight text="Submit" onClick={this.handleSubmit} margin="true"/>,
+    <Button key="btnSubmitAdd2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} margin="true" />
   ];
 
   footer_edit = [
-    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} />,
-    <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} />
+    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} margin="true"/>,
+    <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} margin="true"/>
   ];
 
     render() {
