@@ -2,7 +2,7 @@
 exports.up = function(knex) {
     return knex.schema.createTable('undertime_overtime', (table) => {
         table.increments('id').primary();
-        table.date('date_filed').notNullable(); //has to be default date now?
+        table.date('date_filed').notNullable();
         table.time('from_time').notNullable();
         table.time('to_time').notNullable();
         table.string('reason').notNullable();

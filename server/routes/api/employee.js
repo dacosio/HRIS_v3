@@ -81,8 +81,8 @@ router.put('/:id', function(req,res,next){
         city: req.body.city,
         state: req.body.state,
         zip_code: req.body.zip_code,
-        department_id: 1, //todo
-        role_id: 1 //todo
+        department_id: req.body.department_id, //todo
+        role_id: req.body.role_id //todo
     };
     employeeService
         .update(req.params.id,employee)

@@ -29,7 +29,7 @@ class UserService {
 
     create(obj) {
         return knex('users')
-            .returning('id')
+            .returning(['id','email'])
             .insert(obj);
     }
 

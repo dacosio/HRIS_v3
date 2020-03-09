@@ -25,6 +25,12 @@ class OvertimeComponent extends Component {
     axios.get('http://localhost:8080/api/time') //params todo
     .then(result => {
         // console.log(result);
+        // result.data.from_time = moment(result.from_time).format('HH:mm:ss a')
+        result.data.forEach(res=> {
+          // res.from_time = moment(res.from_time).format("HH:mm:ss a");
+          // res.to_time = moment(res.to_time).format("HH:mm:ss a");
+          console.log(res.from_time)
+        })
         
         this.setState({
           records: this.state.records.concat(result.data.filter(res => res.time_type == 1))

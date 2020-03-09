@@ -6,7 +6,7 @@ import EodComponent from './components/employee/eod.component';
 import LeaveComponent from './components/employee/leaves.component';
 import UndertimeComponent from './components/employee/undertime.component';
 import OvertimeComponent from './components/employee/overtime.component';
-import InterviewComponent from './components/recruitment/interviews.component'
+import ApplicantComponent from './components/recruitment/applicants.component'
 import OnBoardingComponent from './components/recruitment/onboarding.component';
 import EmployeeListComponent from './components/admin/employee_list.component';
 
@@ -31,7 +31,7 @@ class App extends Component {
   ]
 
   children_recruitment = [
-    <Item key="recruitmentLists" text="Interviews" to="/interviews" icon="fa-calendar-alt" />,
+    <Item key="recruitmentLists" text="Interviews" to="/applicants" icon="fa-calendar-alt" />,
     <Item key="onBoardingLists" text="On Boarding" to="/onboarding" icon="fa-calendar-check" />
   ]
 
@@ -67,7 +67,7 @@ class App extends Component {
         <LeaveComponent path="/leaves"/>
         <UndertimeComponent path="/undertime"/>
         <OvertimeComponent path="/overtime"/>
-        <InterviewComponent path="/interviews"/>
+        <ApplicantComponent path="/applicants"/>
         <OnBoardingComponent path="/onboarding"/>
         <EmployeeListComponent path="/employeelists"/>
       </AdminLTE>

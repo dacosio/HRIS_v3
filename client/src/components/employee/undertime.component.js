@@ -54,8 +54,8 @@ class UndertimeComponent extends Component {
 
   handleSubmit = event => {
     let obj = Object.assign({}, this.state);
-    obj.from_time = obj.from_time.format('HH:mm:ss');
-    obj.to_time = obj.to_time.format('HH:mm:ss');
+    obj.from_time = obj.from_time.format('HH:mm:ss a');
+    obj.to_time = obj.to_time.format('HH:mm:ss a');
 
     axios.post('http://localhost:8080/api/time',obj)
     .then(response=> {
