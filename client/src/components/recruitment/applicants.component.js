@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import TimePicker from 'rc-time-picker';
 import DatePicker from "react-datepicker";
-import axios from 'axios'
+import axios from 'axios';
 
 
 import 'rc-time-picker/assets/index.css';
@@ -79,6 +79,7 @@ class InterviewComponent extends Component {
     handleSubmit = event => {
         let obj = Object.assign({}, this.state);
         obj.time = obj.time.format('HH:mm:ss');
+        obj.date = moment(obj.date).format("YYYY-MM-DD")
     
         axios.post('http://localhost:8080/api/applicants',obj)
         .then(response=> {
@@ -111,6 +112,24 @@ class InterviewComponent extends Component {
                 isDone: false
         })
     }
+
+    handleDelete = (id) => {
+        console.log("delete", id)
+        axios.delete('http://localhost:8080/api/applicants/' + id)
+                .then(response => {
+                  const newRecords = this.state.records.filter(res => {
+                    return res.id != id
+                  })
+    
+                this.setState({
+                  records: [...newRecords]
+                })
+                  
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+      }
 
   footer = [
     <Button key="btnSubmitInt" type="success" pullRight text="Save" onClick={this.handleSubmit} margin="true" />, 

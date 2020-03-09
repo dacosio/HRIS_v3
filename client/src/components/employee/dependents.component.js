@@ -9,12 +9,16 @@ import "react-datepicker/dist/react-datepicker.css";
 class DependentsComponent extends Component {
   constructor(props){
     super(props);
+
     this.state = {
-      first_name: '',
-      last_name: '',
-      birthday: new Date(),
-      relationship: '',
-      contact_no: '',
+      obj: {
+        id:0,
+        first_name: '',
+        last_name: '',
+        birthday: new Date(),
+        relationship: '',
+        contact_no: '',
+      },
       records : [],
       editing: false
     }
@@ -42,55 +46,63 @@ class DependentsComponent extends Component {
   
 
   handleFirstName = (event) => {
-    this.setState({
-      first_name : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.first_name = event.target.value;
+
+    this.setState({obj});
+
     console.log(event.target.value);
   }
 
   handleLastName = (event) => {
-    this.setState({
-      last_name : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.last_name = event.target.value;
+    
+    this.setState({obj});
     console.log(event.target.value);
   }
 
   handleBirthday = (date) => {
-    this.setState({
-      birthday : date
-    })
+    var obj = {...this.state.obj};
+    obj.birthday = date;
+    
+    this.setState({obj});
     console.log(date);
   }
 
   handleRelationship = (event) => {
-    this.setState({
-      relationship : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.relationship = event.target.value;
+    
+    this.setState({obj});
     console.log(event.target.value);
   }
   
   handleContact = (event) => {
-    this.setState({
-      contact_no : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.contact_no = event.target.value;
+    
+    this.setState({obj});
     console.log(event.target.value);
   }
   
 
   handleSubmit = event => {
-    axios.post('http://localhost:8080/api/dependents/',this.state) //todo
+    axios.post('http://localhost:8080/api/dependents/',this.state.obj) //todo
       .then(response=> {
         console.log(response.data[0])
         let {records} = this.state;
-        records.push(response.data[0])
         
         this.setState({
-          records,
-          first_name: '',
-          last_name: '',
-          birthday: new Date(),
-          relationship: '',
-          contact_no: ''
+          "records": records.concat(response.data[0]),
+          "obj":{
+            id:0,
+            first_name: '',
+            last_name: '',
+            birthday: new Date(),
+            relationship: '',
+            contact_no: '',
+          }
         })
       })
       .catch(error => {
@@ -100,11 +112,14 @@ class DependentsComponent extends Component {
 
   handleClear = event => {
     this.setState({
-      first_name: '',
-      last_name: '',
-      birthday: new Date(),
-      relationship: '',
-      contact_no: ''
+      "obj":{
+        id:0,
+        first_name: '',
+        last_name: '',
+        birthday: new Date(),
+        relationship: '',
+        contact_no: ''
+      }
     })
   }
 
@@ -115,21 +130,23 @@ class DependentsComponent extends Component {
     let bday = moment(dep.birthday).format("YYYY-MM-DD")
     console.log("new birthday",bday)
     
-    this.setState({
-      editing: true,
-      first_name: dep.first_name,
-      last_name: dep.last_name,
-      birthday: new Date(),
-      relationship: dep.relationship,
-      contact_no: dep.contact_no,
-    })
+    this.setState({editing:true});
+
+    var obj = this.state.obj;
+    obj.id = id;
+    obj.first_name = dep.first_name;
+    obj.last_name = dep.last_name;
+    obj.birthday = new Date(moment(dep.birthday).format("YYYY-MM-DD"));
+    obj.relationship = dep.relationship;
+    obj.contact_no = dep.contact_no;
+    this.setState(obj);
   }
 
   updateDependent = event => {
     console.log('state',this.state.records)
-    console.log('records',this.state.records[0].id)
+    console.log('records',this.state.id)
 
-    axios.put('http://localhost:8080/api/dependents/' + this.state.records[0].id, this.state)
+    axios.put('http://localhost:8080/api/dependents/' + this.state.id, this.state.obj)
       .then(response => {
         console.log('updateDependent', response.data[0]);
         var updatedDependent = response.data[0];
@@ -137,37 +154,23 @@ class DependentsComponent extends Component {
         var previousDependents = this.state.records.filter(dep => dep.id != updatedDependent.id);
         this.setState({"records": [...previousDependents, updatedDependent], "editing": false});
 
+        console.log("Previous Dependent",previousDependents,"Updated Dependent",updatedDependent);
       })
       .catch(error => {
         console.error(error)
       })
-
-     
        
     // console.log(updatedRecords)
-    
-    this.setState({
-      first_name: '',
-      last_name: '',
-      birthday: new Date(),
-      relationship: '',
-      contact_no: '',
-    })
+    this.handleClear();
   }
   
   cancelEditing = (editing) => {
     this.setState({
-      editing,
-      first_name: '',
-      last_name: '',
-      birthday: new Date(),
-      relationship: '',
-      contact_no: '',
-    })
-  }
+      editing: false
+    });
 
-  
-  
+    this.handleClear();
+  }
 
   handleDelete = (id) => {
     console.log("delete", id)
@@ -204,53 +207,53 @@ class DependentsComponent extends Component {
         <Row>
         <Col md={6}>
         {editing ? (
-          <Box title="Edit Dependents" type="danger" collapsable footer={this.footer_edit}>
+          <Box title="Edit Dependent" type="danger" collapsable footer={this.footer_edit}>
             <div className="form-group">
                 <label for="first_name_dep">First Name</label>
-                <input type="text" id="first_name_dep" className="form-control" required value={this.state.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
+                <input type="text" id="first_name_dep" className="form-control" required value={this.state.obj.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
             </div>
             <div className="form-group">
                 <label for="last_name_dep">Last Name</label>
-                <input type="text" id="last_name_dep" className="form-control" required value={this.state.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
+                <input type="text" id="last_name_dep" className="form-control" required value={this.state.obj.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
             </div>
             <div className="form-group">
                 <label for="birthday_dep">Birthday</label>
                   <div id="birthday_dep">
-                    <DatePicker selected={this.state.birthday} required onChange={this.handleBirthday} name="birthday"/>
+                    <DatePicker selected={this.state.obj.birthday} required onChange={this.handleBirthday} name="birthday"/>
                   </div>
             </div>
             <div className="form-group">
                 <label for="relationship_dep">Relationship</label>
-                <input type="text" id="relationship_dep"className="form-control" required value={this.state.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
+                <input type="text" id="relationship_dep"className="form-control" required value={this.state.obj.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
             </div>
             <div className="form-group">
                 <label for="contact_no_dep">Contact Number</label>
-                <input type="text" id="contact_no_dep"className="form-control" required value={this.state.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
+                <input type="text" id="contact_no_dep"className="form-control" required value={this.state.obj.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
             </div>
           </Box>
           
-        ):<Box title="Add Dependents" type="success" collapsable footer={this.footer_add}>
+        ):<Box title="Add Dependent" type="success" collapsable footer={this.footer_add}>
             <div className="form-group">
                 <label for="first_name_dep">First Name</label>
-                <input type="text" id="first_name_dep" className="form-control" required value={this.state.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
+                <input type="text" id="first_name_dep" className="form-control" required value={this.state.obj.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
             </div>
             <div className="form-group">
                 <label for="last_name_dep">Last Name</label>
-                <input type="text" id="last_name_dep" className="form-control" required value={this.state.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
+                <input type="text" id="last_name_dep" className="form-control" required value={this.state.obj.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
             </div>
             <div className="form-group">
                 <label for="birthday_dep">Birthday</label>
                   <div id="birthday_dep">
-                    <DatePicker selected={this.state.birthday} required onChange={this.handleBirthday} name="birthday"/>
+                    <DatePicker selected={this.state.obj.birthday} required onChange={this.handleBirthday} name="birthday"/>
                   </div>
             </div>
             <div className="form-group">
                 <label for="relationship_dep">Relationship</label>
-                <input type="text" id="relationship_dep"className="form-control" required value={this.state.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
+                <input type="text" id="relationship_dep"className="form-control" required value={this.state.obj.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
             </div>
             <div className="form-group">
                 <label for="contact_no_dep">Contact Number</label>
-                <input type="text" id="contact_no_dep"className="form-control" required value={this.state.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
+                <input type="text" id="contact_no_dep"className="form-control" required value={this.state.obj.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
             </div>
           </Box>
         

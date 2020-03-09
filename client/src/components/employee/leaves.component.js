@@ -63,7 +63,6 @@ class LeaveComponent extends Component {
           let {records} = this.state;
           
           records.push(response.data[0])
-          console.log(records[records.length-1])
 
           
           this.setState({

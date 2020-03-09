@@ -25,6 +25,7 @@ class AttendanceComponent extends Component {
             }
             
             const date_today = moment().format("YYYY-MMM-DD");
+            console.log(date_today)
             let log_today = this.state.records.find(log => log.created_at == date_today);
             
             if(log_today)

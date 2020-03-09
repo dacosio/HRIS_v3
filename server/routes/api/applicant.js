@@ -32,7 +32,7 @@ router.post('/', function(req,res,next){
         last_name: req.body.last_name,
         contact_no: req.body.contact_no,
         department_id: req.body.department_id,
-        created_by: req.body.created_by //todo
+        created_by: 1 //todo
     };
     applicantService
         .create(applicant)
@@ -49,7 +49,7 @@ router.put('/:id', function(req,res,next){
         last_name: req.body.last_name,
         contact_no: req.body.contact_no,
         department_id: req.body.department_id,
-        created_by: req.body.created_by //todo
+        created_by: 1 //todo
     };
     applicantService
         .update(req.params.id,applicant)
