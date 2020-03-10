@@ -9,10 +9,9 @@ import axios from 'axios';
 import 'rc-time-picker/assets/index.css';
 
 class InterviewComponent extends Component {
- constructor(props){
-     super(props);
 
-     this.state = {
+
+    state = {
         obj: {
             id: 0,
             date: new Date(),
@@ -26,38 +25,12 @@ class InterviewComponent extends Component {
         records: [],
         editing: false
         }
- }
+ 
 
     componentDidMount() {
         axios.get('http://localhost:8080/api/applicants') //params todo
         .then(result => {
             
-            result.data.forEach(res=> {
-                switch (res.department_id) {
-                case 1:
-                    res.department_id = 'Engineering'
-                    break;
-                case 2:
-                    res.department_id = 'Human Resource Management'
-                    break;
-                case 3:
-                    res.department_id = 'Marketing and Sales'
-                    break;
-                case 4:
-                    res.department_id = 'Accounting and Finance'
-                    break;
-                case 5:
-                    res.department_id = 'Purchasing and Logistics'
-                    break;
-                case 6:
-                    res.department_id = 'Information System'
-                    break;
-                case 7:
-                    res.department_id = 'Software Development'
-                    break;
-                }
-            })
-          
           this.setState({records: result.data})
         })
         .catch(error => {
@@ -122,6 +95,7 @@ class InterviewComponent extends Component {
         let obj = Object.assign({}, this.state.obj);
         obj.time = obj.time.format('HH:mm:ss');
         obj.date = moment(obj.date).format("YYYY-MM-DD")
+        console.log(obj)
     
         axios.post('http://localhost:8080/api/applicants',obj)
         .then(response=> {
@@ -142,7 +116,9 @@ class InterviewComponent extends Component {
                 isDone: false
             }
           })
-        })}
+        })
+        event.preventDefault();
+    }
 
 
     handleClear = event => {
@@ -188,6 +164,10 @@ class InterviewComponent extends Component {
         console.log('records',this.state.id)
         console.log('time',this.state.time.format("HH:mm:ss"))
 
+        let {obj} = this.state;
+        obj.time = this.state.obj.time.format("HH:mm:ss");
+        this.setState(obj);
+
         axios.put('http://localhost:8080/api/applicants/' + this.state.id, this.state.obj)
             .then(response => {
             console.log('updateDependent', response.data[0]);
@@ -221,9 +201,9 @@ class InterviewComponent extends Component {
                     return res.id != id
                   })
     
-                this.setState({
-                  records: [...newRecords]
-                })
+                    this.setState({
+                    records: [...newRecords]
+                    })
                   
                 })
                 .catch((error) => {
@@ -243,11 +223,10 @@ class InterviewComponent extends Component {
 
 
   render() {
-      const {editing} = this.state;
     return (
       <Content title="Interview" subTitle="Schedule" browserTitle="Interviews">
               
-            {editing ? (
+            {this.state.editing ? (
             <Box title="Editing Applicant" type="primary" collapsable footer={this.footer_edit}>
                 <Row>
                     <Col md={2}>
@@ -384,7 +363,7 @@ class InterviewComponent extends Component {
                                             <td>{moment(applicant.date).format("YYYY-MM-DD")}</td>
                                             <td>{applicant.time}</td>
                                             <td>{applicant.first_name.charAt(0).toUpperCase() + applicant.first_name.slice(1)} {applicant.last_name.charAt(0).toUpperCase() + applicant.last_name.slice(1)}</td>
-                                            <td>{applicant.department_id}</td>
+                                            <td>{applicant.department}</td>
                                             <td>{applicant.contact_no}</td>
                                             <td>{applicant.isDone? 'Done' : 'Scheduled'}</td>
                                             <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(applicant.id)}></Button></td>

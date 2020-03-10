@@ -9,7 +9,7 @@ const applicantService = new ApplicantService();
 //get all applicants
 router.get('/', function(req,res,next) {
     applicantService
-        .getAll()
+        .getAllApplicantsView()
         .then(applicants => {
             res.json(applicants)
         });
@@ -36,7 +36,8 @@ router.post('/', function(req,res,next){
     };
     applicantService
         .create(applicant)
-        .then(id => res.json(id))
+        .then(id => applicantService.get(parseInt(id)))
+        .then(obj => res.json(obj))
 });
 
 
@@ -53,7 +54,8 @@ router.put('/:id', function(req,res,next){
     };
     applicantService
         .update(req.params.id,applicant)
-        .then(affected => res.json(affected))
+        .then(id => applicantService.get(parseInt(id)))
+        .then(obj => res.json(obj))
 });
 
 //delete applicant
