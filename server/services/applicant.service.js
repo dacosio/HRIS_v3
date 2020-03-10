@@ -18,14 +18,14 @@ class ApplicantService {
 
     create(obj) {
         return knex('applicant')
-            .returning(['id','date','time','first_name','last_name','contact_no','isDone'])
+            .returning(['id','date','time','first_name','last_name','contact_no','department_id','isDone'])
             .insert(obj);
     }
 
     update(id,obj) {
         return knex('applicant')
             .where('id','=',id)
-            .returning(['id','date','time','first_name','last_name','contact_no','isDone'])
+            .returning(['id','date','time','first_name','last_name','contact_no','department_id','isDone'])
             .update(obj);
     }
 

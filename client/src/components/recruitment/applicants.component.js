@@ -9,23 +9,29 @@ import axios from 'axios';
 import 'rc-time-picker/assets/index.css';
 
 class InterviewComponent extends Component {
- 
-  state = {
-    date: new Date(),
-    time: moment(),
-    first_name: '',
-    last_name: '',
-    contact_no: '',
-    department_id: 1,
-    isDone: false,
-    records: []
-    };
+ constructor(props){
+     super(props);
+
+     this.state = {
+        obj: {
+            id: 0,
+            date: new Date(),
+            time: moment(),
+            first_name: '',
+            last_name: '',
+            contact_no: '',
+            department_id: 1,
+            isDone: false
+        },
+        records: [],
+        editing: false
+        }
+ }
 
     componentDidMount() {
         axios.get('http://localhost:8080/api/applicants') //params todo
         .then(result => {
             
-            console.log(result)
             result.data.forEach(res=> {
                 switch (res.department_id) {
                 case 1:
@@ -59,25 +65,61 @@ class InterviewComponent extends Component {
         })
       }
     
-    handleChange = e => {
-        this.setState({
-            [e.target.name] : e.target.value
-        })
-        console.log(e.target.value)
+   
+    handleDepartment = (event) => {
+    var obj = {...this.state.obj};
+    obj.department_id = event.target.value;
+
+    this.setState({obj});
+
+    console.log(event.target.value);
+    }
+
+    handleFirstName = (event) => {
+    var obj = {...this.state.obj};
+    obj.first_name = event.target.value;
+
+    this.setState({obj});
+
+    console.log(event.target.value);
+    }
+
+    handleLastName = (event) => {
+    var obj = {...this.state.obj};
+    obj.last_name = event.target.value;
+
+    this.setState({obj});
+
+    console.log(event.target.value);
+    }
+    
+    handleContact = (event) => {
+    var obj = {...this.state.obj};
+    obj.contact_no = event.target.value;
+
+    this.setState({obj});
+
+    console.log(event.target.value);
     }
 
     handleChangeDate = date => {
-        this.setState({'date': date});
-        console.log(date)
+        var obj = {...this.state.obj};
+        obj.date = date;
+        
+        this.setState({obj});
+        console.log(date);
       };
 
     handleChangeTime = time => {
-        this.setState({time: time});
-        console.log(time)
+        var obj = {...this.state.obj};
+        obj.time = time;
+        
+        this.setState({obj});
+        console.log(time);
     };
 
     handleSubmit = event => {
-        let obj = Object.assign({}, this.state);
+        let obj = Object.assign({}, this.state.obj);
         obj.time = obj.time.format('HH:mm:ss');
         obj.date = moment(obj.date).format("YYYY-MM-DD")
     
@@ -86,23 +128,11 @@ class InterviewComponent extends Component {
           console.log(response.data[0]);
           let {records} = this.state;
               
-          records.push(response.data[0])
     
           this.setState({
-            records,
-            date: new Date(),
-            time: moment(),
-            first_name: '',
-            last_name: '',
-            contact_no: '',
-            department_id: 1,
-            isDone: false
-          })
-        })}
-
-
-    handleClear = event => {
-        this.setState({
+            "records": records.concat(response.data[0]),
+            obj: {
+                id:0,
                 date: new Date(),
                 time: moment(),
                 first_name: '',
@@ -110,8 +140,78 @@ class InterviewComponent extends Component {
                 contact_no: '',
                 department_id: 1,
                 isDone: false
+            }
+          })
+        })}
+
+
+    handleClear = event => {
+        this.setState({
+                "obj" : {
+                    id: 0,
+                    date: new Date(),
+                    time: moment(),
+                    first_name: '',
+                    last_name: '',
+                    contact_no: '',
+                    department_id: 1,
+                    isDone: false
+                }
         })
     }
+
+    handleEdit = (id) => {
+        console.log("edit", id)
+        console.log(this.state.records)
+        let app = this.state.records.find(app => app.id == id)
+        console.log('app',app)
+        console.log(app.time)
+        this.setState({editing:true});
+    
+        var obj = this.state.obj;
+        console.log('object',obj)
+        console.log('object time',obj.time.format("HH:mm:ss"));
+        obj.id = id;
+        obj.date = new Date(moment(app.date).format("YYYY-MM-DD"));
+        obj.time = moment(); 
+        obj.first_name = app.first_name;
+        obj.last_name = app.last_name;
+        obj.contact_no = app.contact_no;
+        obj.department_id = app.department_id;
+        
+        this.setState(obj);
+      }
+
+
+    updateApplicant = event => {
+        console.log('state',this.state.records)
+        console.log('records',this.state.id)
+        console.log('time',this.state.time.format("HH:mm:ss"))
+
+        axios.put('http://localhost:8080/api/applicants/' + this.state.id, this.state.obj)
+            .then(response => {
+            console.log('updateDependent', response.data[0]);
+            var updatedApplicant = response.data[0];
+
+            var previousApplicants = this.state.records.filter(app => app.id != updatedApplicant.id);
+            this.setState({"records": [...previousApplicants, updatedApplicant], "editing": false});
+
+            console.log("Previous Applicant",previousApplicants,"Updated Applicant",updatedApplicant);
+            })
+            .catch(error => {
+            console.error(error)
+            })
+            
+        this.handleClear();
+    }
+
+    cancelEditing = (editing) => {
+        this.setState({
+          editing: false
+        });
+    
+        this.handleClear();
+      }
 
     handleDelete = (id) => {
         console.log("delete", id)
@@ -131,22 +231,30 @@ class InterviewComponent extends Component {
                 })
       }
 
-  footer = [
-    <Button key="btnSubmitInt" type="success" pullRight text="Save" onClick={this.handleSubmit} margin="true" />, 
-    <Button key="btnSubmitCancelInt" type="warning" pullRight text="Clear" onClick={this.handleClear} margin="true" />, 
-  ];
+    footer_add = [
+        <Button key="btnSubmitAddApp1" type="success" pullRight text="Submit" onClick={this.handleSubmit} margin="true"/>,
+        <Button key="btnSubmitAddApp2" type="warning" pullRight  text="Clear All" onClick={this.handleClear} margin="true" />
+    ];
+
+    footer_edit = [
+        <Button key="btnSubmitEditApp1" type="success" pullRight text="Save" onClick={this.updateApplicant} margin="true"/>,
+        <Button key="btnSubmitEditApp2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} margin="true"/>
+    ];
+
 
   render() {
+      const {editing} = this.state;
     return (
       <Content title="Interview" subTitle="Schedule" browserTitle="Interviews">
               
-            <Box title="Applicant" type="primary" collapsable footer={this.footer}>
+            {editing ? (
+            <Box title="Editing Applicant" type="primary" collapsable footer={this.footer_edit}>
                 <Row>
                     <Col md={2}>
                         <div className="form-group">
                             <label>Date</label>
                             <div>
-                                <DatePicker name="date" selected={this.state.date} onChange={this.handleChangeDate}/>
+                                <DatePicker name="date" selected={this.state.obj.date} onChange={this.handleChangeDate}/>
                             </div>
                         </div>
                     </Col>
@@ -154,85 +262,139 @@ class InterviewComponent extends Component {
                         <div className="form-group">
                             <label>Time</label>
                             <div>
-                            <TimePicker name="time" value={this.state.time} onChange={this.handleChangeTime} />
+                            <TimePicker name="obj.time" value={this.state.obj.time} onChange={this.handleChangeTime} />
                             </div>
                         </div>
                     </Col>
                     <Col md={8}>
-                    <div className="form-group">
-                  <label>Department</label>
-                    <div>
-                        <select value= {this.state.department_id} name="department_id" onChange={this.handleChange}>
-                        <option value='1'>Engineering</option>
-                        <option value='2'>Human Resource Management</option>
-                        <option value='3'>Marketing and Sales</option>
-                        <option value='4'>Accounting and Finance</option>
-                        <option value='5'>Purchasing and Logistics</option>
-                        <option value='6'>Operations</option>
-                        <option value='7'>Information System</option>
-                        <option value='8'>Software Development</option>
-                        </select>
-                    </div>
-                </div>
+                        <div className="form-group">
+                            <label>Department</label>
+                            <div>
+                                <select value= {this.state.obj.department_id} name="obj.department_id" onChange={this.handleDepartment}>
+                                <option value='1'>Engineering</option>
+                                <option value='2'>Human Resource Management</option>
+                                <option value='3'>Marketing and Sales</option>
+                                <option value='4'>Accounting and Finance</option>
+                                <option value='5'>Purchasing and Logistics</option>
+                                <option value='6'>Operations</option>
+                                <option value='7'>Information System</option>
+                                <option value='8'>Software Development</option>
+                                </select>
+                            </div>
+                        </div>
                     </Col>
                 </Row>
-                
                 <Row>
                     <Col md={4}>
                         <div className="form-group">
                             <label>First Name</label>
-                            <input type="text" name="first_name" value={this.state.first_name} onChange={this.handleChange} className="form-control" placeholder="Enter ..." />
+                            <input type="text" name="first_name" value={this.state.obj.first_name} onChange={this.handleFirstName} className="form-control" placeholder="Enter ..." />
                         </div>
                     </Col>
                     <Col md={3}>
                         <div className="form-group">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" value={this.state.last_name} onChange={this.handleChange} className="form-control" placeholder="Enter ..." />
+                            <input type="text" name="last_name" value={this.state.obj.last_name} onChange={this.handleLastName} className="form-control" placeholder="Enter ..." />
                         </div>
                     </Col>
                     <Col md={3}>
                         <div className="form-group">
                             <label>Contact</label>
-                            <input type="text" name="contact_no" value={this.state.contact_no} onChange={this.handleChange} className="form-control" placeholder="Enter ..." />
+                            <input type="text" name="contact_no" value={this.state.obj.contact_no} onChange={this.handleContact} className="form-control" placeholder="Enter ..." />
                         </div>
                     </Col>
                 </Row>        
             </Box>
-
+        ): <Box title="Add Applicant" type="primary" collapsable footer={this.footer_add}>
+                <Row>
+                    <Col md={2}>
+                        <div className="form-group">
+                            <label>Date</label>
+                            <div>
+                                <DatePicker name="date" selected={this.state.obj.date} onChange={this.handleChangeDate}/>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col md={2}>
+                        <div className="form-group">
+                            <label>Time</label>
+                            <div>
+                            <TimePicker name="obj.time" value={this.state.obj.time} onChange={this.handleChangeTime} />
+                            </div>
+                        </div>
+                    </Col>
+                    <Col md={8}>
+                        <div className="form-group">
+                            <label>Department</label>
+                            <div>
+                                <select value= {this.state.obj.department_id} name="obj.department_id" onChange={this.handleDepartment}>
+                                <option value='1'>Engineering</option>
+                                <option value='2'>Human Resource Management</option>
+                                <option value='3'>Marketing and Sales</option>
+                                <option value='4'>Accounting and Finance</option>
+                                <option value='5'>Purchasing and Logistics</option>
+                                <option value='6'>Operations</option>
+                                <option value='7'>Information System</option>
+                                <option value='8'>Software Development</option>
+                                </select>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={4}>
+                        <div className="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="first_name" value={this.state.obj.first_name} onChange={this.handleFirstName} className="form-control" placeholder="Enter ..." />
+                        </div>
+                    </Col>
+                    <Col md={3}>
+                        <div className="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name" value={this.state.obj.last_name} onChange={this.handleLastName} className="form-control" placeholder="Enter ..." />
+                        </div>
+                    </Col>
+                    <Col md={3}>
+                        <div className="form-group">
+                            <label>Contact</label>
+                            <input type="text" name="contact_no" value={this.state.obj.contact_no} onChange={this.handleContact} className="form-control" placeholder="Enter ..." />
+                        </div>
+                    </Col>
+                </Row>        
+            </Box>}
+            
           <Row>
-          
-
-          <Col md={12}>
-            <Box type="primary" collapsable title="Dependents">
-                <table className="table table-head-fixed" id="EmployeesTable">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Applicant</th>
-                            <th>Department</th>
-                            <th>Contact</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                          {this.state.records.map(applicant => {
-                              return  (<tr key={applicant.id}>
-                                          <td>{moment(applicant.date).format("YYYY-MM-DD")}</td>
-                                          <td>{applicant.time}</td>
-                                          <td>{applicant.first_name.charAt(0).toUpperCase() + applicant.first_name.slice(1)} {applicant.last_name.charAt(0).toUpperCase() + applicant.last_name.slice(1)}</td>
-                                          <td>{applicant.department_id}</td>
-                                          <td>{applicant.contact_no}</td>
-                                          <td>{applicant.isDone? 'Done' : 'Scheduled'}</td>
-                                          <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(applicant.id)}></Button></td>
-                                          <td><Button type="danger" text="Delete" onClick={() => this.handleDelete(applicant.id)}></Button></td>
-                                      </tr>);
-                                  })}
-                    </tbody>
-                </table>
-            </Box>
-        </Col>
+            <Col md={12}>
+                <Box type="primary" collapsable title="Dependents">
+                    <table className="table table-head-fixed" id="EmployeesTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Applicant</th>
+                                <th>Department</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.records.map(applicant => {
+                                return  (<tr key={applicant.id}>
+                                            <td>{moment(applicant.date).format("YYYY-MM-DD")}</td>
+                                            <td>{applicant.time}</td>
+                                            <td>{applicant.first_name.charAt(0).toUpperCase() + applicant.first_name.slice(1)} {applicant.last_name.charAt(0).toUpperCase() + applicant.last_name.slice(1)}</td>
+                                            <td>{applicant.department_id}</td>
+                                            <td>{applicant.contact_no}</td>
+                                            <td>{applicant.isDone? 'Done' : 'Scheduled'}</td>
+                                            <td><Button type="warning" text="Edit" onClick={() => this.handleEdit(applicant.id)}></Button></td>
+                                            <td><Button type="danger" text="Delete" onClick={() => this.handleDelete(applicant.id)}></Button></td>
+                                        </tr>);
+                                    })}
+                        </tbody>
+                    </table>
+                </Box>
+            </Col>
 
         </Row>
 
