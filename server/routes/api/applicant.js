@@ -33,20 +33,20 @@ router.post("/", function(req, res, next) {
 });
 
 //update the applicant
-// router.put('/:id', function(req,res,next){
-//     let applicant = {
-//         date: req.body.date,
-//         time: req.body.time,
-//         first_name: req.body.first_name,
-//         last_name: req.body.last_name,
-//         contact_no: req.body.contact_no,
-//         department_id: req.body.department_id,
-//         created_by: req.body.created_by //todo
-//     };
-//     applicantService
-//         .update(req.params.id,applicant)
-//         .then(affected => res.json(affected))
-// });
+router.put("/:id", function(req, res, next) {
+  let applicant = {
+    date: req.body.date,
+    time: req.body.time,
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    contact_no: req.body.contact_no,
+    department_id: req.body.department_id,
+    created_by: req.body.created_by //todo
+  };
+  applicantService
+    .update(req.params.id, applicant)
+    .then(affected => res.json(affected));
+});
 
 //delete applicant
 router.delete("/:id", function(req, res, next) {
