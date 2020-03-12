@@ -27,7 +27,7 @@ class EmployeeListComponent extends Component {
 
         axios.get('http://localhost:8080/api/employees/employeeList') //params todo
             .then(result => {
-                console.log(result)
+                console.log(result.data)
                 this.setState({
                     records: result.data
                 });
@@ -74,7 +74,7 @@ class EmployeeListComponent extends Component {
                                 </thead>
                                 <tbody>
                                     {this.state.records.map(emp => {return (<tr key={emp.id}>
-                                            <td>{emp.id}</td>
+                                            <td>{'000'+emp.id}</td>
                                             <td>{emp.first_name} {emp.last_name}</td>
                                             <td>{moment(emp.date_hired).format("YYYY-MMM-DD")}</td>
                                             <td>{emp.department}</td>
