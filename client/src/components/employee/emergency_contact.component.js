@@ -5,14 +5,17 @@ import axios from 'axios';
 class EmergencyContactComponent extends Component {
 
   state = {
-    first_name: '',
-    last_name: '',
-    relationship: '',
-    contact_no: '',
-    address: '',
-    city: '',
-    state: '',
-    zip_code: '',
+    obj:{
+      id: 0,
+      first_name: '',
+      last_name: '',
+      relationship: '',
+      contact_no: '',
+      address: '',
+      city: '',
+      state: '',
+      zip_code: ''
+    },
     records : [],
     editing: false
   }
@@ -33,80 +36,86 @@ class EmergencyContactComponent extends Component {
   }
   
   handleFirstName = (event) => {
-    this.setState({
-      first_name : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.first_name = event.target.value;
+
+    this.setState({obj});
+
     console.log(event.target.value);
   }
 
   handleLastName = (event) => {
-    this.setState({
-      last_name : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.last_name = event.target.value;
+    
+    this.setState({obj});
     console.log(event.target.value);
   }
 
   handleRelationship = (event) => {
-    this.setState({
-      relationship : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.relationship = event.target.value;
+    
+    this.setState({obj});
     console.log(event.target.value);
 
   }
   
   handleContact = (event) => {
-    this.setState({
-      contact_no : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.contact_no = event.target.value;
+    this.setState({obj})
     console.log(event.target.value);
   }
   
   handleAddress = (event) => {
-    this.setState({
-      address : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.address = event.target.value;
+    this.setState({obj})
     console.log(event.target.value);
   }
   
   handleCity = (event) => {
-    this.setState({
-      city : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.city = event.target.value;
+    this.setState({obj})
     console.log(event.target.value);
   }
 
   handleState = (event) => {
-    this.setState({
-      state : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.state = event.target.value;
+    this.setState({obj})
     console.log(event.target.value);
   }
 
   handleZipCode = (event) => {
-    this.setState({
-      zip_code : event.target.value
-    })
+    var obj = {...this.state.obj};
+    obj.zip_code = event.target.value;
+    this.setState({obj})
     console.log(event.target.value);
   }
   
 
   handleSubmit = event => {
-    axios.post('http://localhost:8080/api/emergency',this.state)
+    axios.post('http://localhost:8080/api/emergency',this.state.obj)
       .then(response=> {
-        // console.log(response.data[0]);
+        console.log(response.data[0]);
         let {records} = this.state;
-        records.push(response.data[0])
         
         this.setState({
-          records,
-          first_name: '',
-          last_name: '',
-          relationship: '',
-          contact_no: '',
-          address: '',
-          city: '',
-          state: '',
-          zip_code: ''
+          "records": records.concat(response.data[0]),
+          "obj" : {
+            id: 0,
+            first_name: '',
+            last_name: '',
+            relationship: '',
+            contact_no: '',
+            address: '',
+            city: '',
+            state: '',
+            zip_code: ''
+          }
         })
       }).catch(error => {
         console.error(error);
@@ -115,14 +124,17 @@ class EmergencyContactComponent extends Component {
 
   handleClear = event => {
     this.setState({
-      first_name: '',
-      last_name: '',
-      relationship: '',
-      contact_no: '',
-      address: '',
-      city: '',
-      state: '',
-      zip_code: ''
+     "obj" : {
+       id: 0,
+       first_name: '',
+       last_name: '',
+       relationship: '',
+       contact_no: '',
+       address: '',
+       city: '',
+       state: '',
+       zip_code: ''
+     }
     })
   }
 
@@ -131,30 +143,34 @@ class EmergencyContactComponent extends Component {
     console.log(this.state.records)
     let ec = this.state.records.find(ec => ec.id == id)
     
-    this.setState({
-      editing: true,
-      first_name: ec.first_name,
-      last_name: ec.last_name,
-      relationship: ec.relationship,
-      contact_no: ec.contact_no,
-      address: ec.address,
-      city: ec.city,
-      state: ec.state,
-      zip_code: ec.zip_code,
-    })
+    this.setState({editing:true});
+
+      var obj = this.state.obj;
+      obj.id = id;
+      obj.first_name = ec.first_name;
+      obj.last_name = ec.last_name;
+      obj.relationship = ec.relationship
+      obj.relationship = ec.relationship;
+      obj.contact_no = ec.contact_no;
+      obj.address = ec.address;
+      obj.city = ec.city;
+      obj.state = ec.state;
+      obj.zip_code = ec.zip_code;
+    
+      this.setState(obj)
   }
 
-  updateDependent = event => {
+  updateEcontact = event => {
     console.log('state',this.state.records)
-    console.log('records',this.state.records[0].id)
+    console.log('records',this.state.id)
 
-    axios.put('http://localhost:8080/api/emergency/' + this.state.records[0].id, this.state)
+    axios.put('http://localhost:8080/api/emergency/' + this.state.id, this.state.obj)
       .then(response => {
-        console.log('updateEc', response.data)
+        console.log('updateEc', response.data[0]);
         var updatedEc = response.data[0];
 
 
-        var previousEc = this.state.records.filter(dep => dep.id != updatedEc.id);
+        var previousEc = this.state.records.filter(ec => ec.id != updatedEc.id);
         this.setState({"records": [...previousEc, updatedEc], "editing": false});
 
       })
@@ -166,30 +182,15 @@ class EmergencyContactComponent extends Component {
        
     // console.log(updatedRecords)
     
-    this.setState({
-      first_name: '',
-      last_name: '',
-      relationship: '',
-      contact_no: '',
-      address: '',
-      city: '',
-      state: '',
-      zip_code: ''
-      })
+    this.handleClear();
   }
   
   cancelEditing = (editing) => {
     this.setState({
-      editing,
-      first_name: '',
-      last_name: '',
-      relationship: '',
-      contact_no: '',
-      address: '',
-      city: '',
-      state: '',
-      zip_code: ''
-      })
+      editing: false,
+      });
+    
+    this.handleClear();
   }
 
   handleDelete = (id) => {
@@ -218,7 +219,7 @@ class EmergencyContactComponent extends Component {
   ];
 
   footer_edit = [
-    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateDependent} margin="true"/>,
+    <Button key="btnSubmitEdit1" type="success" pullRight text="Save" onClick={this.updateEcontact} margin="true"/>,
     <Button key="btnSubmitEdit2" type="warning" pullRight  text="Cancel" onClick={()=> this.cancelEditing(false)} margin="true"/>
   ];
  
@@ -230,70 +231,70 @@ class EmergencyContactComponent extends Component {
         {editing ? (<Box title="Edit Emergency Contact" type="success" collapsable footer={this.footer_edit}>
           <div className="form-group">
               <label>First Name</label>
-              <input type="text" className="form-control" required name="first_name" value={this.state.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
+              <input type="text" className="form-control" required name="first_name" value={this.state.obj.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
           </div>
           <div className="form-group">
               <label>Last Name</label>
-              <input type="text" className="form-control" required name="last_name" value={this.state.last_name} placeholder="Enter ..." onChange={this.handleLastName} />
+              <input type="text" className="form-control" required name="last_name" value={this.state.obj.last_name} placeholder="Enter ..." onChange={this.handleLastName} />
           </div>
           <div className="form-group">
               <label>Relationship</label>
-              <input type="text" className="form-control" required name="relationship" value={this.state.relationship} placeholder="Enter ..." onChange={this.handleRelationship} />
+              <input type="text" className="form-control" required name="relationship" value={this.state.obj.relationship} placeholder="Enter ..." onChange={this.handleRelationship} />
           </div>
           <div className="form-group">
               <label>Contact Number</label>
-              <input type="text" className="form-control" required name="contact_no" value={this.state.contact_no} placeholder="Enter ..." onChange={this.handleContact} />
+              <input type="text" className="form-control" required name="contact_no" value={this.state.obj.contact_no} placeholder="Enter ..." onChange={this.handleContact} />
           </div>
           <div className="form-group">
               <label>Address</label>
-              <input type="text" className="form-control" required name="address" value={this.state.address} placeholder="Enter ..." onChange={this.handleAddress} />
+              <input type="text" className="form-control" required name="address" value={this.state.obj.address} placeholder="Enter ..." onChange={this.handleAddress} />
           </div>
           <div className="form-group">
               <label>City</label>
-              <input type="text" className="form-control" required name="city" value={this.state.city} placeholder="Enter ..." onChange={this.handleCity} />
+              <input type="text" className="form-control" required name="city" value={this.state.obj.city} placeholder="Enter ..." onChange={this.handleCity} />
           </div>
           <div className="form-group">
               <label>State</label>
-              <input type="text" className="form-control" required name="state" value={this.state.state} placeholder="Enter ..." onChange={this.handleState} />
+              <input type="text" className="form-control" required name="state" value={this.state.obj.state} placeholder="Enter ..." onChange={this.handleState} />
           </div>
           <div className="form-group">
               <label>Zip Code</label>
-              <input type="number" className="form-control" name="zip_code" value={this.state.zip_code} placeholder="Enter ..." onChange={this.handleZipCode} />
+              <input type="number" className="form-control" name="zip_code" value={this.state.obj.zip_code} placeholder="Enter ..." onChange={this.handleZipCode} />
           </div>
           </Box>
 
         ):<Box title="Add Emergency Contact" type="success" collapsable footer={this.footer_add}>
           <div className="form-group">
               <label>First Name</label>
-              <input type="text" className="form-control" required name="first_name" value={this.state.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
+              <input type="text" className="form-control" required name="first_name" value={this.state.obj.first_name} placeholder="Enter ..." onChange={this.handleFirstName}/>
           </div>
           <div className="form-group">
               <label>Last Name</label>
-              <input type="text" className="form-control" required name="last_name" value={this.state.last_name} placeholder="Enter ..." onChange={this.handleLastName} />
+              <input type="text" className="form-control" required name="last_name" value={this.state.obj.last_name} placeholder="Enter ..." onChange={this.handleLastName} />
           </div>
           <div className="form-group">
               <label>Relationship</label>
-              <input type="text" className="form-control" required name="relationship" value={this.state.relationship} placeholder="Enter ..." onChange={this.handleRelationship} />
+              <input type="text" className="form-control" required name="relationship" value={this.state.obj.relationship} placeholder="Enter ..." onChange={this.handleRelationship} />
           </div>
           <div className="form-group">
               <label>Contact Number</label>
-              <input type="text" className="form-control" required name="contact_no" value={this.state.contact_no} placeholder="Enter ..." onChange={this.handleContact} />
+              <input type="text" className="form-control" required name="contact_no" value={this.state.obj.contact_no} placeholder="Enter ..." onChange={this.handleContact} />
           </div>
           <div className="form-group">
               <label>Address</label>
-              <input type="text" className="form-control" required name="address" value={this.state.address} placeholder="Enter ..." onChange={this.handleAddress} />
+              <input type="text" className="form-control" required name="address" value={this.state.obj.address} placeholder="Enter ..." onChange={this.handleAddress} />
           </div>
           <div className="form-group">
               <label>City</label>
-              <input type="text" className="form-control" required name="city" value={this.state.city} placeholder="Enter ..." onChange={this.handleCity} />
+              <input type="text" className="form-control" required name="city" value={this.state.obj.city} placeholder="Enter ..." onChange={this.handleCity} />
           </div>
           <div className="form-group">
               <label>State</label>
-              <input type="text" className="form-control" required name="state" value={this.state.state} placeholder="Enter ..." onChange={this.handleState} />
+              <input type="text" className="form-control" required name="state" value={this.state.obj.state} placeholder="Enter ..." onChange={this.handleState} />
           </div>
           <div className="form-group">
               <label>Zip Code</label>
-              <input type="number" className="form-control" name="zip_code" value={this.state.zip_code} placeholder="Enter ..." onChange={this.handleZipCode} />
+              <input type="number" className="form-control" name="zip_code" value={this.state.obj.zip_code} placeholder="Enter ..." onChange={this.handleZipCode} />
           </div>
           </Box>
           }

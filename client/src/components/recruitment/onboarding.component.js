@@ -37,7 +37,7 @@ class OnBoardingComponent extends Component {
             
                 let supervisor = result.data.filter(result => result.role_id ==2)
                 console.log(supervisor)
-
+                console.log(result)
                 this.setState({records: supervisor})
             })
             .catch(error => {
@@ -141,7 +141,7 @@ class OnBoardingComponent extends Component {
                                 <option value='5'>Purchasing and Logistics</option>
                                 <option value='6'>Operations</option>
                                 <option value='7'>Information System</option>
-                                <option value='7'>Software Development</option>
+                                <option value='8'>Software Development</option>
                                 </select>
                             </div>
                      </div>
