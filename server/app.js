@@ -6,7 +6,11 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var cors = require("cors");
+const bearerToken = require("express-bearer-token");
+const jwt = require("jwt-simple");
 var exphbs = require("express-handlebars");
+
+const authClass = require("./auth")();
 
 //routes folder import
 var indexRouter = require("./routes/index");
@@ -24,7 +28,28 @@ var eodsRouter = require("./routes/api/eod");
 var applicantsRouter = require("./routes/api/applicant");
 
 var app = express();
-app.use(cors());
+app.use(cors({ origin: true }));
+// the two middlewares below logs the bearer token from the Authentication Header in the request object. For demo purpose.
+// You don't need this because passport jwt strategy will also extract it with the function
+// ExtractJwt.fromAuthHeaderAsBearerToken
+
+// this middleware reads the Authentication header and retrieve the bearer token
+// then store it to req.bearerToken
+app.use(
+  bearerToken({
+    reqKey: "bearerToken"
+  })
+);
+
+// custom middleware that logs the bearer token from client
+app.use((req, res, next) => {
+  if (req.bearerToken) {
+    console.log(req.bearerToken);
+  }
+  next();
+});
+
+app.use(authClass.initialize());
 
 // view engine setup
 app.engine(

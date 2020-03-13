@@ -37,7 +37,6 @@ class OnBoardingComponent extends Component {
             
                 let supervisor = result.data.filter(result => result.role_id ==2)
                 console.log(supervisor)
-                console.log(result)
                 this.setState({records: supervisor})
             })
             .catch(error => {

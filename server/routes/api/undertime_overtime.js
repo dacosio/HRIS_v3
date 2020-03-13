@@ -13,9 +13,14 @@ router.get("/", function(req, res, next) {
   });
 });
 
-// get undertime_overtime details
+//get time requests
 router.get("/timeRequest", function(req, res, next) {
   undertimeOvertimeService.getTimeForApproval().then(time => res.json(time));
+});
+
+//get a specific role
+router.get("/:id", function(req, res, next) {
+  undertimeOvertimeService.get(req.params.id).then(time => res.json(time));
 });
 
 //get a specific time

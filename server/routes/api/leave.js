@@ -20,6 +20,22 @@ router.get("/leaveRequest", function(req, res, next) {
   });
 });
 
+router.put("/leaveRequest/:id", function(req, res, next) {
+  let leave = {
+    first_name: req.body.first_name,
+    last_name: req.body.last_name,
+    reason: req.body.reason,
+    from_date: req.body.from_date,
+    to_date: req.body.to_date,
+    type: req.body.type,
+    isAccepted: req.body.isAccepted,
+    isDeleted: req.body.isDeleted
+  };
+  leaveService.update(req.params.id, leave).then(leaves => {
+    res.json(leaves);
+  });
+});
+
 //get a specific leaves
 router.get("/:id", function(req, res, next) {
   leaveService.get(req.params.id).then(leave => res.json(leave));

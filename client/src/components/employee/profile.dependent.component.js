@@ -6,11 +6,11 @@ import moment from 'moment';
 export default class ProfileDependentComponent extends Component {
 
   state = {
-    first_name: '',
-    last_name:'',
-    relationship: '',
-    birthday: '',
-    contact_no: '',
+    // first_name: '',
+    // last_name:'',
+    // relationship: '',
+    // birthday: '',
+    // contact_no: '',
     records: []
   }
 

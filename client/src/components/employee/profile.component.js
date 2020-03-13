@@ -4,8 +4,8 @@ import axios from "axios";
 import SalaryComponent from "../finance/salary.component";
 import ProfileDependentComponent from "./profile.dependent.component";
 import ProfileEmergencyComponent from "./profile.emergency.component";
-import LeaveRequestsComponent from "./profile.leave.request.component";
-import TimeRequestsComponent from "./profile.time.component";
+import LeaveRequestsComponent from "./profile.leave.requests.component";
+import TimeRequestsComponent from "./profile.time.requests.component";
 
 class ProfileComponent extends Component {
   state = {
@@ -50,7 +50,6 @@ class ProfileComponent extends Component {
               break;
           }
         });
-
         this.setState({ records: result.data });
         console.log(result.data);
       })
@@ -63,14 +62,6 @@ class ProfileComponent extends Component {
     {
       title: "First Name",
       data: "first_name"
-    },
-    {
-      title: "Last Name",
-      data: "last_name"
-    },
-    {
-      title: "Position Title",
-      data: "position"
     },
     {
       title: "Department",
@@ -105,7 +96,7 @@ class ProfileComponent extends Component {
           <Col md={12}>
             <LeaveRequestsComponent />
             <TimeRequestsComponent />
-            <Box title="Employee Detail" type="primary">
+            <Box title="Employee Detail" type="primary" collapsable>
               <SimpleTable
                 columns={this.columns_profile}
                 data={this.state.records}
@@ -115,7 +106,6 @@ class ProfileComponent extends Component {
                 border="true"
               ></SimpleTable>
             </Box>
-
             <ProfileDependentComponent />
             <ProfileEmergencyComponent />
           </Col>

@@ -35,20 +35,19 @@ class LeaveService {
     return knex
       .select(
         "l.id",
-        "lt.type",
         "e.first_name",
         "e.last_name",
-        "l.leave_type",
+        "l.reason",
         "l.from_date",
         "l.to_date",
-        "l.reason",
+        "lt.type",
         "l.isAccepted",
         "l.isDeleted"
       )
-      .from("employees AS e")
-      .innerJoin("leaves AS l", "e.id", "l.created_by")
-      .innerJoin("leave_type AS lt", "l.leave_type", "lt.id")
-      .where("e.supervisor_id", "=", 1); //todo
+      .from("employees as e")
+      .innerJoin("leaves as l", "e.id", "l.created_by")
+      .innerJoin("leave_type as lt", "lt.id", "l.leave_type")
+      .where("supervisor_id", "=", 1); //todo
   }
 
   get(id) {
@@ -69,6 +68,12 @@ class LeaveService {
     return knex("leaves")
       .where("id", "=", id)
       .update(obj);
+  }
+
+  delete(id) {
+    return knex("leaves")
+      .where("id", "=", id)
+      .del();
   }
 
   delete(id) {
