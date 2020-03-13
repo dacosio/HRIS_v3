@@ -27,8 +27,8 @@ class LeaveService {
       .from("leaves AS l")
       .innerJoin("employees AS e", "l.id", "e.id")
       .innerJoin("departments AS d", "d.id", "e.id")
-      .Where("e.id", "=", id)
-      .andWhere("l.isAccepted", "=", false);
+      .where("e.id", "=", id)
+      .andWhere("l.status", "=", 0);
   }
 
   getLeaveforApproval() {
@@ -41,13 +41,14 @@ class LeaveService {
         "l.from_date",
         "l.to_date",
         "lt.type",
-        "l.isAccepted",
+        "l.status",
         "l.isDeleted"
       )
       .from("employees as e")
       .innerJoin("leaves as l", "e.id", "l.created_by")
       .innerJoin("leave_type as lt", "lt.id", "l.leave_type")
-      .where("supervisor_id", "=", 1); //todo
+      .where("l.status",'=', 0)
+      .andWhere("supervisor_id", "=", 1); //todo
   }
 
   get(id) {

@@ -16,10 +16,13 @@ class OvertimeComponent extends Component {
     to_time: moment(),
     reason: '',
     time_type: 1,
-    isAccepted: false,
+    status: 0,
     created_by: 1, //todo
     records: []
   };
+
+  timeStatus = ["Pending","Approved","Declined"];
+
     
   componentDidMount(){
     axios.get('http://localhost:8080/api/time') //params todo
@@ -77,7 +80,7 @@ class OvertimeComponent extends Component {
         to_time: moment(),
         reason: '',
         time_type: 1,
-        isAccepted: false,
+        status: 0,
       })
 
     }).catch(error => {
@@ -145,7 +148,7 @@ class OvertimeComponent extends Component {
                                       <td>{ot.from_time}</td>
                                       <td>{ot.to_time}</td>
                                       <td>{ot.reason}</td>
-                                      <td>{ot.isAccepted? "Approved" : "Pending"}</td>
+                                      <td>{this.timeStatus[ot.status]}</td>
                                   </tr>);
                               })}
                     </tbody>

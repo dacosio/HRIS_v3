@@ -5,9 +5,8 @@ import axios from "axios";
 
 class TimeRequestsComponent extends Component {
   state = {
-    id: 0,
-    isAccepted: false,
-
+    obj : {id: 0,
+    status: 0},
     records: []
   };
 
@@ -23,21 +22,49 @@ class TimeRequestsComponent extends Component {
   }
 
   handleAccept = id => {
-    this.setState({
-      isAccepted: true
-    });
-    console.log("state", this.state);
-    console.log("records id", this.state.id);
+    
     let time = this.state.records.find(time => time.id == id);
-    console.log(time);
+
+    axios.put("http://localhost:8080/api/time/approveTimeRequest/" + time.id, {})
+      .then(res=> {
+        console.log(res)
+
+        const newRecords = this.state.records.filter(res => {
+                return res.id != id
+              })
+
+            this.setState({
+              records: [...newRecords]
+            }) 
+
+      })
+      .catch(err => {
+        console.error(err)
+      })
+
   };
 
   handleDecline = id => {
-    console.log("state", this.state.records);
-    console.log("records id", this.state.id);
-
+    
     let time = this.state.records.find(time => time.id == id);
-    console.log(time);
+
+    axios.put("http://localhost:8080/api/time/declineTimeRequest/" + time.id, {})
+      .then(res=> {
+        console.log(res)
+
+        const newRecords = this.state.records.filter(res => {
+                return res.id != id
+              })
+
+            this.setState({
+              records: [...newRecords]
+            }) 
+
+      })
+      .catch(err => {
+        console.error(err)
+      })
+
   };
 
   render() {

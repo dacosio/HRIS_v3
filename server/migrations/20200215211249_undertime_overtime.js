@@ -7,7 +7,7 @@ exports.up = function(knex) {
         table.time('to_time').notNullable();
         table.string('reason').notNullable();
         table.boolean('isDeleted').defaultTo(0);
-        table.boolean('isAccepted').defaultTo(0);
+        table.integer('status').defaultTo(0).notNullable();
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('modified_at').defaultTo(null);
         table.integer('created_by').unsigned().notNullable();
