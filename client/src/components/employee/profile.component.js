@@ -5,6 +5,7 @@ import SalaryComponent from "../finance/salary.component";
 import ProfileDependentComponent from "./profile.dependent.component";
 import ProfileEmergencyComponent from "./profile.emergency.component";
 import LeaveRequestsComponent from "./profile.leave.request.component";
+import TimeRequestsComponent from "./profile.time.component";
 
 class ProfileComponent extends Component {
   state = {
@@ -103,6 +104,7 @@ class ProfileComponent extends Component {
         <Row>
           <Col md={12}>
             <LeaveRequestsComponent />
+            <TimeRequestsComponent />
             <Box title="Employee Detail" type="primary">
               <SimpleTable
                 columns={this.columns_profile}

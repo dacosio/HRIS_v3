@@ -3,7 +3,7 @@ import moment from "moment";
 import { Content, Row, Col, Box, Button } from "adminlte-2-react";
 import axios from "axios";
 
-class LeaveRequestsComponent extends Component {
+class TimeRequestsComponent extends Component {
   state = {
     id: 0,
     isAccepted: false,
@@ -13,7 +13,7 @@ class LeaveRequestsComponent extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:8080/api/leaves/leaveRequest") //params todo
+      .get("http://localhost:8080/api/time/timeRequest") //params todo
       .then(result => {
         this.setState({ records: result.data });
       })
@@ -28,24 +28,24 @@ class LeaveRequestsComponent extends Component {
     });
     console.log("state", this.state);
     console.log("records id", this.state.id);
-    let leave = this.state.records.find(leave => leave.id == id);
-    console.log(leave);
+    let time = this.state.records.find(time => time.id == id);
+    console.log(time);
   };
 
   handleDecline = id => {
     console.log("state", this.state.records);
     console.log("records id", this.state.id);
 
-    let leave = this.state.records.find(leave => leave.id == id);
-    console.log(leave);
+    let time = this.state.records.find(time => time.id == id);
+    console.log(time);
   };
 
   render() {
     return (
       <Row>
         <Col md={12}>
-          <Box title="Leave Requests" type="primary" collapsable>
-            <table className="table table-head-fixed" id="LeavesTable">
+          <Box title="Time Requests" type="primary" collapsable>
+            <table className="table table-head-fixed" id="TimesTable">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -57,31 +57,31 @@ class LeaveRequestsComponent extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.state.records.map(leave => {
+                {this.state.records.map(time => {
                   return (
-                    <tr key={leave.id}>
+                    <tr key={time.id}>
                       <td>
-                        {leave.first_name.charAt(0).toUpperCase() +
-                          leave.first_name.slice(1)}{" "}
-                        {leave.last_name.charAt(0).toUpperCase() +
-                          leave.last_name.slice(1)}
+                        {time.first_name.charAt(0).toUpperCase() +
+                          time.first_name.slice(1)}{" "}
+                        {time.last_name.charAt(0).toUpperCase() +
+                          time.last_name.slice(1)}
                       </td>
-                      <td>{leave.type}</td>
-                      <td>{moment(leave.from_date).format("YYYY-MM-DD")}</td>
-                      <td>{moment(leave.to_date).format("YYYY-MM-DD")}</td>
-                      <td>{leave.reason}</td>
+                      <td>{time.type}</td>
+                      <td>{moment(time.from_date).format("YYYY-MM-DD")}</td>
+                      <td>{moment(time.to_date).format("YYYY-MM-DD")}</td>
+                      <td>{time.reason}</td>
                       <td>
                         <Button
                           type="success"
                           text="Accept"
-                          onClick={() => this.handleAccept(leave.id)}
+                          onClick={() => this.handleAccept(time.id)}
                         ></Button>
                       </td>
                       <td>
                         <Button
                           type="danger"
                           text="Decline"
-                          onClick={() => this.handleDecline(leave.id)}
+                          onClick={() => this.handleDecline(time.id)}
                         ></Button>
                       </td>
                     </tr>
@@ -96,4 +96,4 @@ class LeaveRequestsComponent extends Component {
   }
 }
 
-export default LeaveRequestsComponent;
+export default TimeRequestsComponent;
