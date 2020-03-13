@@ -16,7 +16,18 @@ class EmployeeService {
             .select(['e.id','e.first_name', 'e.last_name','e.date_hired','e.department_id','dp.department','e.position','e.department_id','dp.department']);
     }
 
-    
+    getAllEmployeeRequest(){
+        return knex()
+    }
+
+    get(id) {
+        return knex('employees')
+            .where({
+                id : id
+            })
+            .select();
+    }
+
     create(obj) {
         return knex('employees')
             .returning(['id',"first_name","last_name","position","birthday","gender","contact_no","date_hired","address","city","state","zip_code","department_id","role_id","supervisor_id"])

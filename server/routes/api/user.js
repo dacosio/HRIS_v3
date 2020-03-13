@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+const jwt = require("jwt-simple");
+const config = require('../../config');
+const authClass = require('../../auth')();
 const UserService = require('../../services/user.service');
 
 const userService = new UserService();
@@ -7,7 +10,7 @@ const userService = new UserService();
 /********** These are all mounted to /api/users *********/
 
 //get all users
-router.get('/', function(req, res, next){
+router.get('/', authClass.authenticate(), function(req, res, next){
     userService
         .getAll()
         .then(users => {
@@ -16,7 +19,7 @@ router.get('/', function(req, res, next){
 });
 
 //get a specific user
-router.get('/:id', function(req, res, next){
+router.get('/:id', authClass.authenticate(), function(req, res, next){
     userService
         .get(req.params.id)
         .then(user => res.json(user));
@@ -24,7 +27,7 @@ router.get('/:id', function(req, res, next){
 
 
 //create user
-router.post('/', function(req, res, next){
+router.post('/', authClass.authenticate(), function(req, res, next){
     let user = {
       email: req.body.email,
       password: req.body.password,
@@ -37,7 +40,7 @@ router.post('/', function(req, res, next){
 });
 
 //update the user profile
-router.put('/:id', function(req, res, next){
+router.put('/:id', authClass.authenticate(), function(req, res, next){
     let user = {
         email: req.body.email,
         password: req.body.password,
@@ -50,10 +53,35 @@ router.put('/:id', function(req, res, next){
 });
 
 //delete user (:/id)
-router.delete('/:id', function(req, res, next){
+router.delete('/:id', authClass.authenticate(), function(req, res, next){
     userService
         .delete(req.params.id)
         .then(affected => res.json(affected));
 });
 
+router.post("/login", function(req, res) {
+  console.log(req.body);
+  if (req.body.email && req.body.password) {
+      var email = req.body.email;
+      var password = req.body.password;
+
+// Logic here reads from a JSON, in a real application you will read from a database
+      userService
+        .login(email, password)
+        .then((users) => {
+
+          if (users && users.length > 0) {
+            const user = users[0];
+            var token = jwt.encode(user, config.jwtSecret);
+            res.json({
+                token: token
+            });
+          } else {
+              res.sendStatus(401);
+          }
+        });
+  } else {
+      res.sendStatus(401);
+  }
+});
 module.exports = router;

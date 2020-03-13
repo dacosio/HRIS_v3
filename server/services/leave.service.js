@@ -25,37 +25,39 @@ class LeaveService {
 
     getLeaveforApproval() {
         return knex
-            .select('employees.first_name')
-            .from('employees')
-            .innerJoin('leaves','employees.id','leaves.created_by')
-            .where('supervisor_id','=',1)
+            .select("l.id","e.first_name" , "e.last_name" , "l.reason", "l.from_date", "l.to_date" , "lt.type", 'l.isAccepted','l.isDeleted')
+            .from('employees as e')
+            .innerJoin('leaves as l','e.id','l.created_by')
+            .innerJoin("leave_type as lt", "lt.id","l.leave_type")
+            .where('supervisor_id','=',1) //todo
     }
 
-get(id) {
-    return knex('leaves')
-        .where({
-            id: id
-        })
-        .select();
-}
 
-create(obj) {
-    return knex('leaves')
-        .returning(['id','from_date','to_date','reason','leave_type'])
-        .insert(obj);
-}
+    get(id) {
+        return knex('leaves')
+            .where({
+                id: id
+            })
+            .select();
+    }
 
-update(id, obj) {
-    return knex('leaves')
-        .where('id', '=', id)
-        .update(obj);
-}
+    create(obj) {
+        return knex('leaves')
+            .returning(['id','from_date','to_date','reason','leave_type'])
+            .insert(obj);
+    }
 
-delete(id) {
-    return knex('leaves')
-        .where('id', '=', id)
-        .del()
-}
+    update(id, obj) {
+        return knex('leaves')
+            .where('id', '=', id)
+            .update(obj);
+    }
+
+    delete(id) {
+        return knex('leaves')
+            .where('id', '=', id)
+            .del()
+    }
 
 }
 

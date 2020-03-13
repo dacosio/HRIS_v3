@@ -15,6 +15,12 @@ router.get('/', function(req,res,next) {
         });
 });
 
+//get time requests
+router.get("/timeRequest", function(req, res, next) {
+    undertimeOvertimeService
+    .getTimeForApproval()
+    .then(time => res.json(time));
+  });
 
 //get a specific role
 router.get('/:id', function(req,res,next) {

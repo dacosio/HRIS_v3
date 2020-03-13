@@ -45,6 +45,14 @@ class UserService {
             .del()
     }
 
+    login(email, password) {
+        return knex('users')
+            .where({
+                email: email,
+                password: password
+            })
+            .select();
+    }
 }
 
 module.exports = UserService;

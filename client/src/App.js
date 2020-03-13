@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import AdminLTE, { Sidebar, Navbar} from 'adminlte-2-react';
+import { Redirect } from "react-router-dom";
+
+import * as authActions from "./store/actions/authActions";
+
+
+import Login from './Login';
 import ProfileComponent from './components/employee/profile.component';
 import AttendanceComponent from './components/employee/attendance.component';
 import EodComponent from './components/employee/eod.component';
@@ -14,6 +21,10 @@ const { Item, UserPanel } = Sidebar;
 const {Entry} = Navbar;
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+  }
 
   children_employee = [
     <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
@@ -50,10 +61,14 @@ class App extends Component {
 
   logout = event => {
     console.log("hello")
+    this.props.logoutDispatch();
   }
 
 
   render() {
+    if (!this.props.isLoggedIn) {
+      return <Redirect exact to="/login" />;
+    }
     return (
       <AdminLTE title={["HR Info System"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
 
@@ -75,4 +90,14 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn
+});
+
+const mapDispatchToProps = dispatch => ({
+  logoutDispatch: () => {
+    dispatch(authActions.logoutAction());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
