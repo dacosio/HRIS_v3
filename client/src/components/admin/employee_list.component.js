@@ -46,15 +46,6 @@ class EmployeeListComponent extends Component {
 
     closeModal = () => this.setState({openModal: false});
 
-    loadEmployeeProperties = event => {
-        console.log("load employee properties",event);
-        //todo api call to get dependents
-        //todo api call to get emergency contact
-
-        //todo set state
-
-    };
-
     render() {
         return (
             <Content title="Employee Lists" browserTitle="Employee Lists">
@@ -104,7 +95,6 @@ class EmployeeListComponent extends Component {
                     shouldCloseOnEsc={true}
                     role={"dialog"}
                     data={this.state.modalData}>
-        {/* todo HTML for displaying dependents and emergency contacts */}
 
                         <button type="button" className="close" aria-label="Close" onClick={this.closeModal}>
                             <span aria-hidden="true">×</span>
