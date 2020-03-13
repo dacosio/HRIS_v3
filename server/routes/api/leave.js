@@ -13,11 +13,52 @@ router.get("/", function(req, res, next) {
   });
 });
 
-//postman test route
 router.get("/leaveRequest", function(req, res, next) {
   leaveService.getLeaveforApproval().then(leaves => {
     res.json(leaves);
   });
+});
+
+router.put("/approveLeaveRequest/:id", function(req,res,next) {
+  leaveService
+    .get(req.params.id)
+    .then(leaveObj => {
+      console.log("leave obj", leaveObj);
+      if(leaveObj && leaveObj.length > 0) {
+        leaveObj[0].status = 1; // 0 - pending , 1 - accepted, 2 - declined
+      }
+      else {
+        return res.status(404)
+      }
+      console.log("leave", leaveObj);
+
+      return leaveService
+        .update(leaveObj[0].id,leaveObj[0])
+    })
+    .then(leave => {
+      return res.json(leave);
+    });
+});
+
+router.put("/declineLeaveRequest/:id", function(req,res,next) {
+  leaveService
+    .get(req.params.id)
+    .then(leaveObj => {
+      console.log("leave obj", leaveObj);
+      if(leaveObj && leaveObj.length > 0) {
+        leaveObj[0].status = 2; // 0 - pending , 1 - accepted, 2 - declined
+      }
+      else {
+        return res.status(404)
+      }
+      console.log("leave", leaveObj);
+
+      return leaveService
+        .update(leaveObj[0].id,leaveObj[0])
+    })
+    .then(leave => {
+      return res.json(leave);
+    });
 });
 
 router.put("/leaveRequest/:id", function(req, res, next) {
@@ -28,7 +69,7 @@ router.put("/leaveRequest/:id", function(req, res, next) {
     from_date: req.body.from_date,
     to_date: req.body.to_date,
     type: req.body.type,
-    isAccepted: req.body.isAccepted,
+    status: req.body.status,
     isDeleted: req.body.isDeleted
   };
   leaveService.update(req.params.id, leave).then(leaves => {

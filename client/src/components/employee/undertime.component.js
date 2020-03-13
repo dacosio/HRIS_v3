@@ -15,11 +15,12 @@ class UndertimeComponent extends Component {
     to_time: moment(),
     reason: '',
     time_type: 2,
-    isAccepted: false,
+    status: 0,
     created_by: 1, //todo
     records : []
   };
  
+  timeStatus = ["Pending","Approved","Declined"];
 
   componentDidMount(){
     axios.get('http://localhost:8080/api/time') //params todo
@@ -71,7 +72,7 @@ class UndertimeComponent extends Component {
         to_time: moment(),
         reason: '',
         time_type: 2,
-        isAccepted: false,
+        status: 0,
       })
 
     }).catch(error => {
@@ -137,7 +138,7 @@ class UndertimeComponent extends Component {
                                       <td>{ut.from_time}</td>
                                       <td>{ut.to_time}</td>
                                       <td>{ut.reason}</td>
-                                      <td>{ut.isAccepted? "Approved" : "Pending"}</td>
+                                      <td>{this.timeStatus[ut.status]}</td>
                                   </tr>);
                               })}
                     </tbody>

@@ -18,14 +18,47 @@ router.get("/timeRequest", function(req, res, next) {
   undertimeOvertimeService.getTimeForApproval().then(time => res.json(time));
 });
 
-//get a specific role
-router.get("/:id", function(req, res, next) {
-  undertimeOvertimeService.get(req.params.id).then(time => res.json(time));
+
+router.put("/approveTimeRequest/:id", function(req,res,next) {
+  undertimeOvertimeService
+    .get(req.params.id)
+    .then(timeObj => {
+      console.log("time obj", timeObj);
+      if(timeObj && timeObj.length > 0) {
+        timeObj[0].status = 1; // 0 - pending , 1 - accepted, 2 - declined
+      }
+      else {
+        return res.status(404)
+      }
+      console.log("time", timeObj);
+
+      return undertimeOvertimeService
+        .update(timeObj[0].id,timeObj[0])
+    })
+    .then(time => {
+      return res.json(time);
+    });
 });
 
-//get a specific time
-router.get("/:id", function(req, res, next) {
-  undertimeOvertimeService.get(req.params.id).then(time => res.json(time));
+router.put("/declineTimeRequest/:id", function(req,res,next) {
+  undertimeOvertimeService
+    .get(req.params.id)
+    .then(timeObj => {
+      console.log("time obj", timeObj);
+      if(timeObj && timeObj.length > 0) {
+        timeObj[0].status = 2; // 0 - pending , 1 - accepted, 2 - declined
+      }
+      else {
+        return res.status(404)
+      }
+      console.log("time", timeObj);
+
+      return undertimeOvertimeService
+        .update(timeObj[0].id,timeObj[0])
+    })
+    .then(time => {
+      return res.json(time);
+    });
 });
 
 //create time

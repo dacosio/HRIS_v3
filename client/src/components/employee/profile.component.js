@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Content, Row, Col, Box, SimpleTable } from "adminlte-2-react";
 import axios from "axios";
-import SalaryComponent from "../finance/salary.component";
 import ProfileDependentComponent from "./profile.dependent.component";
 import ProfileEmergencyComponent from "./profile.emergency.component";
 import LeaveRequestsComponent from "./profile.leave.requests.component";

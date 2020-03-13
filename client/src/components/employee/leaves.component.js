@@ -17,6 +17,8 @@ class LeaveComponent extends Component {
     records: []
   };
 
+  leaveStatus = ["Pending","Approved","Declined"];
+
   componentDidMount() {
       axios.get('http://localhost:8080/api/leaves/') //params todo
         .then(result => {
@@ -150,7 +152,7 @@ class LeaveComponent extends Component {
                                           <td>{moment(leave.from_date).format("YY/MMM/DD")}</td>
                                           <td>{moment(leave.to_date).format("YY/MMM/DD")}</td>
                                           <td>{leave.reason}</td>
-                                          <td>{leave.isAccepted? "Approved" : "Pending"}</td>
+                                          <td>{this.leaveStatus[leave.status]}</td>
                                          
                                       </tr>);
                                   })}
