@@ -1,3 +1,4 @@
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
@@ -31,8 +32,15 @@ class OnBoardingComponent extends Component {
 
     };
     
+    constructor(props){
+        super(props);
+      }
+
     componentDidMount() {
-        axios.get('http://localhost:8080/api/employees')
+        axios.get(`${process.env.REACT_APP_API_SERVER}/api/employees`,
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` }
+        }) //params todo
             .then(result => {
             
                 let supervisor = result.data.filter(result => result.role_id ==2)
@@ -67,7 +75,10 @@ class OnBoardingComponent extends Component {
     }
 
     handleSubmit = event => {
-        axios.post('http://localhost:8080/api/employees',this.state)
+        axios.post(`${process.env.REACT_APP_API_SERVER}/api/employees`,this.state,
+            {
+            headers: { Authorization: `Bearer ${this.props.token}` }
+            }) //params todo
             .then(response=> {
               console.log(response.data);
             //   alert(response.data)
@@ -93,29 +104,29 @@ class OnBoardingComponent extends Component {
               })
       })}
 
-  handleClear = event => {
-      this.setState({
-        department_id: 1,
-        role_id: 3,
-        supervisor_id: 1, //todo
-        position: '',
-        gender: 'Male',
-        first_name: '',
-        last_name: '',
-        contact_no: '',
-        birthday: new Date(),
-        address: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        email: '',
-        supervisor: null,
-        date_hired: new Date(),
-        records: [],
-        password: '',
-        confirm_password: ''
-      })
-  }
+    handleClear = event => {
+        this.setState({
+            department_id: 1,
+            role_id: 3,
+            supervisor_id: 1, //todo
+            position: '',
+            gender: 'Male',
+            first_name: '',
+            last_name: '',
+            contact_no: '',
+            birthday: new Date(),
+            address: '',
+            city: '',
+            state: '',
+            zip_code: '',
+            email: '',
+            supervisor: null,
+            date_hired: new Date(),
+            records: [],
+            password: '',
+            confirm_password: ''
+        })
+    }
 
   footer = [
     <Button key="btnSubmitOnBoard" type="success" pullRight text="Save" onClick={this.handleSubmit} margin="true" />, 
@@ -293,4 +304,10 @@ class OnBoardingComponent extends Component {
   }
 }
 
-export default OnBoardingComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(OnBoardingComponent);

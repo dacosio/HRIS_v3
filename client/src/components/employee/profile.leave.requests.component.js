@@ -1,4 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import moment from "moment";
 import { Content, Row, Col, Box, Button } from "adminlte-2-react";
 import axios from "axios";
@@ -10,9 +12,16 @@ class LeaveRequestsComponent extends Component {
     records: []
   };
 
+  constructor(props){
+    super(props);
+  }
+
   componentDidMount() {
     axios
-      .get("http://localhost:8080/api/leaves/leaveRequest") //params todo
+      .get(`${process.env.REACT_APP_API_SERVER}/api/leaves/leaveRequest`,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo //params todo
       .then(result => {
         this.setState({ records: result.data });
       })
@@ -25,7 +34,10 @@ class LeaveRequestsComponent extends Component {
     
     let leave = this.state.records.find(leave => leave.id == id);
 
-    axios.put("http://localhost:8080/api/leaves/approveLeaveRequest/" + leave.id, {})
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/leaves/approveLeaveRequest/` + leave.id, {},
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo //params todo
       .then(res=> {
         console.log(res)
 
@@ -48,7 +60,10 @@ class LeaveRequestsComponent extends Component {
     
     let leave = this.state.records.find(leave => leave.id == id);
 
-    axios.put("http://localhost:8080/api/leaves/declineLeaveRequest/" + leave.id, {})
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/leaves/declineLeaveRequest/` + leave.id, {},
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo //params todo
       .then(res=> {
         console.log(res)
 
@@ -123,4 +138,10 @@ class LeaveRequestsComponent extends Component {
   }
 }
 
-export default LeaveRequestsComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(LeaveRequestsComponent);

@@ -10,6 +10,7 @@ export function loginSuccessAction(token) {
 
 export function logoutAction() {
   localStorage.clear("token");
+  localStorage.clear("userData");
   return {
     type: LOGOUT
   };
@@ -19,7 +20,7 @@ export function loginThunk(email, password) {
   return dispatch => {
     console.log(email, password);
     return axios
-      .post(`http://localhost:8080/api/users/login`, {
+      .post(`${process.env.REACT_APP_API_SERVER}/api/login`, {
         email: email,
         password: password
       })

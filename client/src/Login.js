@@ -43,6 +43,7 @@ export class Login extends React.Component {
           value={this.state.password}
           onChange={this.passwordInputChange}
         />
+        <br/>
         <button onClick={this.login}>click to log in</button>
       </div>
     );

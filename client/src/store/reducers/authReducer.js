@@ -2,7 +2,8 @@ import { LOGIN, LOGOUT } from "../actions/authActionTypes";
 
 const initialState = {
   isLoggedIn: localStorage.getItem("token") !== null,
-  token: localStorage.getItem("token") || null
+  token: localStorage.getItem("token") || null,
+  userData: localStorage.getItem("userData") || null
 };
 
 export function loginReducer(state, action) {

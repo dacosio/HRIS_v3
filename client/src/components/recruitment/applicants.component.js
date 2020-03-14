@@ -1,3 +1,4 @@
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
@@ -28,7 +29,10 @@ class InterviewComponent extends Component {
  
 
     componentDidMount() {
-        axios.get('http://localhost:8080/api/applicants') //params todo
+        axios.get(`${process.env.REACT_APP_API_SERVER}/api/applicants`,
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` }
+        }) //params todo
         .then(result => {
             
           this.setState({records: result.data})
@@ -97,7 +101,10 @@ class InterviewComponent extends Component {
         obj.date = moment(obj.date).format("YYYY-MM-DD")
         console.log(obj)
     
-        axios.post('http://localhost:8080/api/applicants',obj)
+        axios.post(`${process.env.REACT_APP_API_SERVER}/api/applicants`,obj,
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` }
+        }) //params todo
         .then(response=> {
           console.log(response.data[0]);
           let {records} = this.state;
@@ -168,7 +175,10 @@ class InterviewComponent extends Component {
         obj.time = this.state.obj.time.format("HH:mm:ss");
         this.setState(obj);
 
-        axios.put('http://localhost:8080/api/applicants/' + this.state.id, this.state.obj)
+        axios.put(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + this.state.id, this.state.obj,
+            {
+            headers: { Authorization: `Bearer ${this.props.token}` }
+            }) //params todo
             .then(response => {
             console.log('updateDependent', response.data[0]);
             var updatedApplicant = response.data[0];
@@ -195,7 +205,10 @@ class InterviewComponent extends Component {
 
     handleDelete = (id) => {
         console.log("delete", id)
-        axios.delete('http://localhost:8080/api/applicants/' + id)
+        axios.delete(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + id,
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` }
+        }) //params todo
                 .then(response => {
                   const newRecords = this.state.records.filter(res => {
                     return res.id != id
@@ -380,5 +393,10 @@ class InterviewComponent extends Component {
     </Content>);
   }
 }
-
-export default InterviewComponent;
+const mapStateToProps = state => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    token: state.auth.token,
+    userData: JSON.parse(state.auth.userData)
+  });
+  
+  export default connect(mapStateToProps)(InterviewComponent);

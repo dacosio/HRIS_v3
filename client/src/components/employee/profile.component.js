@@ -1,10 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Content, Row, Col, Box, SimpleTable } from "adminlte-2-react";
 import axios from "axios";
 import ProfileDependentComponent from "./profile.dependent.component";
 import ProfileEmergencyComponent from "./profile.emergency.component";
 import LeaveRequestsComponent from "./profile.leave.requests.component";
 import TimeRequestsComponent from "./profile.time.requests.component";
+
 
 class ProfileComponent extends Component {
   state = {
@@ -19,9 +22,16 @@ class ProfileComponent extends Component {
     records: []
   };
 
-  componentDidMount() {
-    axios
-      .get("http://localhost:8080/api/employees/") //params todo
+  constructor(props){
+    super(props);
+  }
+
+
+    componentDidMount() {
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/employees/`,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
       .then(result => {
         console.log(result.data);
         result.data.forEach(res => {
@@ -114,4 +124,10 @@ class ProfileComponent extends Component {
   }
 }
 
-export default ProfileComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(ProfileComponent);

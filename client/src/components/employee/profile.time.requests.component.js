@@ -1,5 +1,6 @@
-import React, { Component } from "react";
-import moment from "moment";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
+import moment from 'moment';
 import { Content, Row, Col, Box, Button } from "adminlte-2-react";
 import axios from "axios";
 
@@ -10,9 +11,16 @@ class TimeRequestsComponent extends Component {
     records: []
   };
 
+  constructor(props){
+    super(props);
+  }
+
   componentDidMount() {
     axios
-      .get("http://localhost:8080/api/time/timeRequest") //params todo
+      .get(`${process.env.REACT_APP_API_SERVER}/api/time/timeRequest`,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
       .then(result => {
         this.setState({ records: result.data });
       })
@@ -25,7 +33,10 @@ class TimeRequestsComponent extends Component {
     
     let time = this.state.records.find(time => time.id == id);
 
-    axios.put("http://localhost:8080/api/time/approveTimeRequest/" + time.id, {})
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/time/approveTimeRequest/` + time.id, {},
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    })
       .then(res=> {
         console.log(res)
 
@@ -48,7 +59,10 @@ class TimeRequestsComponent extends Component {
     
     let time = this.state.records.find(time => time.id == id);
 
-    axios.put("http://localhost:8080/api/time/declineTimeRequest/" + time.id, {})
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/time/declineTimeRequest/` + time.id, {},
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      })
       .then(res=> {
         console.log(res)
 
@@ -123,4 +137,11 @@ class TimeRequestsComponent extends Component {
   }
 }
 
-export default TimeRequestsComponent;
+
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(TimeRequestsComponent);

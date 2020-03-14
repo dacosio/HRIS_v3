@@ -1,9 +1,10 @@
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 import moment from 'moment';
 
-export default class ProfileDependentComponent extends Component {
+class ProfileDependentComponent extends Component {
 
   state = {
     // first_name: '',
@@ -70,3 +71,10 @@ export default class ProfileDependentComponent extends Component {
 }
 
 
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(ProfileDependentComponent);

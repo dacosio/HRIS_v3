@@ -5,7 +5,7 @@ module.exports = {
 
   development: {
     client: 'pg',
-    'debug': true,
+    'debug': false,
     connection: {
       database: process.env.DB_NAME,
       user:     process.env.DB_USERNAME,

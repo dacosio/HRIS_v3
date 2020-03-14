@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 
-export default class ProfileEmergencyComponent extends Component {
+class ProfileEmergencyComponent extends Component {
 
   state = {
     first_name: '',
@@ -53,4 +55,12 @@ export default class ProfileEmergencyComponent extends Component {
       )}
 }
 
+
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(ProfileEmergencyComponent);
 

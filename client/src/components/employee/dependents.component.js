@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Col, Box, SimpleTable,Button, Row } from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
@@ -27,7 +29,10 @@ class DependentsComponent extends Component {
 
 
   loadDependents = () => {
-    axios.get('http://localhost:8080/api/dependents/') //params todo
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/`,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
       .then(result => {
         console.log(result.data)
         this.setState({
@@ -88,7 +93,10 @@ class DependentsComponent extends Component {
   
 
   handleSubmit = event => {
-    axios.post('http://localhost:8080/api/dependents/',this.state.obj) //todo
+    axios.post(`${process.env.REACT_APP_API_SERVER}/api/dependents/`,this.state.obj,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
       .then(response=> {
         console.log(response.data[0])
         let {records} = this.state;
@@ -146,7 +154,10 @@ class DependentsComponent extends Component {
     console.log('state',this.state.records)
     console.log('records',this.state.id)
 
-    axios.put('http://localhost:8080/api/dependents/' + this.state.id, this.state.obj)
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/dependents/` + this.state.id, this.state.obj,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
       .then(response => {
         console.log('updateDependent', response.data[0]);
         var updatedDependent = response.data[0];
@@ -174,7 +185,10 @@ class DependentsComponent extends Component {
 
   handleDelete = (id) => {
     console.log("delete", id)
-    axios.delete('http://localhost:8080/api/dependents/' + id)
+    axios.delete(`${process.env.REACT_APP_API_SERVER}/api/dependents/` + id,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
             .then(response => {
               const newRecords = this.state.records.filter(res => {
                 return res.id != id
@@ -293,8 +307,12 @@ class DependentsComponent extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
 
-
-export default DependentsComponent;
+export default connect(mapStateToProps)(DependentsComponent);
 
 

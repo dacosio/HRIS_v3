@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Content, Row, Col, Box, Button, SimpleTable} from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
 import axios from 'axios';
@@ -17,10 +19,17 @@ class LeaveComponent extends Component {
     records: []
   };
 
+  constructor(props){
+    super(props);
+  }
+
   leaveStatus = ["Pending","Approved","Declined"];
 
   componentDidMount() {
-      axios.get('http://localhost:8080/api/leaves/') //params todo
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/leaves/`,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
         .then(result => {
           this.setState({records: result.data})
         })
@@ -59,7 +68,10 @@ class LeaveComponent extends Component {
   }
 
   handleSubmit = event => {
-    axios.post('http://localhost:8080/api/leaves',this.state)
+    axios.post(`${process.env.REACT_APP_API_SERVER}/api/leaves`,this.state,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
         .then(response=> {
           console.log(response.data[0]);
           let {records} = this.state;
@@ -166,4 +178,10 @@ class LeaveComponent extends Component {
   }
 }
 
-export default LeaveComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(LeaveComponent);
