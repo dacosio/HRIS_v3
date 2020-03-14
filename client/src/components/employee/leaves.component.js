@@ -15,6 +15,7 @@ class LeaveComponent extends Component {
     to_date: new Date(),
     reason: '',
     leave_type: '1',
+    status: 0,
     created_by: 1, //todo
     records: []
   };

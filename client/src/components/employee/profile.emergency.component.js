@@ -16,7 +16,10 @@ class ProfileEmergencyComponent extends Component {
 
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/emergency') //params todo
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
       .then(result => {
   
         this.setState({records: result.data})

@@ -55,16 +55,11 @@ class Auth extends Component {
     <Item key="onBoardingLists" text="On Boarding" to="/onboarding" icon="fa-calendar-check" />
   ]
 
-  children_finance = [
-    <Item key="payroll" text="Payslip" to="/payslips" icon="fa-receipt" />
-  ]
-
   sidebar = [
     <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />, //todo
     <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
     <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
-    <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>,
-    <Item key="finance" icon="fa-wallet" text="Finance" children={this.children_finance}/>
+    <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
   ]
 
   logout = event => {

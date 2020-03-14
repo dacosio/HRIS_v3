@@ -18,7 +18,10 @@ class ProfileDependentComponent extends Component {
 
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/dependents') //params todo
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents`,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
       .then(result => {
         
         result.data.forEach(res=> {

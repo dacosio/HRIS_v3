@@ -61,7 +61,7 @@ class LeaveService {
 
   create(obj) {
     return knex("leaves")
-      .returning(["id", "from_date", "to_date", "reason", "leave_type"])
+      .returning(["id", "from_date", "to_date", "reason", "leave_type","status"])
       .insert(obj);
   }
 
