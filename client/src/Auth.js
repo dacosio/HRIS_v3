@@ -56,7 +56,7 @@ class Auth extends Component {
   ]
 
   sidebar = [
-    <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />, //todo
+    <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />,
     <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
     <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
     <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
