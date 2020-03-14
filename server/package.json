@@ -3,8 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
-    "homepage": "https://suruchisharma.co"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "bcrypt": "^3.0.8",
@@ -33,5 +32,6 @@
     "pg-native": "^3.0.0",
     "postgres": "^1.0.2",
     "sqlite3": "^4.1.1"
-  }
+  },
+  "homepage": "https://suruchisharma.co"
 }
