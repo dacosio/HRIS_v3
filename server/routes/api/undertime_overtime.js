@@ -15,7 +15,7 @@ router.get("/", function(req, res, next) {
 
 //get time requests
 router.get("/timeRequest", function(req, res, next) {
-  undertimeOvertimeService.getTimeForApproval().then(time => res.json(time));
+  undertimeOvertimeService.getTimeForApproval(req.user.id).then(time => res.json(time));
 });
 
 

@@ -14,7 +14,7 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/leaveRequest", function(req, res, next) {
-  leaveService.getLeaveforApproval().then(leaves => {
+  leaveService.getLeaveforApproval(req.user.id).then(leaves => {
     res.json(leaves);
   });
 });

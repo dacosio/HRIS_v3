@@ -30,6 +30,7 @@ class LeaveService {
   //     .where("e.id", "=", id)
   //     .andWhere("l.status", "=", 0);
   // }
+  
 
   getLeaveforApproval(id) {
     return knex
