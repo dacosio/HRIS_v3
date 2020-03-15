@@ -8,13 +8,16 @@ const leaveService = new LeaveService();
 
 //get all leaves
 router.get("/", function(req, res, next) {
-  leaveService.getAll().then(leaves => {
+  leaveService.getAll(parseInt(req.user.id))
+  .then(leaves => {
     res.json(leaves);
   });
 });
 
 router.get("/leaveRequest", function(req, res, next) {
-  leaveService.getLeaveforApproval(req.user.id).then(leaves => {
+  console.log("getting requests for : ", req.user.id);
+  leaveService.getLeaveforApproval(parseInt(req.user.id))
+  .then(leaves => {
     res.json(leaves);
   });
 });

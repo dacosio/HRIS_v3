@@ -10,7 +10,8 @@ export function loginReducer(state, action) {
   return {
     ...state,
     isLoggedIn: true,
-    token: action.token
+    token: action.token,
+    userData: action.userData
   };
 }
 
@@ -18,7 +19,8 @@ function logoutReducer(state) {
   return {
     ...state,
     isLoggedIn: false,
-    token: null
+    token: null,
+    userData: null
   };
 }
 

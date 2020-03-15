@@ -73,7 +73,7 @@ class LeaveRequestsComponent extends Component {
 
             this.setState({
               records: [...newRecords]
-            }) 
+            })
 
       })
       .catch(err => {
@@ -84,7 +84,7 @@ class LeaveRequestsComponent extends Component {
 
   render() {
     return (
-      <Row>
+      (this.state.records.length > 0) && <Row>
         <Col md={12}>
           <Box title="Leave Requests" type="primary" collapsable>
             <table className="table table-head-fixed" id="LeavesTable">

@@ -8,6 +8,14 @@ class DependentService {
             .select();
     }
 
+    getByEmployee(id){
+        return knex('dependents')
+            .where({
+                employee_id : id
+            })
+            .select();
+    }
+
     get(id) {
         return knex('dependents')
             .where({

@@ -9,7 +9,7 @@ const eodService = new EodService();
 //get all eods
 router.get('/', function(req,res,next) {
     eodService
-        .getAll()
+        .getAll(parseInt(req.user.id))
         .then(eods => {
             res.json(eods)
         });

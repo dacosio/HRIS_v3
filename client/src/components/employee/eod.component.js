@@ -22,7 +22,7 @@ class EodComponent extends Component {
     }
 
   componentDidMount() {
-    axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods`,
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods/`,
     {
       headers: { Authorization: `Bearer ${this.props.token}` }
     }) //params todo
@@ -84,7 +84,7 @@ class EodComponent extends Component {
   
 
     footer = [
-      <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+      <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
     ];
 
   

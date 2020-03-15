@@ -28,13 +28,14 @@ class ProfileComponent extends Component {
 
 
     componentDidMount() {
-      axios.get(`${process.env.REACT_APP_API_SERVER}/api/employees/`,
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/employees/${this.props.userData.id}`,
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo
       .then(result => {
-        console.log(result.data);
+        //console.log(result.data);
         result.data.forEach(res => {
+          // res.first_name = res.first_name + " " + res.last_name;
           switch (res.department_id) {
             case 1:
               res.department_id = "Engineering";
@@ -73,6 +74,10 @@ class ProfileComponent extends Component {
       data: "first_name"
     },
     {
+      title: "Last Name",
+      data: "last_name"
+    },
+    {
       title: "Department",
       data: "department_id"
     },
@@ -103,8 +108,8 @@ class ProfileComponent extends Component {
       >
         <Row>
           <Col md={12}>
-            <LeaveRequestsComponent />
-            <TimeRequestsComponent />
+            {(this.props.userData.role_id < 3) && <LeaveRequestsComponent />}
+            {(this.props.userData.role_id < 3) && <TimeRequestsComponent />}
             <Box title="Employee Detail" type="primary" collapsable>
               <SimpleTable
                 columns={this.columns_profile}

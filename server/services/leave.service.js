@@ -3,8 +3,10 @@ const knex = require("../database/knex");
 class LeaveService {
   constructor() {}
 
-  getAll() {
-    return knex("leaves").select();
+  getAll(id) {
+    return knex("leaves")
+    .where({created_by: id})
+    .select();
   }
 
   getAllLeaveRequest() {
@@ -49,7 +51,7 @@ class LeaveService {
       .innerJoin("leaves as l", "e.id", "l.created_by")
       .innerJoin("leave_type as lt", "lt.id", "l.leave_type")
       .where("l.status",'=', 0)
-      .andWhere("supervisor_id", "=", id); //todo
+      .andWhere("e.supervisor_id", "=", id); //todo
   }
 
   get(id) {

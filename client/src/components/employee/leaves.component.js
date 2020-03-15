@@ -27,7 +27,7 @@ class LeaveComponent extends Component {
   leaveStatus = ["Pending","Approved","Declined"];
 
   componentDidMount() {
-      axios.get(`${process.env.REACT_APP_API_SERVER}/api/leaves/`,
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/leaves`,
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo
@@ -87,7 +87,7 @@ class LeaveComponent extends Component {
   })}
 
   footer = [
-    <Button key="btnSubmitLeave" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitLeave" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
   ];
 
 
@@ -96,7 +96,7 @@ class LeaveComponent extends Component {
       <Content title="Leaves" subTitle="Requests" browserTitle="Leaves">
       <Row>
       <Col md={4}>
-      <Row> 
+      <Row>
         <Col xs={12}>
           <form>
             <Box  title="Leave Application" type="primary" name="leave_type" footer={this.footer}>

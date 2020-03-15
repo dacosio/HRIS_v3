@@ -8,14 +8,15 @@ const undertimeOvertimeService = new UndertimeOvertimeService();
 
 //get all times
 router.get("/", function(req, res, next) {
-  undertimeOvertimeService.getAll().then(times => {
+  undertimeOvertimeService.getAll(parseInt(req.user.id)).then(times => {
     res.json(times);
   });
 });
 
 //get time requests
 router.get("/timeRequest", function(req, res, next) {
-  undertimeOvertimeService.getTimeForApproval(req.user.id).then(time => res.json(time));
+  undertimeOvertimeService.getTimeForApproval(parseInt(req.user.id))
+  .then(time => res.json(time));
 });
 
 

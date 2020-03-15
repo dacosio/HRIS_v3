@@ -15,6 +15,12 @@ router.get('/', function(req,res,next) {
         });
 });
 
+//get dependents of employee
+router.get('/employee/:id', function(req,res,next) {
+    dependentService
+        .getByEmployee(parseInt(req.params.id))
+        .then(dependents => res.json(dependents))
+});
 
 //get a specific dependent
 router.get('/:id', function(req,res,next) {

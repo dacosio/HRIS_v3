@@ -3,8 +3,10 @@ const knex = require("../database/knex");
 class UndertimeOvertimeService {
   constructor() {}
 
-  getAll() {
-    return knex("undertime_overtime").select();
+  getAll(id) {
+    return knex("undertime_overtime")
+    .where({created_by: id})
+    .select();
   }
 
   get(id) {

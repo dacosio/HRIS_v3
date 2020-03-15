@@ -25,7 +25,9 @@ class Auth extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
     if (this.props.isLoggedIn) {
+      document.body.classList.add("fixed");
       axios
         .get(`${process.env.REACT_APP_API_SERVER}/api/secret`, {
           headers: { Authorization: `Bearer ${this.props.token}` }
@@ -37,30 +39,7 @@ class Auth extends Component {
     }
   }
 
-  children_employee = [
-    <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
-    <Item key="attendance" text="Attendance" to="/attendance" icon="fa-user-clock"/>,
-    <Item key="eod" text="End of Day" to="/eod" icon="fa-file-alt" />,
-    <Item key="leaves" text="Leaves" to="/leaves" icon="fa-leaf"/>,
-    <Item key="undertime" text="Undertime" to="/undertime" icon="fa-clock"/>,
-    <Item key="overtime" text="Overtime" to="/overtime" icon="fa-business-time" />
-  ]
 
-  children_admin = [
-    <Item key="employeeLists" text="Employees" to="/employeelists" icon="fa-users" />,
-  ]
-
-  children_recruitment = [
-    <Item key="recruitmentLists" text="Interviews" to="/applicants" icon="fa-calendar-alt" />,
-    <Item key="onBoardingLists" text="On Boarding" to="/onboarding" icon="fa-calendar-check" />
-  ]
-
-  sidebar = [
-    <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />,
-    <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
-    <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
-    <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
-  ]
 
   logout = event => {
     this.props.logoutDispatch();
@@ -68,6 +47,32 @@ class Auth extends Component {
 
   render() {
     if (this.props.isLoggedIn) {
+
+      this.children_employee = [
+        <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
+        <Item key="attendance" text="Attendance" to="/attendance" icon="fa-user-clock"/>,
+        <Item key="eod" text="End of Day" to="/eod" icon="fa-file-alt" />,
+        <Item key="leaves" text="Leaves" to="/leaves" icon="fa-leaf"/>,
+        <Item key="undertime" text="Undertime" to="/undertime" icon="fa-clock"/>,
+        <Item key="overtime" text="Overtime" to="/overtime" icon="fa-business-time" />
+      ];
+
+      this.children_admin = [
+        <Item key="employeeLists" text="Employees" to="/employeelists" icon="fa-users" />,
+      ];
+
+      this.children_recruitment = [
+        <Item key="recruitmentLists" text="Interviews" to="/applicants" icon="fa-calendar-alt" />,
+        <Item key="onBoardingLists" text="On Boarding" to="/onboarding" icon="fa-calendar-check" />
+      ];
+
+      this.sidebar = [
+        <UserPanel key="userinfo" username={this.props.userData.first_name + " " + this.props.userData.last_name} status={this.props.userData.position} statusType="success" imageUrl="/user2-160x160.jpg" />,
+        <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
+        this.props.userData.role_id == 1 && <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
+        this.props.userData.department_id == 2 && this.props.userData.role_id == 1 && <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
+      ];
+
       return (
           <AdminLTE title={["HR Info System"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
               <Navbar.Core>
@@ -94,7 +99,7 @@ class Auth extends Component {
 const mapStateToProps = state => ({
   isLoggedIn: state.auth.isLoggedIn,
   token: state.auth.token,
-  userData: state.auth.userData
+  userData: JSON.parse(state.auth.userData)
 });
 
 const mapDispatchToProps = dispatch => ({

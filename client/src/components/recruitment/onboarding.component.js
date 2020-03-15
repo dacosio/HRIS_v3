@@ -42,7 +42,7 @@ class OnBoardingComponent extends Component {
           headers: { Authorization: `Bearer ${this.props.token}` }
         }) //params todo
             .then(result => {
-            
+            console.log("employees", result);
                 let supervisor = result.data.filter(result => result.role_id ==2)
                 console.log(supervisor)
                 this.setState({records: supervisor})
@@ -172,9 +172,9 @@ class OnBoardingComponent extends Component {
                     <div className="form-group">
                         <label>Supervisor</label>
                             <div>
-                                <select value= {this.state.supervisor_id} name="supervisor_id" onChange={this.handleChange}>
+                                <select  value= {this.state.supervisor_id} name="supervisor_id" onChange={this.handleChange}>
                                 {this.state.records.map(supervisor => {
-                                        return ( <option>{supervisor.first_name} {supervisor.last_name}</option>)
+                                        return ( <option key={supervisor.id} value={supervisor.id}>{supervisor.first_name} {supervisor.last_name}</option>)
                                 })}
                                 </select>
                             </div>
@@ -287,14 +287,6 @@ class OnBoardingComponent extends Component {
                         <div className="form-group">
                             <label>Password</label>
                             <input type="password" name="password" value={this.state.password} onChange={this.handleChange} className="form-control" placeholder="password" />
-                        </div>
-                    </Col>
-                </Row>
-                <Row>  
-                    <Col md={3}>
-                        <div className="form-group">
-                            <label>Confirm Password</label>
-                            <input type="password" name="confirm_password" value={this.state.confirm_password} onChange={this.handleChange} className="form-control" placeholder="confirm password" />
                         </div>
                     </Col>
                 </Row>

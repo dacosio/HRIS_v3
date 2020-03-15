@@ -14,7 +14,7 @@ class AttendanceComponent extends Component {
     };
 
     componentDidMount() {
-      axios.get(`${process.env.REACT_APP_API_SERVER}/api/logs`,
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/logs/${this.props.userData.id}`,
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo
@@ -111,7 +111,7 @@ class AttendanceComponent extends Component {
                     <Row>
                         <Col md={6}>
                         {
-                            !this.state.log_today && 
+                            !this.state.log_today &&
                             <div>
                                 <Button type="success" text="Time In" onClick={this.handleTimeIn} margin="true"/>
                             </div>
@@ -119,7 +119,7 @@ class AttendanceComponent extends Component {
                         }
                         
                         {
-                            (this.state.log_today && !this.state.log_today.time_out) && 
+                            (this.state.log_today && !this.state.log_today.time_out) &&
                             <div>
                                 <Button type="success" text="Time Out" onClick={this.handleTimeOut} margin="true"/>
                             </div>

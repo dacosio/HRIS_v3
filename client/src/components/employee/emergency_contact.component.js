@@ -28,7 +28,7 @@ class EmergencyContactComponent extends Component {
   }
 
   loadEc = () => {
-    axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/employee/${this.props.employee.id}`,
     {
       headers: { Authorization: `Bearer ${this.props.token}` }
     }) //params todo

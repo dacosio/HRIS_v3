@@ -20,7 +20,7 @@ class ProfileEmergencyComponent extends Component {
 
 
     componentDidMount() {
-      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/${this.props.userData.id}`,
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo

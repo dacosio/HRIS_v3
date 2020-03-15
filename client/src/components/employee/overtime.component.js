@@ -72,6 +72,9 @@ class OvertimeComponent extends Component {
     obj.from_time = obj.from_time.format('HH:mm:ss');
     obj.to_time = obj.to_time.format('HH:mm:ss');
 
+    if(obj.reason.trim() == ""){
+      return alert("Please enter a reason.");
+    }
     axios.post(`${process.env.REACT_APP_API_SERVER}/api/time`, obj, {
       headers: { Authorization: `Bearer ${this.props.token}` }
     })
@@ -97,7 +100,7 @@ class OvertimeComponent extends Component {
   };
 
   footer = [
-    <Button key="btnSubmitOt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitOt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
   ];
 
   render() {
@@ -118,20 +121,20 @@ class OvertimeComponent extends Component {
                     <div className="form-group">
                         <label>From</label>
                         <div>
-                            <TimePicker name="from_time" value={this.state.from_time} onChange={this.handleFromTime} />
+                            <TimePicker name="from_time" value={this.state.from_time} onChange={this.handleFromTime} required/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label>To</label>
                         <div>
-                            <TimePicker name="to_time" value={this.state.to_time} onChange={this.handleToTime} />
+                            <TimePicker name="to_time" value={this.state.to_time} onChange={this.handleToTime} required/>
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label>Reason</label>
                         <textarea type="text" name="reason" value={this.state.reason} onChange={this.handleReason}
-                            className="form-control" placeholder="Enter ..." />
+                            className="form-control" placeholder="Enter ..." required/>
                     </div>
                 </Box>
               </Col>
@@ -170,7 +173,8 @@ class OvertimeComponent extends Component {
 
 const mapStateToProps = state => ({
   isLoggedIn: state.auth.isLoggedIn,
-  token: state.auth.token
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
 });
 
 export default connect(mapStateToProps)(OvertimeComponent);

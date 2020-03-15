@@ -14,7 +14,6 @@ class InterviewComponent extends Component {
 
     state = {
         obj: {
-            id: 0,
             date: new Date(),
             time: moment(),
             first_name: '',
@@ -113,7 +112,6 @@ class InterviewComponent extends Component {
           this.setState({
             "records": records.concat(response.data[0]),
             obj: {
-                id:0,
                 date: new Date(),
                 time: moment(),
                 first_name: '',
@@ -131,7 +129,6 @@ class InterviewComponent extends Component {
     handleClear = event => {
         this.setState({
                 "obj" : {
-                    id: 0,
                     date: new Date(),
                     time: moment(),
                     first_name: '',
@@ -175,7 +172,7 @@ class InterviewComponent extends Component {
         obj.time = this.state.obj.time.format("HH:mm:ss");
         this.setState(obj);
 
-        axios.put(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + this.state.id, this.state.obj,
+        axios.put(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + this.state.obj.id, this.state.obj,
             {
             headers: { Authorization: `Bearer ${this.props.token}` }
             }) //params todo

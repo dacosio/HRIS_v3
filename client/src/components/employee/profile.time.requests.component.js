@@ -46,7 +46,7 @@ class TimeRequestsComponent extends Component {
 
             this.setState({
               records: [...newRecords]
-            }) 
+            })
 
       })
       .catch(err => {
@@ -83,7 +83,7 @@ class TimeRequestsComponent extends Component {
 
   render() {
     return (
-      <Row>
+      (this.state.records.length > 0) && <Row>
         <Col md={12}>
           <Box title="Time Requests" type="primary" collapsable>
             <table className="table table-head-fixed" id="TimesTable">

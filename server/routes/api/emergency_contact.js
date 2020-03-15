@@ -23,6 +23,12 @@ router.get('/:id', function(req,res,next) {
         .then(emergencyContact => res.json(emergencyContact))
 });
 
+router.get('/employee/:id', function(req,res,next) {
+    emergencyContactService
+        .getByEmployee(parseInt(req.params.id))
+        .then(emergencyContact => res.json(emergencyContact))
+});
+
 //create emergency contact
 router.post('/', function(req,res,next){
     let emergencyContact = {
