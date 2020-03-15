@@ -1,9 +1,10 @@
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 import moment from 'moment';
 
-export default class ProfileDependentComponent extends Component {
+class ProfileDependentComponent extends Component {
 
   state = {
     // first_name: '',
@@ -14,10 +15,21 @@ export default class ProfileDependentComponent extends Component {
     records: []
   }
 
+  constructor(props){
+    super(props);
+    console.log("data", props);
+  }
 
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/dependents') //params todo
+<<<<<<< Updated upstream
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/${this.props.userData.id}`,
+=======
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents`,
+>>>>>>> Stashed changes
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
       .then(result => {
         
         result.data.forEach(res=> {
@@ -70,3 +82,14 @@ export default class ProfileDependentComponent extends Component {
 }
 
 
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+<<<<<<< Updated upstream
+export default connect(mapStateToProps)(ProfileDependentComponent);
+=======
+export default connect(mapStateToProps)(ProfileDependentComponent);
+>>>>>>> Stashed changes

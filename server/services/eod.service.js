@@ -3,8 +3,9 @@ const knex = require('../database/knex');
 class EodService {
     constructor() {}
 
-    getAll() {
+    getAll(id) {
         return knex('end_of_day')
+        .where({created_by: id})
             .select();
     }
 

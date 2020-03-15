@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Content, Row, Col, Box, Button, SimpleTable, DescriptionBlock } from 'adminlte-2-react';
 import axios from 'axios';
 import moment from 'moment'
@@ -15,9 +17,19 @@ class EodComponent extends Component {
 
       }
   
+    constructor(props){
+      super(props);
+    }
 
   componentDidMount() {
-    axios.get('http://localhost:8080/api/eods')
+<<<<<<< Updated upstream
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods/`,
+=======
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods`,
+>>>>>>> Stashed changes
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
       .then(result => {
         this.setState({records: result.data})
       })
@@ -52,7 +64,10 @@ class EodComponent extends Component {
     }
 
     handleSubmit = event => {
-      axios.post('http://localhost:8080/api/eods',this.state)
+      axios.post(`${process.env.REACT_APP_API_SERVER}/api/eods`,this.state,
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
         .then(response=> {
           console.log(response.data[0]);
           let {records} = this.state;
@@ -73,7 +88,7 @@ class EodComponent extends Component {
   
 
     footer = [
-      <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+      <Button key="btnSubmitEod" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
     ];
 
   
@@ -158,4 +173,10 @@ class EodComponent extends Component {
     }
 }
 
-export default EodComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(EodComponent);

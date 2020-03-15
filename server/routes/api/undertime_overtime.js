@@ -8,14 +8,15 @@ const undertimeOvertimeService = new UndertimeOvertimeService();
 
 //get all times
 router.get("/", function(req, res, next) {
-  undertimeOvertimeService.getAll().then(times => {
+  undertimeOvertimeService.getAll(parseInt(req.user.id)).then(times => {
     res.json(times);
   });
 });
 
 //get time requests
 router.get("/timeRequest", function(req, res, next) {
-  undertimeOvertimeService.getTimeForApproval().then(time => res.json(time));
+  undertimeOvertimeService.getTimeForApproval(parseInt(req.user.id))
+  .then(time => res.json(time));
 });
 
 
@@ -69,7 +70,7 @@ router.post("/", function(req, res, next) {
     to_time: req.body.to_time,
     reason: req.body.reason,
     time_type: req.body.time_type,
-    created_by: req.body.created_by //todo
+    created_by: req.user.id //todo
   };
   undertimeOvertimeService.create(time).then(id => res.json(id));
 });
@@ -81,7 +82,7 @@ router.put("/:id", function(req, res, next) {
     from_time: req.body.from_time,
     to_time: req.body.to_time,
     reason: req.body.reason,
-    created_by: 1 //todo
+    created_by: req.user.id //todo
   };
   undertimeOvertimeService
     .update(req.params.id, time)

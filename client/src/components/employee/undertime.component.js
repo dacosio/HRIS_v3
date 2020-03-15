@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import moment from 'moment';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import TimePicker from 'rc-time-picker';
@@ -9,21 +10,28 @@ import 'rc-time-picker/assets/index.css';
 
 class UndertimeComponent extends Component {
 
-  state = {
-    date_filed: new Date(),
-    from_time: moment(),
-    to_time: moment(),
-    reason: '',
-    time_type: 2,
-    status: 0,
-    created_by: 1, //todo
-    records : []
-  };
- 
+ constructor(props){
+    super(props);
+
+    this.state = {
+      date_filed: new Date(),
+      from_time: moment(),
+      to_time: moment(),
+      reason: '',
+      time_type: 2,
+      status: 0,
+      created_by: 1, //todo
+      records : []
+    };
+
+  }
   timeStatus = ["Pending","Approved","Declined"];
 
   componentDidMount(){
-    axios.get('http://localhost:8080/api/time') //params todo
+    console.log(this.props);
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/time`,{
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
     .then(result => {
         // console.log(result);
         
@@ -58,7 +66,9 @@ class UndertimeComponent extends Component {
     obj.from_time = obj.from_time.format('HH:mm:ss');
     obj.to_time = obj.to_time.format('HH:mm:ss');
 
-    axios.post('http://localhost:8080/api/time',obj)
+    axios.post(`${process.env.REACT_APP_API_SERVER}/api/time`, obj, {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    })
     .then(response=> {
       console.log(response.data[0]);
       let {records} = this.state;
@@ -89,7 +99,7 @@ class UndertimeComponent extends Component {
       <Content title="Undertime" subTitle="Requests" browserTitle="Undertime">
         <Row>
           <Col md={6}>
-            <Row> 
+            <Row>
               <Col xs={12}>
                 <Box title="Undertime Application" type="success" collapsable footer={this.footer}>
                   <div className="form-group">
@@ -150,4 +160,10 @@ class UndertimeComponent extends Component {
   }
 }
 
-export default UndertimeComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(UndertimeComponent);

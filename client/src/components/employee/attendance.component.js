@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Content, Row, Col, Box, Button, SimpleTable } from 'adminlte-2-react';
 import moment from 'moment';
 import axios from 'axios';
@@ -12,7 +14,14 @@ class AttendanceComponent extends Component {
     };
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/logs') //params todo
+<<<<<<< Updated upstream
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/logs/${this.props.userData.id}`,
+=======
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/logs`,
+>>>>>>> Stashed changes
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
         .then(result => {
           
             if(result.data.length > 0) {
@@ -39,7 +48,10 @@ class AttendanceComponent extends Component {
     }
 
   handleTimeIn = event => {
-    axios.post('http://localhost:8080/api/logs',{})
+    axios.post(`${process.env.REACT_APP_API_SERVER}/api/logs`,{},
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
     .then(response=> {
       console.log(response.data);
 
@@ -65,8 +77,11 @@ class AttendanceComponent extends Component {
   };
 
   handleTimeOut = event => {
-    axios.put('http://localhost:8080/api/logs/'+this.state.log_today.id,
-    this.state.log_today)
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/logs/`+this.state.log_today.id,
+    this.state.log_today,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
     .then(response=> {
       console.log("time out", response);
 
@@ -100,7 +115,7 @@ class AttendanceComponent extends Component {
                     <Row>
                         <Col md={6}>
                         {
-                            !this.state.log_today && 
+                            !this.state.log_today &&
                             <div>
                                 <Button type="success" text="Time In" onClick={this.handleTimeIn} margin="true"/>
                             </div>
@@ -108,7 +123,7 @@ class AttendanceComponent extends Component {
                         }
                         
                         {
-                            (this.state.log_today && !this.state.log_today.time_out) && 
+                            (this.state.log_today && !this.state.log_today.time_out) &&
                             <div>
                                 <Button type="success" text="Time Out" onClick={this.handleTimeOut} margin="true"/>
                             </div>
@@ -147,4 +162,10 @@ class AttendanceComponent extends Component {
     }
 }
 
-export default AttendanceComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(AttendanceComponent);

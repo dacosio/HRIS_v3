@@ -16,6 +16,14 @@ class EmergencyContactService {
             .select();
     }
 
+    getByEmployee(id) {
+        return knex('emergency_contacts')
+            .where({
+                employee_id : id
+            })
+            .select();
+    }
+
     create(obj) {
         return knex('emergency_contacts')
             .returning(['id', 'first_name', 'last_name','relationship', 'contact_no','address','city','state','zip_code'])

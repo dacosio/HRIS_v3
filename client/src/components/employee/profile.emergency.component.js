@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Content, Row, Col, Box, SimpleTable } from 'adminlte-2-react';
 import axios from 'axios';
 
-export default class ProfileEmergencyComponent extends Component {
+class ProfileEmergencyComponent extends Component {
 
   state = {
     first_name: '',
@@ -11,10 +13,21 @@ export default class ProfileEmergencyComponent extends Component {
     records: []
   }
 
+  constructor(props){
+    super(props);
+    console.log("data", props);
+  }
 
 
     componentDidMount() {
-      axios.get('http://localhost:8080/api/emergency') //params todo
+<<<<<<< Updated upstream
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/${this.props.userData.id}`,
+=======
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
+>>>>>>> Stashed changes
+      {
+        headers: { Authorization: `Bearer ${this.props.token}` }
+      }) //params todo
       .then(result => {
   
         this.setState({records: result.data})
@@ -53,4 +66,12 @@ export default class ProfileEmergencyComponent extends Component {
       )}
 }
 
+
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(ProfileEmergencyComponent);
 

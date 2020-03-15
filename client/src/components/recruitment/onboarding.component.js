@@ -1,3 +1,4 @@
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import DatePicker from "react-datepicker";
@@ -31,10 +32,17 @@ class OnBoardingComponent extends Component {
 
     };
     
+    constructor(props){
+        super(props);
+      }
+
     componentDidMount() {
-        axios.get('http://localhost:8080/api/employees')
+        axios.get(`${process.env.REACT_APP_API_SERVER}/api/employees`,
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` }
+        }) //params todo
             .then(result => {
-            
+            console.log("employees", result);
                 let supervisor = result.data.filter(result => result.role_id ==2)
                 console.log(supervisor)
                 this.setState({records: supervisor})
@@ -67,7 +75,10 @@ class OnBoardingComponent extends Component {
     }
 
     handleSubmit = event => {
-        axios.post('http://localhost:8080/api/employees',this.state)
+        axios.post(`${process.env.REACT_APP_API_SERVER}/api/employees`,this.state,
+            {
+            headers: { Authorization: `Bearer ${this.props.token}` }
+            }) //params todo
             .then(response=> {
               console.log(response.data);
             //   alert(response.data)
@@ -93,29 +104,29 @@ class OnBoardingComponent extends Component {
               })
       })}
 
-  handleClear = event => {
-      this.setState({
-        department_id: 1,
-        role_id: 3,
-        supervisor_id: 1, //todo
-        position: '',
-        gender: 'Male',
-        first_name: '',
-        last_name: '',
-        contact_no: '',
-        birthday: new Date(),
-        address: '',
-        city: '',
-        state: '',
-        zip_code: '',
-        email: '',
-        supervisor: null,
-        date_hired: new Date(),
-        records: [],
-        password: '',
-        confirm_password: ''
-      })
-  }
+    handleClear = event => {
+        this.setState({
+            department_id: 1,
+            role_id: 3,
+            supervisor_id: 1, //todo
+            position: '',
+            gender: 'Male',
+            first_name: '',
+            last_name: '',
+            contact_no: '',
+            birthday: new Date(),
+            address: '',
+            city: '',
+            state: '',
+            zip_code: '',
+            email: '',
+            supervisor: null,
+            date_hired: new Date(),
+            records: [],
+            password: '',
+            confirm_password: ''
+        })
+    }
 
   footer = [
     <Button key="btnSubmitOnBoard" type="success" pullRight text="Save" onClick={this.handleSubmit} margin="true" />, 
@@ -161,9 +172,9 @@ class OnBoardingComponent extends Component {
                     <div className="form-group">
                         <label>Supervisor</label>
                             <div>
-                                <select value= {this.state.supervisor_id} name="supervisor_id" onChange={this.handleChange}>
+                                <select  value= {this.state.supervisor_id} name="supervisor_id" onChange={this.handleChange}>
                                 {this.state.records.map(supervisor => {
-                                        return ( <option>{supervisor.first_name} {supervisor.last_name}</option>)
+                                        return ( <option key={supervisor.id} value={supervisor.id}>{supervisor.first_name} {supervisor.last_name}</option>)
                                 })}
                                 </select>
                             </div>
@@ -279,18 +290,16 @@ class OnBoardingComponent extends Component {
                         </div>
                     </Col>
                 </Row>
-                <Row>  
-                    <Col md={3}>
-                        <div className="form-group">
-                            <label>Confirm Password</label>
-                            <input type="password" name="confirm_password" value={this.state.confirm_password} onChange={this.handleChange} className="form-control" placeholder="confirm password" />
-                        </div>
-                    </Col>
-                </Row>
             </Box>
 
         </Content>);
   }
 }
 
-export default OnBoardingComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
+
+export default connect(mapStateToProps)(OnBoardingComponent);

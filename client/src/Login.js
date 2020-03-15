@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import './Login.css';
 
 import * as authActions from "./store/actions/authActions";
 
@@ -27,11 +28,34 @@ export class Login extends React.Component {
     this.props.loginDispatch(this.state.email, this.state.password);
   };
 
+
+  
   render() {
     if (this.props.isLoggedIn) {
       return <Redirect exact to="/attendance" />;
     }
     return (
+<<<<<<< Updated upstream
+      <section className="entry-page">
+        <form>
+          <h2>Welcome!</h2>
+            <fieldset>
+              <legend className="text-center">Human Resource Info System</legend>
+              <ul>
+                <li>
+                  <label htmlFor="username">Username</label>
+                  <input value={this.state.email} onChange={this.emailInputChange} />
+                </li>
+                <li>
+                  <label htmlFor="password">Password</label>
+                  <input type="password" value={this.state.password} onChange={this.passwordInputChange}/>
+                </li>
+              </ul>
+            </fieldset>
+            <button onClick={this.login}>Log in</button>
+          </form>
+      </section>
+=======
       <div>
         Login
         <br />
@@ -43,8 +67,10 @@ export class Login extends React.Component {
           value={this.state.password}
           onChange={this.passwordInputChange}
         />
+        <br/>
         <button onClick={this.login}>click to log in</button>
       </div>
+>>>>>>> Stashed changes
     );
   }
 }
@@ -60,3 +86,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+
+/******************** */
+

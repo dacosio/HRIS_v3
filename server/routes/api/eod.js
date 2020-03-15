@@ -9,7 +9,7 @@ const eodService = new EodService();
 //get all eods
 router.get('/', function(req,res,next) {
     eodService
-        .getAll()
+        .getAll(parseInt(req.user.id))
         .then(eods => {
             res.json(eods)
         });
@@ -30,7 +30,7 @@ router.post('/', function(req,res,next){
         impediments: req.body.impediments,
         next_day_target: req.body.next_day_target,
         concerns: req.body.concerns,
-        created_by: 1 //todo
+        created_by: req.user.id //todo
     };
     eodService
         .create(eod)
@@ -45,7 +45,7 @@ router.put('/:id', function(req,res,next){
         impediments: req.body.impediments,
         next_day_target: req.body.next_day_target,
         concerns: req.body.concerns,
-        created_by: 1 //todo
+        created_by: req.user.id //todo
     };
     eodService
         .update(req.params.id,eod)

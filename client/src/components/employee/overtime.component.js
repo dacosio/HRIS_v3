@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import { Content, Row, Col, Box, Button } from 'adminlte-2-react';
 import TimePicker from 'rc-time-picker';
@@ -20,19 +20,25 @@ class OvertimeComponent extends Component {
     created_by: 1, //todo
     records: []
   };
+    constructor(props){
+    super(props);
+  }
 
   timeStatus = ["Pending","Approved","Declined"];
 
+
     
   componentDidMount(){
-    axios.get('http://localhost:8080/api/time') //params todo
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/time`,{
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
     .then(result => {
         // console.log(result);
         // result.data.from_time = moment(result.from_time).format('HH:mm:ss a')
         result.data.forEach(res=> {
           // res.from_time = moment(res.from_time).format("HH:mm:ss a");
           // res.to_time = moment(res.to_time).format("HH:mm:ss a");
-          console.log(res.from_time)
+          console.log("time response",res.from_time)
         })
         
         this.setState({
@@ -66,7 +72,15 @@ class OvertimeComponent extends Component {
     obj.from_time = obj.from_time.format('HH:mm:ss');
     obj.to_time = obj.to_time.format('HH:mm:ss');
 
-    axios.post('http://localhost:8080/api/time',obj)
+<<<<<<< Updated upstream
+    if(obj.reason.trim() == ""){
+      return alert("Please enter a reason.");
+    }
+=======
+>>>>>>> Stashed changes
+    axios.post(`${process.env.REACT_APP_API_SERVER}/api/time`, obj, {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    })
     .then(response=> {
       console.log(response.data[0]);
       let {records} = this.state;
@@ -89,7 +103,7 @@ class OvertimeComponent extends Component {
   };
 
   footer = [
-    <Button key="btnSubmitOt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />, 
+    <Button key="btnSubmitOt" type="success" pullRight text="Submit" onClick={this.handleSubmit} />,
   ];
 
   render() {
@@ -110,20 +124,20 @@ class OvertimeComponent extends Component {
                     <div className="form-group">
                         <label>From</label>
                         <div>
-                            <TimePicker name="from_time" value={this.state.from_time} onChange={this.handleFromTime} />
+                            <TimePicker name="from_time" value={this.state.from_time} onChange={this.handleFromTime} required/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label>To</label>
                         <div>
-                            <TimePicker name="to_time" value={this.state.to_time} onChange={this.handleToTime} />
+                            <TimePicker name="to_time" value={this.state.to_time} onChange={this.handleToTime} required/>
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label>Reason</label>
                         <textarea type="text" name="reason" value={this.state.reason} onChange={this.handleReason}
-                            className="form-control" placeholder="Enter ..." />
+                            className="form-control" placeholder="Enter ..." required/>
                     </div>
                 </Box>
               </Col>
@@ -160,4 +174,14 @@ class OvertimeComponent extends Component {
   }
 }
 
-export default OvertimeComponent;
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+<<<<<<< Updated upstream
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+=======
+  token: state.auth.token
+>>>>>>> Stashed changes
+});
+
+export default connect(mapStateToProps)(OvertimeComponent);

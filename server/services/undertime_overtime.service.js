@@ -3,8 +3,10 @@ const knex = require("../database/knex");
 class UndertimeOvertimeService {
   constructor() {}
 
-  getAll() {
-    return knex("undertime_overtime").select();
+  getAll(id) {
+    return knex("undertime_overtime")
+    .where({created_by: id})
+    .select();
   }
 
   get(id) {
@@ -15,7 +17,7 @@ class UndertimeOvertimeService {
       .select();
   }
 
-  getTimeForApproval() {
+  getTimeForApproval(id) {
     return knex
       .select(
         "uo.id",
@@ -31,7 +33,7 @@ class UndertimeOvertimeService {
       .innerJoin("undertime_overtime AS uo", "e.id", "uo.created_by")
       .innerJoin("time_type AS tt", "uo.time_type", "tt.id")
       .where("uo.status",'=',0)
-      .andWhere("e.supervisor_id", "=", 1); //todo
+      .andWhere("e.supervisor_id", "=", id); //todo
   }
 
  

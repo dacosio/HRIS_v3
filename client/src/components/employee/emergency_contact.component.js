@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+
 import { Col, Box, SimpleTable,Button, Row} from 'adminlte-2-react';
 import axios from 'axios';
 
@@ -14,14 +16,26 @@ class EmergencyContactComponent extends Component {
       address: '',
       city: '',
       state: '',
-      zip_code: ''
+      zip_code: '',
+      employee_id: this.props.employee.id
     },
     records : [],
     editing: false
   }
 
+  constructor(props){
+    super(props);
+  }
+
   loadEc = () => {
-    axios.get('http://localhost:8080/api/emergency') //params todo
+<<<<<<< Updated upstream
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/employee/${this.props.employee.id}`,
+=======
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
+>>>>>>> Stashed changes
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
     .then(result => {
       console.log(result.data)
       this.setState({records: result.data})
@@ -98,7 +112,10 @@ class EmergencyContactComponent extends Component {
   
 
   handleSubmit = event => {
-    axios.post('http://localhost:8080/api/emergency',this.state.obj)
+    axios.post(`${process.env.REACT_APP_API_SERVER}/api/emergency`,this.state.obj,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
       .then(response=> {
         console.log(response.data[0]);
         let {records} = this.state;
@@ -164,7 +181,10 @@ class EmergencyContactComponent extends Component {
     console.log('state',this.state.records)
     console.log('records',this.state.id)
 
-    axios.put('http://localhost:8080/api/emergency/' + this.state.id, this.state.obj)
+    axios.put(`${process.env.REACT_APP_API_SERVER}/api/emergency/` + this.state.id, this.state.obj,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
       .then(response => {
         console.log('updateEc', response.data[0]);
         var updatedEc = response.data[0];
@@ -195,7 +215,10 @@ class EmergencyContactComponent extends Component {
 
   handleDelete = (id) => {
     console.log("delete", id)
-    axios.delete('http://localhost:8080/api/emergency/' + id)
+    axios.delete(`${process.env.REACT_APP_API_SERVER}/api/emergency/` + id,
+    {
+      headers: { Authorization: `Bearer ${this.props.token}` }
+    }) //params todo
             .then(response => {
               const newRecords = this.state.records.filter(res => {
                 return res.id != id
@@ -333,6 +356,14 @@ class EmergencyContactComponent extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+  isLoggedIn: state.auth.isLoggedIn,
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+});
 
-
-export default EmergencyContactComponent;
+<<<<<<< Updated upstream
+export default connect(mapStateToProps)(EmergencyContactComponent);
+=======
+export default connect(mapStateToProps)(EmergencyContactComponent);
+>>>>>>> Stashed changes

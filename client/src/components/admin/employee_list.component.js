@@ -1,3 +1,4 @@
+import { connect } from "react-redux";
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 import {
@@ -25,7 +26,10 @@ class EmployeeListComponent extends Component {
             modalData: {}
         };
 
-        axios.get('http://localhost:8080/api/employees/employeeList') //params todo
+        axios.get(`${process.env.REACT_APP_API_SERVER}/api/employees/employeeList`,
+        {
+          headers: { Authorization: `Bearer ${this.props.token}` }
+        }) //params todo
             .then(result => {
                 console.log(result)
                 this.setState({
@@ -39,8 +43,9 @@ class EmployeeListComponent extends Component {
             });
     }
 
-    showEmployeeDetails = id => {
-        console.log("selected employee", id);
+    showEmployeeDetails = obj => {
+        console.log("selected employee", obj);
+        this.setState({modalData: obj})
         this.setState({openModal: true});
     };
 
@@ -102,8 +107,8 @@ class EmployeeListComponent extends Component {
                         <h3>Employee Properties</h3> 
 
                     <Row>
-                        <DependentsComponent/>
-                        <EmergencyContactComponent/>
+                        <DependentsComponent employee={this.state.modalData}/>
+                        <EmergencyContactComponent employee={this.state.modalData}/>
                     </Row>
                 </ReactModal>
             </Content>
@@ -112,5 +117,10 @@ class EmployeeListComponent extends Component {
 }
 
 
-
-export default EmployeeListComponent;
+const mapStateToProps = state => ({
+    isLoggedIn: state.auth.isLoggedIn,
+    token: state.auth.token,
+    userData: JSON.parse(state.auth.userData)
+  });
+  
+  export default connect(mapStateToProps)(EmployeeListComponent);

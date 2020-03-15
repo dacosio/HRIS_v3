@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from "react-redux";
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Link
-} from "react-router-dom";
-import { Provider } from "react-redux";
-import Login from './Login';
-
+  } from "react-router-dom";
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
@@ -17,14 +15,7 @@ import store from "./store/index.js";
 ReactDOM.render(
     <Provider store={store}>
         <Router>
-            <Switch>
-                <Route exact path="/login">
-                    <Login />
-                </Route>
-                <Route path="/">
-                    <App />
-                </Route>
-            </Switch>
+            <App/>
         </Router>
     </Provider>, document.getElementById('root'));
 

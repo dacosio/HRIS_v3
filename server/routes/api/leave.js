@@ -8,13 +8,16 @@ const leaveService = new LeaveService();
 
 //get all leaves
 router.get("/", function(req, res, next) {
-  leaveService.getAll().then(leaves => {
+  leaveService.getAll(parseInt(req.user.id))
+  .then(leaves => {
     res.json(leaves);
   });
 });
 
 router.get("/leaveRequest", function(req, res, next) {
-  leaveService.getLeaveforApproval().then(leaves => {
+  console.log("getting requests for : ", req.user.id);
+  leaveService.getLeaveforApproval(parseInt(req.user.id))
+  .then(leaves => {
     res.json(leaves);
   });
 });
@@ -70,7 +73,8 @@ router.put("/leaveRequest/:id", function(req, res, next) {
     to_date: req.body.to_date,
     type: req.body.type,
     status: req.body.status,
-    isDeleted: req.body.isDeleted
+    isDeleted: req.body.isDeleted,
+    created_by: req.user.id
   };
   leaveService.update(req.params.id, leave).then(leaves => {
     res.json(leaves);
@@ -89,7 +93,7 @@ router.post("/", function(req, res, next) {
     from_date: req.body.from_date,
     to_date: req.body.to_date,
     reason: req.body.reason,
-    created_by: 1 //todo
+    created_by: req.user.id //todo
   };
   leaveService.create(leave).then(id => res.json(id));
 });
@@ -101,7 +105,7 @@ router.put("/:id", function(req, res, next) {
     from_date: req.body.from_date,
     to_date: req.body.to_date,
     reason: req.body.reason,
-    created_by: 1 //todo
+    created_by: req.user.id //todo
   };
   leaveService
     .update(req.params.id, leave)
