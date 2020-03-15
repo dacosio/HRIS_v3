@@ -25,19 +25,9 @@ class Auth extends Component {
   }
 
   componentDidMount() {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
     console.log(this.props);
     if (this.props.isLoggedIn) {
       document.body.classList.add("fixed");
-=======
-    if (this.props.isLoggedIn) {
->>>>>>> Stashed changes
-=======
-    console.log(this.props);
-    if (this.props.isLoggedIn) {
-      document.body.classList.add("fixed");
->>>>>>> master
       axios
         .get(`${process.env.REACT_APP_API_SERVER}/api/secret`, {
           headers: { Authorization: `Bearer ${this.props.token}` }
@@ -49,38 +39,7 @@ class Auth extends Component {
     }
   }
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 
-=======
-  children_employee = [
-    <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
-    <Item key="attendance" text="Attendance" to="/attendance" icon="fa-user-clock"/>,
-    <Item key="eod" text="End of Day" to="/eod" icon="fa-file-alt" />,
-    <Item key="leaves" text="Leaves" to="/leaves" icon="fa-leaf"/>,
-    <Item key="undertime" text="Undertime" to="/undertime" icon="fa-clock"/>,
-    <Item key="overtime" text="Overtime" to="/overtime" icon="fa-business-time" />
-  ]
-
-  children_admin = [
-    <Item key="employeeLists" text="Employees" to="/employeelists" icon="fa-users" />,
-  ]
-
-  children_recruitment = [
-    <Item key="recruitmentLists" text="Interviews" to="/applicants" icon="fa-calendar-alt" />,
-    <Item key="onBoardingLists" text="On Boarding" to="/onboarding" icon="fa-calendar-check" />
-  ]
-
-  sidebar = [
-    <UserPanel key="userinfo" username="Don Cosio" status="Available" statusType="success" imageUrl="/user2-160x160.jpg" />,
-    <Item key="employee" icon="fa-address-card" text="Employee" children={this.children_employee}/>,
-    <Item key="admin" icon="fa-user-cog" text="Administrator" children={this.children_admin}/>,
-    <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
-  ]
->>>>>>> Stashed changes
-=======
-
->>>>>>> master
 
   logout = event => {
     this.props.logoutDispatch();
@@ -88,10 +47,6 @@ class Auth extends Component {
 
   render() {
     if (this.props.isLoggedIn) {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
->>>>>>> master
 
       this.children_employee = [
         <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
@@ -118,11 +73,6 @@ class Auth extends Component {
         this.props.userData.department_id == 2 && this.props.userData.role_id == 1 && <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
       ];
 
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> master
       return (
           <AdminLTE title={["HR Info System"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
               <Navbar.Core>
@@ -149,15 +99,7 @@ class Auth extends Component {
 const mapStateToProps = state => ({
   isLoggedIn: state.auth.isLoggedIn,
   token: state.auth.token,
-<<<<<<< HEAD
-<<<<<<< Updated upstream
   userData: JSON.parse(state.auth.userData)
-=======
-  userData: state.auth.userData
->>>>>>> Stashed changes
-=======
-  userData: JSON.parse(state.auth.userData)
->>>>>>> master
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -166,12 +108,4 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
-=======
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
->>>>>>> Stashed changes
-=======
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
->>>>>>> master

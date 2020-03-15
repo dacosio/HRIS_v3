@@ -20,15 +20,8 @@ class ProfileEmergencyComponent extends Component {
 
 
     componentDidMount() {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+
       axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/${this.props.userData.id}`,
-=======
-      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
->>>>>>> Stashed changes
-=======
-      axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/${this.props.userData.id}`,
->>>>>>> master
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo

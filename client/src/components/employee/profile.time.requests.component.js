@@ -144,12 +144,5 @@ const mapStateToProps = state => ({
   userData: JSON.parse(state.auth.userData)
 });
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+
 export default connect(mapStateToProps)(TimeRequestsComponent);
-=======
-export default connect(mapStateToProps)(TimeRequestsComponent);
->>>>>>> Stashed changes
-=======
-export default connect(mapStateToProps)(TimeRequestsComponent);
->>>>>>> master

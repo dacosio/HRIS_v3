@@ -35,10 +35,6 @@ export class Login extends React.Component {
       return <Redirect exact to="/attendance" />;
     }
     return (
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
->>>>>>> master
       <section className="entry-page">
         <form>
           <h2>Welcome!</h2>
@@ -58,25 +54,6 @@ export class Login extends React.Component {
             <button onClick={this.login}>Log in</button>
           </form>
       </section>
-<<<<<<< HEAD
-=======
-      <div>
-        Login
-        <br />
-        Email:
-        <input value={this.state.email} onChange={this.emailInputChange} />
-        <br />
-        Password:
-        <input
-          value={this.state.password}
-          onChange={this.passwordInputChange}
-        />
-        <br/>
-        <button onClick={this.login}>click to log in</button>
-      </div>
->>>>>>> Stashed changes
-=======
->>>>>>> master
     );
   }
 }
@@ -94,5 +71,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 
-/******************** */
 

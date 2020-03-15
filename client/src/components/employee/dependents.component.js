@@ -30,15 +30,8 @@ class DependentsComponent extends Component {
 
 
   loadDependents = () => {
-<<<<<<< HEAD
-<<<<<<< Updated upstream
+
     axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/employee/${this.props.employee.id}`,
-=======
-    axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/`,
->>>>>>> Stashed changes
-=======
-    axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/employee/${this.props.employee.id}`,
->>>>>>> master
     {
       headers: { Authorization: `Bearer ${this.props.token}` }
     }) //params todo
