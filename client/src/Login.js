@@ -35,18 +35,18 @@ export class Login extends React.Component {
       return <Redirect exact to="/attendance" />;
     }
     return (
-      <section id="entry-page">
+      <section className="entry-page">
         <form>
-          <h2>Welcome Back!</h2>
+          <h2>Welcome!</h2>
             <fieldset>
-              <legend>Log In</legend>
+              <legend className="text-center">Human Resource Info System</legend>
               <ul>
                 <li>
                   <label htmlFor="username">Username</label>
                   <input value={this.state.email} onChange={this.emailInputChange} />
                 </li>
                 <li>
-                  <label htmlFor="password">Password:</label>
+                  <label htmlFor="password">Password</label>
                   <input type="password" value={this.state.password} onChange={this.passwordInputChange}/>
                 </li>
               </ul>
