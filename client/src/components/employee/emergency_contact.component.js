@@ -28,11 +28,15 @@ class EmergencyContactComponent extends Component {
   }
 
   loadEc = () => {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/employee/${this.props.employee.id}`,
 =======
     axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency`,
 >>>>>>> Stashed changes
+=======
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/emergency/employee/${this.props.employee.id}`,
+>>>>>>> master
     {
       headers: { Authorization: `Bearer ${this.props.token}` }
     }) //params todo
@@ -362,8 +366,12 @@ const mapStateToProps = state => ({
   userData: JSON.parse(state.auth.userData)
 });
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 export default connect(mapStateToProps)(EmergencyContactComponent);
 =======
 export default connect(mapStateToProps)(EmergencyContactComponent);
 >>>>>>> Stashed changes
+=======
+export default connect(mapStateToProps)(EmergencyContactComponent);
+>>>>>>> master

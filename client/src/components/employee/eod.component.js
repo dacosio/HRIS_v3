@@ -22,11 +22,15 @@ class EodComponent extends Component {
     }
 
   componentDidMount() {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods/`,
 =======
     axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods`,
 >>>>>>> Stashed changes
+=======
+    axios.get(`${process.env.REACT_APP_API_SERVER}/api/eods/`,
+>>>>>>> master
     {
       headers: { Authorization: `Bearer ${this.props.token}` }
     }) //params todo

@@ -172,11 +172,15 @@ class InterviewComponent extends Component {
         obj.time = this.state.obj.time.format("HH:mm:ss");
         this.setState(obj);
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         axios.put(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + this.state.obj.id, this.state.obj,
 =======
         axios.put(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + this.state.id, this.state.obj,
 >>>>>>> Stashed changes
+=======
+        axios.put(`${process.env.REACT_APP_API_SERVER}/api/applicants/` + this.state.obj.id, this.state.obj,
+>>>>>>> master
             {
             headers: { Authorization: `Bearer ${this.props.token}` }
             }) //params todo

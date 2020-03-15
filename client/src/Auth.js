@@ -25,6 +25,7 @@ class Auth extends Component {
   }
 
   componentDidMount() {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     console.log(this.props);
     if (this.props.isLoggedIn) {
@@ -32,6 +33,11 @@ class Auth extends Component {
 =======
     if (this.props.isLoggedIn) {
 >>>>>>> Stashed changes
+=======
+    console.log(this.props);
+    if (this.props.isLoggedIn) {
+      document.body.classList.add("fixed");
+>>>>>>> master
       axios
         .get(`${process.env.REACT_APP_API_SERVER}/api/secret`, {
           headers: { Authorization: `Bearer ${this.props.token}` }
@@ -43,6 +49,7 @@ class Auth extends Component {
     }
   }
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 
 =======
@@ -71,6 +78,9 @@ class Auth extends Component {
     <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
   ]
 >>>>>>> Stashed changes
+=======
+
+>>>>>>> master
 
   logout = event => {
     this.props.logoutDispatch();
@@ -78,7 +88,10 @@ class Auth extends Component {
 
   render() {
     if (this.props.isLoggedIn) {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> master
 
       this.children_employee = [
         <Item key="profile" text="Profile" to="/profile" icon="fa-user-alt" />,
@@ -105,8 +118,11 @@ class Auth extends Component {
         this.props.userData.department_id == 2 && this.props.userData.role_id == 1 && <Item key="recruitment" icon="fa-paperclip" text="Recruitment" children={this.children_recruitment}/>
       ];
 
+<<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
       return (
           <AdminLTE title={["HR Info System"]} titleShort={["HRIS"]} theme="blue" sidebar={this.sidebar}>
               <Navbar.Core>
@@ -133,11 +149,15 @@ class Auth extends Component {
 const mapStateToProps = state => ({
   isLoggedIn: state.auth.isLoggedIn,
   token: state.auth.token,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   userData: JSON.parse(state.auth.userData)
 =======
   userData: state.auth.userData
 >>>>>>> Stashed changes
+=======
+  userData: JSON.parse(state.auth.userData)
+>>>>>>> master
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -146,8 +166,12 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
 =======
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);
 >>>>>>> Stashed changes
+=======
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+>>>>>>> master

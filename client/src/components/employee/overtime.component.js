@@ -72,12 +72,18 @@ class OvertimeComponent extends Component {
     obj.from_time = obj.from_time.format('HH:mm:ss');
     obj.to_time = obj.to_time.format('HH:mm:ss');
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
     if(obj.reason.trim() == ""){
       return alert("Please enter a reason.");
     }
 =======
 >>>>>>> Stashed changes
+=======
+    if(obj.reason.trim() == ""){
+      return alert("Please enter a reason.");
+    }
+>>>>>>> master
     axios.post(`${process.env.REACT_APP_API_SERVER}/api/time`, obj, {
       headers: { Authorization: `Bearer ${this.props.token}` }
     })
@@ -176,12 +182,17 @@ class OvertimeComponent extends Component {
 
 const mapStateToProps = state => ({
   isLoggedIn: state.auth.isLoggedIn,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   token: state.auth.token,
   userData: JSON.parse(state.auth.userData)
 =======
   token: state.auth.token
 >>>>>>> Stashed changes
+=======
+  token: state.auth.token,
+  userData: JSON.parse(state.auth.userData)
+>>>>>>> master
 });
 
 export default connect(mapStateToProps)(OvertimeComponent);

@@ -35,7 +35,10 @@ export class Login extends React.Component {
       return <Redirect exact to="/attendance" />;
     }
     return (
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> master
       <section className="entry-page">
         <form>
           <h2>Welcome!</h2>
@@ -55,6 +58,7 @@ export class Login extends React.Component {
             <button onClick={this.login}>Log in</button>
           </form>
       </section>
+<<<<<<< HEAD
 =======
       <div>
         Login
@@ -71,6 +75,8 @@ export class Login extends React.Component {
         <button onClick={this.login}>click to log in</button>
       </div>
 >>>>>>> Stashed changes
+=======
+>>>>>>> master
     );
   }
 }

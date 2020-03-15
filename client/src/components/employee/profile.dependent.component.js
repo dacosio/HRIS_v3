@@ -22,11 +22,15 @@ class ProfileDependentComponent extends Component {
 
 
     componentDidMount() {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/${this.props.userData.id}`,
 =======
       axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents`,
 >>>>>>> Stashed changes
+=======
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/dependents/${this.props.userData.id}`,
+>>>>>>> master
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo
@@ -88,8 +92,12 @@ const mapStateToProps = state => ({
   userData: JSON.parse(state.auth.userData)
 });
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 export default connect(mapStateToProps)(ProfileDependentComponent);
 =======
 export default connect(mapStateToProps)(ProfileDependentComponent);
 >>>>>>> Stashed changes
+=======
+export default connect(mapStateToProps)(ProfileDependentComponent);
+>>>>>>> master

@@ -37,11 +37,15 @@ router.put('/:id', function(req, res, next){
     let user = {
         email: req.body.email,
         password: req.body.password,
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         employee_id: req.params.id //todo
 =======
         employee_id: 2
 >>>>>>> Stashed changes
+=======
+        employee_id: req.params.id //todo
+>>>>>>> master
       };
     userService
         // .update(req.session.passport.user.id, user)

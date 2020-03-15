@@ -27,11 +27,15 @@ class LeaveComponent extends Component {
   leaveStatus = ["Pending","Approved","Declined"];
 
   componentDidMount() {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
       axios.get(`${process.env.REACT_APP_API_SERVER}/api/leaves`,
 =======
       axios.get(`${process.env.REACT_APP_API_SERVER}/api/leaves/`,
 >>>>>>> Stashed changes
+=======
+      axios.get(`${process.env.REACT_APP_API_SERVER}/api/leaves`,
+>>>>>>> master
       {
         headers: { Authorization: `Bearer ${this.props.token}` }
       }) //params todo
@@ -189,8 +193,12 @@ const mapStateToProps = state => ({
   userData: JSON.parse(state.auth.userData)
 });
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 export default connect(mapStateToProps)(LeaveComponent);
 =======
 export default connect(mapStateToProps)(LeaveComponent);
 >>>>>>> Stashed changes
+=======
+export default connect(mapStateToProps)(LeaveComponent);
+>>>>>>> master
