@@ -16,7 +16,8 @@ class EmergencyContactComponent extends Component {
       address: '',
       city: '',
       state: '',
-      zip_code: ''
+      zip_code: '',
+      employee_id: this.props.employee.id
     },
     records : [],
     editing: false

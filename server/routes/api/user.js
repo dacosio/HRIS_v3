@@ -37,7 +37,7 @@ router.put('/:id', function(req, res, next){
     let user = {
         email: req.body.email,
         password: req.body.password,
-        employee_id: 2
+        employee_id: req.params.id //todo
       };
     userService
         // .update(req.session.passport.user.id, user)

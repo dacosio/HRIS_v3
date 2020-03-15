@@ -11,27 +11,27 @@ class LeaveService {
     return knex.select();
   }
 
-  getAllLeaveRequestByEmployee(id) {
-    return knex
-      .select(
-        "e.first_name",
-        "e.last_name",
-        "e.position",
-        "l.leave_type",
-        "l.from_date",
-        "l.to_date",
-        "l.reason",
-        "l.created_at",
-        "d.department"
-      )
-      .from("leaves AS l")
-      .innerJoin("employees AS e", "l.id", "e.id")
-      .innerJoin("departments AS d", "d.id", "e.id")
-      .where("e.id", "=", id)
-      .andWhere("l.status", "=", 0);
-  }
+  // getAllLeaveRequestByEmployee(id) {
+  //   return knex
+  //     .select(
+  //       "e.first_name",
+  //       "e.last_name",
+  //       "e.position",
+  //       "l.leave_type",
+  //       "l.from_date",
+  //       "l.to_date",
+  //       "l.reason",
+  //       "l.created_at",
+  //       "d.department"
+  //     )
+  //     .from("leaves AS l")
+  //     .innerJoin("employees AS e", "l.id", "e.id")
+  //     .innerJoin("departments AS d", "d.id", "e.id")
+  //     .where("e.id", "=", id)
+  //     .andWhere("l.status", "=", 0);
+  // }
 
-  getLeaveforApproval() {
+  getLeaveforApproval(id) {
     return knex
       .select(
         "l.id",
@@ -48,7 +48,7 @@ class LeaveService {
       .innerJoin("leaves as l", "e.id", "l.created_by")
       .innerJoin("leave_type as lt", "lt.id", "l.leave_type")
       .where("l.status",'=', 0)
-      .andWhere("supervisor_id", "=", 1); //todo
+      .andWhere("supervisor_id", "=", id); //todo
   }
 
   get(id) {

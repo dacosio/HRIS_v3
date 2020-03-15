@@ -15,7 +15,7 @@ class UndertimeOvertimeService {
       .select();
   }
 
-  getTimeForApproval() {
+  getTimeForApproval(id) {
     return knex
       .select(
         "uo.id",
@@ -31,7 +31,7 @@ class UndertimeOvertimeService {
       .innerJoin("undertime_overtime AS uo", "e.id", "uo.created_by")
       .innerJoin("time_type AS tt", "uo.time_type", "tt.id")
       .where("uo.status",'=',0)
-      .andWhere("e.supervisor_id", "=", 1); //todo
+      .andWhere("e.supervisor_id", "=", id); //todo
   }
 
  

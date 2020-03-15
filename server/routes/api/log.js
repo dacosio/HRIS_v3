@@ -29,7 +29,7 @@ router.post('/', function(req,res,next){
     let log = {
         time_in: new Date(),//req.body.time_in,
         time_out: null,//req.body.time_out,
-        created_by: 1 //todo
+        created_by: req.user.id //todo
     };
     logService
         .create(log)

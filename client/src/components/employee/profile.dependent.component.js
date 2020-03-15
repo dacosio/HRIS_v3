@@ -15,6 +15,10 @@ class ProfileDependentComponent extends Component {
     records: []
   }
 
+  constructor(props){
+    super(props);
+    console.log("data", props);
+  }
 
 
     componentDidMount() {

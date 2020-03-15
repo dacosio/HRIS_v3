@@ -34,7 +34,7 @@ router.post('/', function(req,res,next){
         city: req.body.city,
         state: req.body.state,
         zip_code: req.body.zip_code,
-        employee_id: 1 //todo
+        employee_id: req.body.employee_id //todo
     };
     emergencyContactService
         .create(emergencyContact)
@@ -53,7 +53,7 @@ router.put('/:id', function(req,res,next){
         city: req.body.city,
         state: req.body.state,
         zip_code: req.body.zip_code,
-        employee_id: 1 //todo
+        employee_id: req.body.employee_id //todo
     };
     emergencyContactService
         .update(req.params.id,emergencyContact)

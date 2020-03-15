@@ -43,8 +43,9 @@ class EmployeeListComponent extends Component {
             });
     }
 
-    showEmployeeDetails = id => {
-        console.log("selected employee", id);
+    showEmployeeDetails = obj => {
+        console.log("selected employee", obj);
+        this.setState({modalData: obj})
         this.setState({openModal: true});
     };
 
@@ -106,8 +107,8 @@ class EmployeeListComponent extends Component {
                         <h3>Employee Properties</h3> 
 
                     <Row>
-                        <DependentsComponent/>
-                        <EmergencyContactComponent/>
+                        <DependentsComponent employee={this.state.modalData}/>
+                        <EmergencyContactComponent employee={this.state.modalData}/>
                     </Row>
                 </ReactModal>
             </Content>

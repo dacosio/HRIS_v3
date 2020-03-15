@@ -31,7 +31,7 @@ router.post('/', function(req,res,next){
         birthday: req.body.birthday,
         relationship: req.body.relationship,
         contact_no: req.body.contact_no,
-        employee_id: 1 //todo
+        employee_id: req.body.employee_id //todo
     };
     dependentService
         .create(dependents)
@@ -47,7 +47,7 @@ router.put('/:id', function(req,res,next){
         birthday: req.body.birthday,
         relationship: req.body.relationship,
         contact_no: req.body.contact_no,
-        employee_id: 1 //todo
+        employee_id: req.body.employee_id //todo
     };
     dependentService
         .update(req.params.id,dependents)

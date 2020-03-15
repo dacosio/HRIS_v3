@@ -11,7 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 class DependentsComponent extends Component {
   constructor(props){
     super(props);
-
+    console.log("props",props)
     this.state = {
       obj: {
         id:0,
@@ -20,6 +20,7 @@ class DependentsComponent extends Component {
         birthday: new Date(),
         relationship: '',
         contact_no: '',
+        employee_id: this.props.employee.id
       },
       records : [],
       editing: false
@@ -223,50 +224,50 @@ class DependentsComponent extends Component {
         {editing ? (
           <Box title="Edit Dependent" type="danger" collapsable footer={this.footer_edit}>
             <div className="form-group">
-                <label for="first_name_dep">First Name</label>
+                <label htmlFor="first_name_dep">First Name</label>
                 <input type="text" id="first_name_dep" className="form-control" required value={this.state.obj.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
             </div>
             <div className="form-group">
-                <label for="last_name_dep">Last Name</label>
+                <label htmlFor="last_name_dep">Last Name</label>
                 <input type="text" id="last_name_dep" className="form-control" required value={this.state.obj.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
             </div>
             <div className="form-group">
-                <label for="birthday_dep">Birthday</label>
+                <label htmlFor="birthday_dep">Birthday</label>
                   <div id="birthday_dep">
                     <DatePicker selected={this.state.obj.birthday} required onChange={this.handleBirthday} name="birthday"/>
                   </div>
             </div>
             <div className="form-group">
-                <label for="relationship_dep">Relationship</label>
+                <label htmlFor="relationship_dep">Relationship</label>
                 <input type="text" id="relationship_dep"className="form-control" required value={this.state.obj.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
             </div>
             <div className="form-group">
-                <label for="contact_no_dep">Contact Number</label>
+                <label htmlFor="contact_no_dep">Contact Number</label>
                 <input type="text" id="contact_no_dep"className="form-control" required value={this.state.obj.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
             </div>
           </Box>
           
         ):<Box title="Add Dependent" type="success" collapsable footer={this.footer_add}>
             <div className="form-group">
-                <label for="first_name_dep">First Name</label>
+                <label htmlFor="first_name_dep">First Name</label>
                 <input type="text" id="first_name_dep" className="form-control" required value={this.state.obj.first_name} name="first_name" placeholder="Enter ..." onChange={this.handleFirstName}/>
             </div>
             <div className="form-group">
-                <label for="last_name_dep">Last Name</label>
+                <label htmlFor="last_name_dep">Last Name</label>
                 <input type="text" id="last_name_dep" className="form-control" required value={this.state.obj.last_name} name="last_name" placeholder="Enter ..." onChange={this.handleLastName} />
             </div>
             <div className="form-group">
-                <label for="birthday_dep">Birthday</label>
+                <label htmlFor="birthday_dep">Birthday</label>
                   <div id="birthday_dep">
                     <DatePicker selected={this.state.obj.birthday} required onChange={this.handleBirthday} name="birthday"/>
                   </div>
             </div>
             <div className="form-group">
-                <label for="relationship_dep">Relationship</label>
+                <label htmlFor="relationship_dep">Relationship</label>
                 <input type="text" id="relationship_dep"className="form-control" required value={this.state.obj.relationship} name="relationship" placeholder="Enter ..." onChange={this.handleRelationship} />
             </div>
             <div className="form-group">
-                <label for="contact_no_dep">Contact Number</label>
+                <label htmlFor="contact_no_dep">Contact Number</label>
                 <input type="text" id="contact_no_dep"className="form-control" required value={this.state.obj.contact_no} name="contact_no" placeholder="Enter ..." onChange={this.handleContact} />
             </div>
           </Box>

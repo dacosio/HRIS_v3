@@ -13,6 +13,10 @@ class ProfileEmergencyComponent extends Component {
     records: []
   }
 
+  constructor(props){
+    super(props);
+    console.log("data", props);
+  }
 
 
     componentDidMount() {

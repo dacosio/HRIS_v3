@@ -38,7 +38,7 @@ class OvertimeComponent extends Component {
         result.data.forEach(res=> {
           // res.from_time = moment(res.from_time).format("HH:mm:ss a");
           // res.to_time = moment(res.to_time).format("HH:mm:ss a");
-          console.log(res.from_time)
+          console.log("time response",res.from_time)
         })
         
         this.setState({
