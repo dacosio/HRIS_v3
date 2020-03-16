@@ -27,7 +27,7 @@ router.post("/", function(req, res, next) {
     last_name: req.body.last_name,
     contact_no: req.body.contact_no,
     department_id: req.body.department_id,
-    created_by: req.user.id //todo
+    created_by: req.user.id
   };
   applicantService
     .create(applicant)
@@ -44,7 +44,7 @@ router.put("/:id", function(req, res, next) {
     last_name: req.body.last_name,
     contact_no: req.body.contact_no,
     department_id: req.body.department_id,
-    created_by: req.user.id //todo
+    created_by: req.user.id 
   };
   applicantService
     .update(req.params.id, applicant)

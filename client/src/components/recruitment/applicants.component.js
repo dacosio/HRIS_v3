@@ -355,7 +355,7 @@ class InterviewComponent extends Component {
             
           <Row>
             <Col md={12}>
-                <Box type="primary" collapsable title="Dependents">
+                <Box type="primary" collapsable title="Scheduled Interviews">
                     <table className="table table-head-fixed" id="EmployeesTable">
                         <thead>
                             <tr>
