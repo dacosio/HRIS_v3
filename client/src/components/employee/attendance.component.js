@@ -159,7 +159,7 @@ class AttendanceComponent extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => ({ //we use  mapStatetoProps to extract all the data that is needed in this component
   isLoggedIn: state.auth.isLoggedIn,
   token: state.auth.token,
   userData: JSON.parse(state.auth.userData)

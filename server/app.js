@@ -34,9 +34,6 @@ var applicantsRouter = require('./routes/api/applicant');
 
 var app = express();
 app.use(cors({ origin: true}));
-// the two middlewares below logs the bearer token from the Authentication Header in the request object. For demo purpose.
-// You don't need this because passport jwt strategy will also extract it with the function
-// ExtractJwt.fromAuthHeaderAsBearerToken
 
 // this middleware reads the Authentication header and retrieve the bearer token
 // then store it to req.bearerToken
@@ -46,14 +43,8 @@ app.use(
   })
 );
 
-// custom middleware that logs the bearer token from client
-/*app.use((req, res, next) => {
-  if (req.bearerToken) {
-    console.log(req.bearerToken);
-  }
-  next();
-});*/
 
+// custom middleware that logs the bearer token from client
 app.use(authClass.initialize());
 
 // view engine setup
@@ -98,12 +89,12 @@ app.post("/api/login", async function(req, res) {
       var email = req.body.email;
       var password = req.body.password;
 
-      const users = await userService.login(email, password);
+      const users = await userService.login(email, password); //this will take the email and password from users table and assign it to users constant
       if (users && users.length > 0) {
         const user = users[0];
-        const employees = await employeeService.get(user.employee_id);
+        const employees = await employeeService.get(user.employee_id); //this will take the specific employee id of the logged in user
         if(employees && employees.length > 0) {
-          var token = jwt.encode(employees[0], config.jwtSecret);
+          var token = jwt.encode(employees[0], config.jwtSecret); //jwt.encode will generate a token
           res.json({
               token: token,
               // you can put other data in the payload
@@ -112,7 +103,7 @@ app.post("/api/login", async function(req, res) {
               tokenCreatedDate: new Date().getTime()
           });
         } else {
-            res.sendStatus(401);
+            res.sendStatus(401); //401 is unauthorized
         }
       }
 

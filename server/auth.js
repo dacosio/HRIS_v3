@@ -1,5 +1,5 @@
 const passport = require('passport');
-const passportJWT = require('passport-jwt');
+const passportJWT = require('passport-jwt'); //define the passport strategy to verify the user
 const config = require('./config');
 
 const EmployeeService = require('./services/employee.service');
@@ -9,9 +9,9 @@ module.exports = ()=>{
     const strategy = new passportJWT.Strategy(
     {
         secretOrKey: config.jwtSecret,
-        jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken()
+        jwtFromRequest: passportJWT.ExtractJwt.fromAuthHeaderAsBearerToken() //header will hold the token
     }
-    , async (payload,done)=>{
+    , async (payload,done)=>{ //payload will store the employee information
         const emps = await employeeService.get(payload.id);
         if(emps && emps.length > 0) {
             const emp = emps[0];
